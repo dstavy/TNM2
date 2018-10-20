@@ -8,6 +8,8 @@
 #include "ofMain.h"
 #include "ofxFaceTracker2.h"
 #include "PresentationUpdate.hpp"
+#include "GroupManager.hpp"
+#include "User.hpp"
 
 class ofApp : public ofBaseApp{
 public:
@@ -19,24 +21,29 @@ public:
     ofRectangle getBoundingBox(ofRectangle rec1, ofRectangle rec2);
     void drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, int w, int h);
     void presentationUpdater();
+    void drawTablePage();
+    void drawElement(User* user, bool profile, View::Features feature, int xScreen, int yScreen, int w, int h, float aspectRatio);
+    ofRectangle& adjustAspectRatio(ofRectangle& box, float aspectRatio);
+    void drawGrid(View::Features feature, Group::GroupBy by, bool profile, int x, int y, int w, int h, int userPerLevel);
+
+
     
     ofxFaceTracker2 frontTracker;
     ofxFaceTracker2 profileTracker;
     ofVideoPlayer frontPlayer;
     ofVideoPlayer profilePlayer;
     PresentationUpdate presentationUpdate;
-    map<string, User*> users;
-
+    UserMap users;
+    ofImage tablePage;
+    GroupManager groupManager;
+    
     ofShader sepiaShader;
     ofRectangle frontFace;
     ofRectangle profileFace;
     int rotation;
-    int sessionId;
     
     ofPoint  getGridLocation();
     
-    ofPixels recordPixels;
-    int select;
     ofFbo gridFbo;
     int gridSize = 600;
     //float boxPadding = 200;

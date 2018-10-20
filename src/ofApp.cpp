@@ -1,14 +1,21 @@
 #include "ofApp.h"
 
 const long ofApp::VIDEO_GRID_REFRESH = 2000;
-const long ofApp::PRESENTATION_UPDATE_REFRESH = 30000;
+const long ofApp::PRESENTATION_UPDATE_REFRESH = 3000000;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    ofBackground(0,0,0,0);
+    //ofBackground(0,0,0,0);
     ofSetBackgroundAuto(false);
     ofSetVerticalSync(true);
-    sepiaShader.load("shaders/sepia");
+    
+    if (!tablePage.load("Assets/table_page.png"))
+    {
+        ofLogNotice("cant load Assets/table_page.png");
+    }
+    if (!sepiaShader.load("Shaders/sepia")) {
+        ofLogNotice("cant load Shaders/sepia");
+    }
 
     //frontPlayer.load("me_front.mov");    // Setup tracker
     frontPlayer.setLoopState(OF_LOOP_NORMAL);
@@ -24,20 +31,27 @@ void ofApp::setup(){
     
     frontTracker.setup("Model/shape_predictor_68_face_landmarks.dat");
     profileTracker.setup("Model/shape_predictor_68_face_landmarks.dat");
+    
     //frontTracker.setFaceRotation(90);
     //fprofileTracker.setFaceRotation(90);
+  
+    groupManager.groupFactory(View::FORHEAD, Group::GENERIC);
     currentUser = NULL;
-    presentationUpdate.setup(users, &frontPlayer, &profilePlayer, &frontTracker, &profileTracker);
+    presentationUpdate.setup(users, &frontPlayer, &profilePlayer, &frontTracker, &profileTracker, &groupManager);
     currentUser = presentationUpdate.update();
+    
+    //Group* g = groupManager.getGroup(View::HEAD, Group::GENERIC);
+    //vector<User*> gridUsers(0);
+    //g->getGridUsers(1, gridUsers);
 
     gridSize = 600;
     nextGrid = -1;
     gridFbo.allocate(gridSize, gridSize);
     // Clear the FBO's
     // otherwise it will bring some junk with it from the memory
-    gridFbo.begin();
-    ofClear(0,0,0,0);
-    gridFbo.end();
+    //gridFbo.begin();
+    //ofClear(0,0,0,0);
+    //gridFbo.end();
   //  ofEnableAlphaBlending();
 }
 
@@ -45,16 +59,14 @@ void ofApp::setup(){
 void ofApp::exit(){
     frontPlayer.close();
     profilePlayer.close();
-}
-
-ofRectangle ofApp::getBoundingBox(ofRectangle rec1, ofRectangle rec2) {
-    // get min max
-    int xmin = min(rec1.getLeft(),rec2.getLeft());
-    int ymin= min(rec1.getTop(), rec2.getTop());
-    int xmax = max(rec1.getRight(), rec2.getRight());
-    int ymax = max(rec1.getBottom(), rec2.getBottom());
     
-    return ofRectangle(xmin, ymin, xmax - xmin, ymax - ymin);
+    // delete users
+    for(std::map<std::string, User*>::iterator itr = users.begin(); itr != users.end(); itr++)
+    {
+        delete (itr->second);
+    }
+    
+    groupManager.exit();
 }
 
 //--------------------------------------------------------------
@@ -92,14 +104,21 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    //if (frontTracker.size()) {
-    drawVideo(frontPlayer, frontFace, 100, 100, 600, 600);
-    //}
-   //if (profileTracker.size()) {
-    drawVideo(profilePlayer, profileFace, 100, 1000, 600, 600);
-   //}
+    if (currentUser != NULL) {
+        //if (frontTracker.size()) {
+        drawVideo(frontPlayer, frontFace, 100, 100, 600, 600);
+        //}
+       //if (profileTracker.size()) {
+        drawVideo(profilePlayer, profileFace, 100, 1000, 600, 600);
+       //}
+    }
+    drawTablePage();
+    drawGrid(View::FORHEAD, Group::GENERIC, false, 165, 80, 142, 118, 4);
 }
 
+void ofApp::drawTablePage() {
+    tablePage.draw(0,0, 1920,1080);
+}
 
 void ofApp::drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, int w, int h) {
     if (player.isFrameNew()) {
@@ -139,7 +158,7 @@ void ofApp::drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, in
     player.unbind();
     
     //ofPath path;
-        path.clear();
+    path.clear();
     path.setFillColor(dark);
     path.setStrokeColor(ofColor::black);
     path.setStrokeWidth(10);
@@ -173,6 +192,56 @@ ofPoint ofApp::getGridLocation() {
     }
 }
 
+void ofApp::drawGrid(View::Features feature, Group::GroupBy by, bool profile, int x, int y, int w, int h, int userPerLevel) {
+    int xSpacing = 4;
+    int ySpacing = 16;
+    float aspectRatio = (float)w/h;
+    int currX = 0;
+    int currY = 0;
+    Group* g = groupManager.getGroup(View::FORHEAD, Group::GENERIC);
+    vector<User*> users(0);
+    g->getGridUsers(userPerLevel, users);
+    ofPushMatrix();
+    ofTranslate(x, y);
+    for(int i = Group::NUM_LEVELS -1; i >=0; i--) {
+        for (int j = 0; j < userPerLevel; j++) {
+            currX += xSpacing;
+            drawElement(users[i * userPerLevel + j], profile, g->feature, currX, currY, w, h, aspectRatio);
+            currX += w;
+        }
+        currY += h + ySpacing;
+        currX = 0;
+    }
+    ofPopMatrix();
+}
+
+void ofApp::drawElement(User* user, bool profile, View::Features feature, int xScreen, int yScreen, int w, int h, float aspectRatio) {
+    if (user != NULL) {
+        View& view = user->getView(profile);
+        ofImage& face = view.getImage();
+        ofRectangle& box = view.getBounderyBox(feature);
+        box = adjustAspectRatio(box, aspectRatio);
+        face.drawSubsection(xScreen, yScreen, w, h, box.x, box.y, box.width, box.height);
+    }
+}
+
+ofRectangle& ofApp::adjustAspectRatio(ofRectangle& box, float aspectRatio) { // x/y
+    float imageAspectRatio = (float)box.width/box.height;
+    int w = box.width;
+    int h = box.height;
+    if (imageAspectRatio > aspectRatio) {
+        h *=  imageAspectRatio / aspectRatio;
+    } else if (imageAspectRatio < aspectRatio) {
+        w *=  aspectRatio / imageAspectRatio;
+    }
+    
+    box.y -= (h - box.height) /2;
+    box.x -= (w - box.width) /2;
+    box.height = h;
+    box.width = w;
+    
+    return box;
+}
 
 void ofApp::keyReleased(int key){
    /* if (key == 'r'){
@@ -226,7 +295,6 @@ void ofApp::keyReleased(int key){
 
 void ofApp::presentationUpdater()
 {
-    presentationUpdate.setup(users, &frontPlayer, &profilePlayer, &frontTracker, &profileTracker);
     User* user = presentationUpdate.update();
     if (user != NULL) {
         currentUser = user;

@@ -12,6 +12,7 @@
 #include "ofxJSON.h"
 #include "ofxFaceTracker2.h"
 #include "User.hpp"
+#include "GroupManager.hpp"
 
 // his class check the videos. add a new user and update scores
 class PresentationUpdate {
@@ -26,20 +27,25 @@ public:
     ofVideoPlayer* profilePlayer;
     ofxFaceTracker2* frontTracker;
     ofxFaceTracker2* profileTracker;
-    map<string, User*> users;
+    GroupManager* groupManager;
+    UserMap users;
     
-    void setup(map<string, User*> users, ofVideoPlayer* frontPlayer, ofVideoPlayer* profilePlayer, ofxFaceTracker2* frontTracker, ofxFaceTracker2* profileTracker) {
+    void setup(UserMap &users, ofVideoPlayer* frontPlayer, ofVideoPlayer* profilePlayer, ofxFaceTracker2* frontTracker, ofxFaceTracker2* profileTracker, GroupManager* groupManager) {
         this->users = users;
         this->frontPlayer = frontPlayer;
         this->profilePlayer = profilePlayer;
         this->frontTracker = frontTracker;
         this->profileTracker = profileTracker;
+        this->groupManager = groupManager;
     };
     
     User* update();
 private:
-    static ofxJSONElement loadLibrary(string url);
-    User* createUser(string id, int vScore, int xScore);
+    //ofxJSONElement loadLibrary(string url);
+    //ofxJSONElement datasetJson;
+    User* createUser(string id);
     static void updateUser(User* user, int vScore, int xScore);
+    vector<User*> getUsersList();
+    ofxJSONElement datasetJson;
 };
 #endif /* PresentationUpdate_hpp */

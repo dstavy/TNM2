@@ -12,7 +12,7 @@ const int Analyzer::FACE_EXTENDED_PADDING = 150;
 
 //--------------------------------------------------------------
 bool Analyzer::videoAnalyze(string fileName, ofVideoPlayer& player, ofxFaceTracker2& tracker, User& user, bool profile, string outImage){
-    tracker.setFaceRotation(90);
+    //tracker.setFaceRotation(90);
     player.load(fileName);    // Setup tracker
     player.play();
     tracker.setup();
@@ -40,10 +40,11 @@ bool Analyzer::videoAnalyze(string fileName, ofVideoPlayer& player, ofxFaceTrack
         player.getPixels();
         
         // TODO:: crop
-        ofImage image;
+        View& view = user.getView(profile);
+        ofImage& image = view.getImage();
         image.setFromPixels(pixels);
         image.rotate90(90);
-        ofRectangle rec = user.getView(profile).parts[View::HEAD];
+        ofRectangle& rec = view.getBounderyBox(View::HEAD);
         image.crop(rec.x - FACE_EXTENDED_PADDING, rec.y - FACE_EXTENDED_PADDING, rec.width + 2*FACE_EXTENDED_PADDING, rec.height + 2*FACE_EXTENDED_PADDING);
         image.save(outImage);
         return true;
@@ -134,15 +135,17 @@ bool Analyzer::videoAnalyze(string fileName, ofVideoPlayer& player, ofxFaceTrack
 */
     
 bool Analyzer::faceAnalyze(string fileName, ofxFaceTracker2& tracker, User& user, bool profile)  {
-    ofImage image;
+    ofImage& image = user.getView(profile).getImage();
     image.load(fileName);
-    tracker.setFaceRotation(0);
-    tracker.update(image);
+   // tracker.setFaceRotation(0);
+    //for (int i = 0; i < 30; i++) {
+        tracker.update(image);
+    //}
     return faceInflate(tracker, user, profile);
 }
 
 bool Analyzer::faceInflate(ofxFaceTracker2& tracker, User& user, bool profile) {
-    View view = user.getView(profile);
+    View& view = user.getView(profile);
     if(tracker.size()){
         ofxFaceTracker2Instance camFace = tracker.getInstances()[0];
         //  if (headingforwad && !proflie || headingside && profile)

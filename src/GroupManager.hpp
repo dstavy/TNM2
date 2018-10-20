@@ -10,21 +10,18 @@
 
 #include "ofMain.h"
 #include "Group.hpp"
+#include "GenericGroup.hpp"
 #include "View.hpp"
 
-
 class GroupManager {
-public:
+private:
     vector<Group*>groups;
-    Group* groupFactory(View::Features features, Group::GroupBy by) {
-        // TODO::
-        return NULL;
-    };
-    
-    Group* getGroup(View::Features features, Group::GroupBy by) {
-        // TODO::
-        return NULL;
-    };
+    vector<User*> users;
+public:
+    void update(vector<User*> users);
+    void exit();
+    bool groupFactory(View::Features feature, Group::GroupBy by);
+    Group* getGroup(View::Features feature, Group::GroupBy by);
 };
     
 

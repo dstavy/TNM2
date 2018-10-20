@@ -33,18 +33,13 @@ public:
     ofImage face;
     bool profile;
     
-    //View(bool profile) {
-     //   this->profile = profile;
-    //};
+    ofImage& getImage() {
+        return face;
+    }
     
-    map<ofPoint, string> getPoints();
-    ofTexture getTexture(string feature) {
-        ofTexture texture;
-        return (texture);
-    };
-    
-    //ofVideoPlayer* player;
-   // ofTracker* tracker;
+    ofRectangle& getBounderyBox(Features feature) {
+        return parts[feature];
+    }
 };
 
 #endif /* View_hpp */

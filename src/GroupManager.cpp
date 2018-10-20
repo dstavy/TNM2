@@ -6,3 +6,44 @@
 //
 
 #include "GroupManager.hpp"
+
+
+
+void GroupManager::update(vector<User*> users) {
+    for(auto const& group: groups) {
+        group->update(users);
+    }
+}
+
+void GroupManager::exit() {
+    for(auto const& group: groups) {
+        delete(group);
+    }
+}
+
+Group* GroupManager::getGroup(View::Features feature, Group::GroupBy by) {
+    for(auto const& group: groups) {
+        if ((group->grouBy == by) && (group->feature == feature )) {
+            return group;
+        }
+        return NULL;
+    }
+}
+
+bool GroupManager::groupFactory(View::Features feature, Group::GroupBy by) {
+  
+    Group* group = getGroup(feature, by);
+    if (group != NULL) {
+        return group;
+    }
+    else {
+        switch ((int)by) {
+            case Group::GENERIC:
+                Group* g  = new GenericGroup(feature, by);
+                groups.push_back(g);
+                return true;
+        }
+    }
+    return false;
+}
+

@@ -1,6 +1,6 @@
 [
    {
-      "id" : "test1.oni",
+      "id" : "dan_1",
       "others" : [
          {
             "id" : "test1.oni",
@@ -23,7 +23,7 @@
       "xScore" : 16
    },
    {
-      "id" : "test1.oni",
+      "id" : "dan_2",
       "others" : [
          {
             "id" : "test1.oni",
@@ -69,7 +69,7 @@
       "xScore" : 13
    },
    {
-      "id" : "test1.oni",
+      "id" : "dan_3",
       "others" : [
          {
             "id" : "test1.oni",
@@ -92,7 +92,7 @@
       "xScore" : 12
    },
    {
-      "id" : "test1.oni",
+      "id" : "dan_4",
       "others" : [
          {
             "id" : "test1.oni",
