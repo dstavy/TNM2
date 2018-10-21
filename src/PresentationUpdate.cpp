@@ -70,7 +70,7 @@ User* PresentationUpdate::update() {
                         updateUser(it->second, vScore, xScore);
                     }
                 }
-                groupManager.update(getUsersList());
+                groupManager->update(getUsersList());
                 lastUpdate = ofGetSystemTimeMillis();
             }
         } else {
