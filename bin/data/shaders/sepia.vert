@@ -1,4 +1,4 @@
-#version 150
+#version 330
 
 // these are for the programmable pipeline system
 uniform mat4 modelViewProjectionMatrix;

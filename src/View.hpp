@@ -23,6 +23,41 @@ public:
         SAVED_IMAGE
     };
     
+    struct Letter {
+        string s;
+        int color;
+    };
+    /*
+    const map<int, Letter> pointToLetterFront = {
+        {1,  {"D", 0 },
+        {16,  {"D'", 0 },
+        {2,  {"I", 0 },
+        D    [ 1 , (1-(3-1)) ]
+        D'   [ 17, (17-(15-17)) ]
+        I    2
+        I'   16
+        K    4
+        K'   14
+        L    49
+        L'   55
+        J    32
+        J'   36
+        G    40
+        G'   43
+        H    37
+        H'   46
+        E    22
+        E'   23
+        F    18
+        F'   27
+        A    [ 28 , (28-(34-28)) ]
+        B    [ 28 , (34 +2*(34-28) ]
+                     O    above 38-39
+                     O    under 42-42
+                     O    above 44-45
+                     O    under 48-47
+};
+     */
     static const int LANDMARKS_NUM = 5;
     static const int PARTS_NUM = 7;
     static const string FACES_DIR ;

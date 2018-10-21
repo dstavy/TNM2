@@ -221,7 +221,13 @@ void ofApp::drawElement(User* user, bool profile, View::Features feature, int xS
         ofImage& face = view.getImage();
         ofRectangle& box = view.getBounderyBox(feature);
         box = adjustAspectRatio(box, aspectRatio);
+        face.bind();
+        sepiaShader.begin();
+        sepiaShader.setUniform1f("factor", 0.8/*ofRandom(0.6, 1.0)*/); // SET A UNIFORM
         face.drawSubsection(xScreen, yScreen, w, h, box.x, box.y, box.width, box.height);
+        sepiaShader.end();
+        face.unbind();
+
     }
 }
 

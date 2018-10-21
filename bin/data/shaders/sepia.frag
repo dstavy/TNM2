@@ -1,7 +1,8 @@
-#version 150
+#version 330
 
 // this is how we receive the texture
 uniform sampler2DRect tex0;
+uniform float factor;
 
 in vec2 texCoordVarying;
 
@@ -19,5 +20,5 @@ vec4 Sepia( in vec4 color )
 
 void main (void){
     outputColor = texture(tex0, texCoordVarying);
-    outputColor = mix(outputColor, Sepia(outputColor), clamp(0.8,0.0,1.0) );
+    outputColor = mix(outputColor, Sepia(outputColor), clamp(factor,0.0,1.0) );
 }
