@@ -47,8 +47,9 @@ void Group::getGridUsers(int usersPerLevel, vector<User*>& outUsers) {
 
 float Group::getScore(User* user) {
     for (int i = 0; i < NUM_LEVELS; i++) {
-        if (std::find(users[i].begin(), users[i].end(), user) != users[i].end());
-        return levelScores[i];
+		if (std::find(users[i].begin(), users[i].end(), user) != users[i].end()) {
+			return levelScores[i];
+		}
     }
     return 0.0;
 }

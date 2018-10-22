@@ -16,6 +16,6 @@ void GenericGroup::update(vector<User*> newUsers) {
     }
     
     for (int i = 0; i < NUM_LEVELS; i++) {
-        levelScores[i] / users[i].size();
+        levelScores[i] /= users[i].size();
     }
 }

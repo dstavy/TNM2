@@ -26,8 +26,8 @@ Group* GroupManager::getGroup(View::Features feature, Group::GroupBy by) {
         if ((group->grouBy == by) && (group->feature == feature )) {
             return group;
         }
-        return NULL;
     }
+	return NULL;
 }
 
 bool GroupManager::groupFactory(View::Features feature, Group::GroupBy by) {
