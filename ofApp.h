@@ -42,7 +42,7 @@ public:
     
     ofPoint  getGridLocation();
     
-    ofFbo gridFbo;
+    //ofFbo gridFbo;
     int gridSize = 600;
     //float boxPadding = 200;
     int nextGrid = -1;
@@ -53,4 +53,7 @@ public:
     User* currentUser = NULL;
     int frontVideoStartFrame;
     int proflleVideoStartFrame;
+    static void setupFonts();
+    
+    //fonts
 };
