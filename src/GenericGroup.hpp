@@ -13,7 +13,7 @@
 
 class GenericGroup : public Group {
 public:
-    GenericGroup(View::Features feature, GroupBy grouBy) : Group(feature, grouBy) {};
+    GenericGroup(View::Features feature, GroupBy grouBy, int levels) : Group(feature, grouBy, levels ) {};
     void update(vector<User*> newUsers) override;
     ~GenericGroup() {};
 };

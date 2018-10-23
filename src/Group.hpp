@@ -20,28 +20,35 @@ public:
         AGE,
         GENDER
     };
-    static const int NUM_LEVELS = 5;
+    //static const int NUM_LEVELS = 5;
     View::Features feature;
     GroupBy grouBy;
+    int numLevels;
     //int getLevel(User* user);
     float getScore(int level) {
         return levelScores[level];
     };
     float getScore(User* user);
-    vector<User*> users[NUM_LEVELS];
-    float levelScores[NUM_LEVELS];
+    vector<User*>* users;
+    float* levelScores;
     virtual void update(vector<User*> newUsers) = 0;
     void getGridUsers(int usersPerLevel, vector<User*>& outUsers);
-    Group(View::Features feature, GroupBy grouBy)
+    Group(View::Features feature, GroupBy grouBy, int levels)
     {
         this->feature = feature;
         this->grouBy = grouBy;
+        this->numLevels = levels;
+        users = new vector<User*>[numLevels];
+        levelScores = new float[numLevels];
     };
     
-    virtual ~Group() = default;
+    virtual ~Group() {
+        //delete(users);
+        //delete(levelScores);
+    };
     
     void clear() {
-        for (int i = 0; i < NUM_LEVELS; i++) {
+        for (int i = 0; i < numLevels; i++) {
             users[i].clear();
             levelScores[i] = 0.;
         }

@@ -6,8 +6,9 @@ const long ofApp::PRESENTATION_UPDATE_REFRESH = 3000000;
 //--------------------------------------------------------------
 void ofApp::setup(){
     //ofBackground(0,0,0,0);
-    ofSetBackgroundAuto(false);
+    //ofSetBackgroundAuto(false);
     ofSetVerticalSync(true);
+    //glDisable(GL_DEPTH_TEST);
     
     if (!tablePage.load("Assets/table_page.png"))
     {
@@ -35,11 +36,13 @@ void ofApp::setup(){
     //frontTracker.setFaceRotation(90);
     //fprofileTracker.setFaceRotation(90);
   
-    groupManager.groupFactory(View::FORHEAD, Group::GENERIC);
+    Group* g = groupManager.groupFactory(View::EYES, Group::GENERIC, 7);
     currentUser = NULL;
     presentationUpdate.setup(users, &frontPlayer, &profilePlayer, &frontTracker, &profileTracker, &groupManager);
     currentUser = presentationUpdate.update();
     
+    grids[0].setup(&sepiaShader,g, false, 165, 80, 4, "test", 1.0);
+    grids[0].update();
     //Group* g = groupManager.getGroup(View::HEAD, Group::GENERIC);
     //vector<User*> gridUsers(0);
     //g->getGridUsers(1, gridUsers);
@@ -113,7 +116,8 @@ void ofApp::draw(){
        //}
     }
     drawTablePage();
-    drawGrid(View::FORHEAD, Group::GENERIC, false, 165, 80, 142, 118, 4);
+    //drawGrid(View::FORHEAD, Group::GENERIC, false, 165, 80, 142, 118, 4);
+    grids[0].draw(600, 80);
 }
 
 void ofApp::drawTablePage() {
@@ -190,63 +194,6 @@ ofPoint ofApp::getGridLocation() {
         case 7:
             return ofPoint(0 , recSize);
     }
-}
-
-void ofApp::drawGrid(View::Features feature, Group::GroupBy by, bool profile, int x, int y, int w, int h, int userPerLevel) {
-    int xSpacing = 4;
-    int ySpacing = 16;
-    float aspectRatio = (float)w/h;
-    int currX = 0;
-    int currY = 0;
-    Group* g = groupManager.getGroup(View::FORHEAD, Group::GENERIC);
-    vector<User*> users(0);
-    g->getGridUsers(userPerLevel, users);
-    ofPushMatrix();
-    ofTranslate(x, y);
-    for(int i = Group::NUM_LEVELS -1; i >=0; i--) {
-        for (int j = 0; j < userPerLevel; j++) {
-            currX += xSpacing;
-            drawElement(users[i * userPerLevel + j], profile, g->feature, currX, currY, w, h, aspectRatio);
-            currX += w;
-        }
-        currY += h + ySpacing;
-        currX = 0;
-    }
-    ofPopMatrix();
-}
-
-void ofApp::drawElement(User* user, bool profile, View::Features feature, int xScreen, int yScreen, int w, int h, float aspectRatio) {
-    if (user != NULL) {
-        View& view = user->getView(profile);
-        ofImage& face = view.getImage();
-        ofRectangle& box = view.getBounderyBox(feature);
-        box = adjustAspectRatio(box, aspectRatio);
-        face.bind();
-        sepiaShader.begin();
-        sepiaShader.setUniform1f("factor", 0.8/*ofRandom(0.6, 1.0)*/); // SET A UNIFORM
-        face.drawSubsection(xScreen, yScreen, w, h, box.x, box.y, box.width, box.height);
-        sepiaShader.end();
-        face.unbind();
-
-    }
-}
-
-ofRectangle& ofApp::adjustAspectRatio(ofRectangle& box, float aspectRatio) { // x/y
-    float imageAspectRatio = (float)box.width/box.height;
-    int w = box.width;
-    int h = box.height;
-    if (imageAspectRatio > aspectRatio) {
-        h *=  imageAspectRatio / aspectRatio;
-    } else if (imageAspectRatio < aspectRatio) {
-        w *=  aspectRatio / imageAspectRatio;
-    }
-    
-    box.y -= (h - box.height) /2;
-    box.x -= (w - box.width) /2;
-    box.height = h;
-    box.width = w;
-    
-    return box;
 }
 
 void ofApp::keyReleased(int key){

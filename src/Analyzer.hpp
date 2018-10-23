@@ -16,7 +16,9 @@
 // his class check the videos. add a new user and update scores
 class Analyzer {
 public:
-    static const int FACE_EXTENDED_PADDING;
+    static const int EAR_WIDTH = 20;
+    static const int EXTRA_EAR_LENGTH = 38;
+    static const int EAR_ROTATION_FACTOR = 200;
     static bool videoAnalyze(string fileName, ofVideoPlayer& player, ofxFaceTracker2& tracker, User& user, bool profile, string outImage);
     static bool faceAnalyze(string fileName, ofxFaceTracker2& tracker, User& user, bool profile);
 private:

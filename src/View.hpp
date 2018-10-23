@@ -20,7 +20,7 @@ public:
         MOUTH,
         LEFT_EAR,
         RIGHT_EAR,
-        SAVED_IMAGE
+       // SAVED_IMAGE
     };
     
     struct Letter {
@@ -58,6 +58,7 @@ public:
                      O    under 48-47
 };
      */
+    static const int FACE_EXTENDED_PADDING = 150;
     static const int LANDMARKS_NUM = 5;
     static const int PARTS_NUM = 7;
     static const string FACES_DIR ;

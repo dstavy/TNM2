@@ -24,9 +24,10 @@
 		6AABAB39E82AF5CFEA23A205 /* ContourFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5FBB4A8427353AED09174BE5 /* ContourFinder.cpp */; };
 		7CDAD32BE4FA46701E3552C7 /* RunningBackground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5CBF6AED6A17AC0C17F63CC4 /* RunningBackground.cpp */; };
 		8455EA5940411E781CB9BCC1 /* GenericGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66B43F0DD0205DBFDF9F1CAA /* GenericGroup.cpp */; };
-		A5C7D7C073773C0816ECA2C4 /* User.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F936587F2B56A06D14FEF13 /* User.cpp */; };
+		9DB08F3E8C2743C6D1A4C3FD /* ofxTextAlignTTF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2FD38686DA7B75619AB21D1D /* ofxTextAlignTTF.cpp */; };
 		A6668C5B1272D7FCD5B5A16F /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6CEC50DB3D06414010233963 /* Utilities.cpp */; };
 		A9D8C7CC986604120578C96F /* GroupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6D07F378217877EE3D2FD42B /* GroupManager.cpp */; };
+		B4C11BD118649C67ADB9857C /* ofxTextAlign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D012F45E592BBD8AB62101D6 /* ofxTextAlign.cpp */; };
 		B55C4B5C2C846B0D2C4EFC7D /* ImageGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04C1FA983B64966CB756736E /* ImageGrid.cpp */; };
 		B6840996567E78436F7ECFAB /* ETF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B047FF96258DC01792B272DB /* ETF.cpp */; };
 		BEDFEE7400C58EA4E412B757 /* ofxJSONElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2B099E6BD1199664C48B177 /* ofxJSONElement.cpp */; };
@@ -158,6 +159,7 @@
 		2DE0CB634091CA3622870601 /* cudaarithm.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = cudaarithm.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/cudaarithm.hpp; sourceTree = SOURCE_ROOT; };
 		2E411F99E3AB7154484B4F96 /* kmeans_index.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = kmeans_index.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/kmeans_index.h; sourceTree = SOURCE_ROOT; };
 		2F3FA783F254D7A057FF7E5C /* ippasync.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ippasync.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/ippasync.hpp; sourceTree = SOURCE_ROOT; };
+		2FD38686DA7B75619AB21D1D /* ofxTextAlignTTF.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ofxTextAlignTTF.cpp; path = ../../../addons/ofxTextAlign/src/ofxTextAlignTTF.cpp; sourceTree = SOURCE_ROOT; };
 		30884ECD9C171AB1B1BDFC3F /* cv.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = cv.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv/cv.hpp; sourceTree = SOURCE_ROOT; };
 		312C4E5B5888B0E1B0260A34 /* fast_math.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = fast_math.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/fast_math.hpp; sourceTree = SOURCE_ROOT; };
 		319268D200F1BA567E4CCFF9 /* cxeigen.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = cxeigen.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv/cxeigen.hpp; sourceTree = SOURCE_ROOT; };
@@ -183,7 +185,6 @@
 		3C5231D57B4C137AD4857C43 /* cvdef.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = cvdef.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/cvdef.h; sourceTree = SOURCE_ROOT; };
 		3CAC3F11B245608778B60A54 /* type_traits.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = type_traits.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/cudev/util/detail/type_traits.hpp; sourceTree = SOURCE_ROOT; };
 		3E62F0912DD06E97FB7B71E5 /* calib3d.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = calib3d.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/calib3d.hpp; sourceTree = SOURCE_ROOT; };
-		3F936587F2B56A06D14FEF13 /* User.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = User.cpp; path = src/User.cpp; sourceTree = SOURCE_ROOT; };
 		3F9F5D5E3A4CDE45682F38E2 /* sha.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = sha.h; path = ../../../addons/ofxPoco/libs/openssl/include/openssl/sha.h; sourceTree = SOURCE_ROOT; };
 		3FEC91F2DC9B84817ADF511F /* interface.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = interface.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/hal/interface.h; sourceTree = SOURCE_ROOT; };
 		3FED4C887C37A3FD70D004E8 /* ui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ui.h; path = ../../../addons/ofxPoco/libs/openssl/include/openssl/ui.h; sourceTree = SOURCE_ROOT; };
@@ -272,6 +273,7 @@
 		6D07F378217877EE3D2FD42B /* GroupManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = GroupManager.cpp; path = src/GroupManager.cpp; sourceTree = SOURCE_ROOT; };
 		6DD5A3CBB6D5BBA1C1354F1B /* flann.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = flann.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/flann.hpp; sourceTree = SOURCE_ROOT; };
 		6E20DD7238FD1446DA7DB1D5 /* histogram.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = histogram.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/cudev/grid/histogram.hpp; sourceTree = SOURCE_ROOT; };
+		6E443BF051035CA6BB7362B4 /* ofxTextAlignTTF.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxTextAlignTTF.h; path = ../../../addons/ofxTextAlign/src/ofxTextAlignTTF.h; sourceTree = SOURCE_ROOT; };
 		6EF5548EEA5A855DAA35C873 /* cudafilters.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = cudafilters.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/cudafilters.hpp; sourceTree = SOURCE_ROOT; };
 		6FAF79F4AD0DC48C239A0E3E /* idea.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = idea.h; path = ../../../addons/ofxPoco/libs/openssl/include/openssl/idea.h; sourceTree = SOURCE_ROOT; };
 		70046E043EDDB466ED625C3B /* Tracker.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Tracker.h; path = ../../../addons/ofxCv/libs/ofxCv/include/ofxCv/Tracker.h; sourceTree = SOURCE_ROOT; };
@@ -407,6 +409,7 @@
 		AFCFB2EC5C6F97073DAC843C /* ocl.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ocl.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/ocl.hpp; sourceTree = SOURCE_ROOT; };
 		AFDF50FE842FFA83D825748D /* matx.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = matx.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/matx.hpp; sourceTree = SOURCE_ROOT; };
 		B047FF96258DC01792B272DB /* ETF.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ETF.cpp; path = ../../../addons/ofxCv/libs/CLD/src/ETF.cpp; sourceTree = SOURCE_ROOT; };
+		B06CEE800C9548721BCC1ADC /* ofxTextAlign.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxTextAlign.h; path = ../../../addons/ofxTextAlign/src/ofxTextAlign.h; sourceTree = SOURCE_ROOT; };
 		B09FCFF976DCEACB7C7C8D4E /* optical_flow.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = optical_flow.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/superres/optical_flow.hpp; sourceTree = SOURCE_ROOT; };
 		B1579F602B98D48A6937B341 /* util.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = util.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/stitching/detail/util.hpp; sourceTree = SOURCE_ROOT; };
 		B1CC96657896D2F948104F3D /* seed.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = seed.h; path = ../../../addons/ofxPoco/libs/openssl/include/openssl/seed.h; sourceTree = SOURCE_ROOT; };
@@ -457,6 +460,7 @@
 		CE9C7160245B19131DAE6128 /* ofxCvColorImage.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ofxCvColorImage.cpp; path = ../../../addons/ofxOpenCv/src/ofxCvColorImage.cpp; sourceTree = SOURCE_ROOT; };
 		CEB9CEC3B30B261C9C596534 /* cap_ios.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = cap_ios.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/videoio/cap_ios.h; sourceTree = SOURCE_ROOT; };
 		CF29BFB3FD3CAA54F336E6FD /* cvaux.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = cvaux.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv/cvaux.hpp; sourceTree = SOURCE_ROOT; };
+		D012F45E592BBD8AB62101D6 /* ofxTextAlign.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ofxTextAlign.cpp; path = ../../../addons/ofxTextAlign/src/ofxTextAlign.cpp; sourceTree = SOURCE_ROOT; };
 		D09005AA091D7F458B01FD2B /* cudaoptflow.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = cudaoptflow.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/cudaoptflow.hpp; sourceTree = SOURCE_ROOT; };
 		D0FD0FEA8D83DDE3B801570C /* pyr_up.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = pyr_up.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/cudev/grid/detail/pyr_up.hpp; sourceTree = SOURCE_ROOT; };
 		D187BA09540C3E6871988EAC /* private.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = private.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/cudalegacy/private.hpp; sourceTree = SOURCE_ROOT; };
@@ -1143,6 +1147,14 @@
 			name = openssl;
 			sourceTree = "<group>";
 		};
+		73252C2D4C7012665A9367CD /* ofxTextAlign */ = {
+			isa = PBXGroup;
+			children = (
+				8D82D69CE80FD55076D0A11A /* src */,
+			);
+			name = ofxTextAlign;
+			sourceTree = "<group>";
+		};
 		735E5AEBC5583BE28FD95AFA /* ofxFaceTracker21 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1243,6 +1255,17 @@
 			isa = PBXGroup;
 			children = (
 				325BD94FFB93161BBC68336E /* ofxCv.h */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		8D82D69CE80FD55076D0A11A /* src */ = {
+			isa = PBXGroup;
+			children = (
+				D012F45E592BBD8AB62101D6 /* ofxTextAlign.cpp */,
+				B06CEE800C9548721BCC1ADC /* ofxTextAlign.h */,
+				2FD38686DA7B75619AB21D1D /* ofxTextAlignTTF.cpp */,
+				6E443BF051035CA6BB7362B4 /* ofxTextAlignTTF.h */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -1503,6 +1526,7 @@
 				2865DAEF86B1907A704CA70B /* ofxJSON */,
 				A0B90D3B0ADB9C1716816714 /* ofxOpenCv */,
 				0117D94CE0C695E5E5482BEC /* ofxPoco */,
+				73252C2D4C7012665A9367CD /* ofxTextAlign */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -1698,7 +1722,6 @@
 				04C1FA983B64966CB756736E /* ImageGrid.cpp */,
 				D26FC12D6D0DBA1F985D30FE /* View.hpp */,
 				AE7C8DA5B8F7E8141B4C3EA6 /* GroupManager.hpp */,
-				3F936587F2B56A06D14FEF13 /* User.cpp */,
 				A99AC8B76823EAAA895DC194 /* Group.cpp */,
 				5DDB1E8EC621C69D3AEE710F /* GenericGroup.hpp */,
 				E42AC12B695160CF1F48F02A /* PresentationUpdate.hpp */,
@@ -1906,7 +1929,6 @@
 				A9D8C7CC986604120578C96F /* GroupManager.cpp in Sources */,
 				0CA1F37EF966E5F9BFC36D89 /* Analyzer.cpp in Sources */,
 				B55C4B5C2C846B0D2C4EFC7D /* ImageGrid.cpp in Sources */,
-				A5C7D7C073773C0816ECA2C4 /* User.cpp in Sources */,
 				D55170E94C2E8B38D3DC6454 /* Group.cpp in Sources */,
 				B6840996567E78436F7ECFAB /* ETF.cpp in Sources */,
 				F76B4A79BD8DE4854141CB47 /* fdog.cpp in Sources */,
@@ -1935,6 +1957,8 @@
 				63020F16C7E8DED980111241 /* ofxCvImage.cpp in Sources */,
 				D3301F6A0B43BB293ED97C1D /* ofxCvShortImage.cpp in Sources */,
 				1C36947250DCB09A8A375C0C /* ofxXmlPoco.cpp in Sources */,
+				B4C11BD118649C67ADB9857C /* ofxTextAlign.cpp in Sources */,
+				9DB08F3E8C2743C6D1A4C3FD /* ofxTextAlignTTF.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2040,6 +2064,7 @@
 					../../../addons/ofxPoco/libs/poco/include,
 					../../../addons/ofxPoco/src,
 					../../../addons/ofxPoco/libs/openssl/include,
+					../../../addons/ofxTextAlign/src,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CFLAGS = (
@@ -2152,6 +2177,7 @@
 					../../../addons/ofxPoco/libs/poco/include,
 					../../../addons/ofxPoco/src,
 					../../../addons/ofxPoco/libs/openssl/include,
+					../../../addons/ofxTextAlign/src,
 				);
 				ICON = "$(ICON_NAME_RELEASE)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
@@ -2273,6 +2299,7 @@
 					../../../addons/ofxPoco/libs/poco/include,
 					../../../addons/ofxPoco/src,
 					../../../addons/ofxPoco/libs/openssl/include,
+					../../../addons/ofxTextAlign/src,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2396,6 +2423,7 @@
 					../../../addons/ofxPoco/libs/poco/include,
 					../../../addons/ofxPoco/src,
 					../../../addons/ofxPoco/libs/openssl/include,
+					../../../addons/ofxTextAlign/src,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CFLAGS = (
@@ -2508,6 +2536,7 @@
 					../../../addons/ofxPoco/libs/poco/include,
 					../../../addons/ofxPoco/src,
 					../../../addons/ofxPoco/libs/openssl/include,
+					../../../addons/ofxTextAlign/src,
 				);
 				ICON = "$(ICON_NAME_DEBUG)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
@@ -2618,6 +2647,7 @@
 					../../../addons/ofxPoco/libs/poco/include,
 					../../../addons/ofxPoco/src,
 					../../../addons/ofxPoco/libs/openssl/include,
+					../../../addons/ofxTextAlign/src,
 				);
 				ICON = "$(ICON_NAME_RELEASE)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";

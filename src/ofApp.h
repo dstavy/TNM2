@@ -10,9 +10,11 @@
 #include "PresentationUpdate.hpp"
 #include "GroupManager.hpp"
 #include "User.hpp"
+#include "ImageGrid.hpp"
 
 class ofApp : public ofBaseApp{
 public:
+    static const int NUM_IMAGE_GRIDS = 8;
     void setup();
     void exit();
     void update();
@@ -22,11 +24,6 @@ public:
     void drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, int w, int h);
     void presentationUpdater();
     void drawTablePage();
-    void drawElement(User* user, bool profile, View::Features feature, int xScreen, int yScreen, int w, int h, float aspectRatio);
-    ofRectangle& adjustAspectRatio(ofRectangle& box, float aspectRatio);
-    void drawGrid(View::Features feature, Group::GroupBy by, bool profile, int x, int y, int w, int h, int userPerLevel);
-
-
     
     ofxFaceTracker2 frontTracker;
     ofxFaceTracker2 profileTracker;
@@ -41,6 +38,7 @@ public:
     ofRectangle frontFace;
     ofRectangle profileFace;
     int rotation;
+    ImageGrid grids[NUM_IMAGE_GRIDS];
     
     ofPoint  getGridLocation();
     

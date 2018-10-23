@@ -20,7 +20,7 @@ private:
 public:
     void update(vector<User*> users);
     void exit();
-    bool groupFactory(View::Features feature, Group::GroupBy by);
+    Group* groupFactory(View::Features feature, Group::GroupBy by, int levels);
     Group* getGroup(View::Features feature, Group::GroupBy by);
 };
     

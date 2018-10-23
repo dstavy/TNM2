@@ -30,7 +30,7 @@ Group* GroupManager::getGroup(View::Features feature, Group::GroupBy by) {
     }
 }
 
-bool GroupManager::groupFactory(View::Features feature, Group::GroupBy by) {
+Group* GroupManager::groupFactory(View::Features feature, Group::GroupBy by, int levels) {
   
     Group* group = getGroup(feature, by);
     if (group != NULL) {
@@ -39,11 +39,11 @@ bool GroupManager::groupFactory(View::Features feature, Group::GroupBy by) {
     else {
         switch ((int)by) {
             case Group::GENERIC:
-                Group* g  = new GenericGroup(feature, by);
+                Group* g  = new GenericGroup(feature, by, levels);
                 groups.push_back(g);
-                return true;
+                return g;
         }
     }
-    return false;
+    return NULL;
 }
 

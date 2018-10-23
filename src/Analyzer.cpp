@@ -8,7 +8,7 @@
 #include "Analyzer.hpp"
 
 #define SEC_5 = 30 * 5;
-const int Analyzer::FACE_EXTENDED_PADDING = 150;
+//const int Analyzer::FACE_EXTENDED_PADDING = 150;
 
 //--------------------------------------------------------------
 bool Analyzer::videoAnalyze(string fileName, ofVideoPlayer& player, ofxFaceTracker2& tracker, User& user, bool profile, string outImage){
@@ -17,23 +17,50 @@ bool Analyzer::videoAnalyze(string fileName, ofVideoPlayer& player, ofxFaceTrack
     player.play();
     tracker.setup();
     int start =  0;
+    int countDown = 30; // after 30 frames not detecting stops
+    float profileThreshold = 0.2;
+    float frontThreshold = 0.1;
+    ofVec3f bestFront(1.,1.,1.);
+    ofVec3f middle(0.,0., 0.);
+    float bestProflie = 0.;
+    ofVec3f translation;
+    ofVec3f scale;
+    ofQuaternion rotation;
+    ofQuaternion so;
+    int bestFrame = 0;
+    int lastFrame = -1;
     
     player.setUseTexture(false);
     int i = 0;
     for (i = 0; i < player.getTotalNumFrames(); i++) {
         player.setFrame(i);
         tracker.update(player);
-        if(tracker.size()){
-            continue;
+        if(!tracker.size()){
+            countDown--;
+            if (countDown < 0) {
+                break;
+            }
         }
         else {
-           // if (i > 30) {
-                i--;
-                break;
-          //  }
+            ofxFaceTracker2Instance camFace = tracker.getInstances()[0];
+            camFace.getPoseMatrix().decompose(translation, rotation, scale, so);
+            if (!profile) {
+                if (bestFront.distance(middle) > rotation.asVec3().distance(middle))
+                {
+                    bestFront = rotation.asVec3();
+                    bestFrame = i;
+                }
+            } else {
+                if (bestProflie < rotation.asVec3().x) {
+                    bestProflie = rotation.asVec3().x;
+                    bestFrame = i;
+                }
+            }
         }
     }
-    player.setFrame(i);
+        
+    lastFrame = i;
+    player.setFrame(bestFrame);
     tracker.update(player);
     if (faceInflate(tracker, user, profile)) {
         ofPixels pixels;
@@ -45,7 +72,7 @@ bool Analyzer::videoAnalyze(string fileName, ofVideoPlayer& player, ofxFaceTrack
         image.setFromPixels(pixels);
         image.rotate90(90);
         ofRectangle& rec = view.getBounderyBox(View::HEAD);
-        image.crop(rec.x - FACE_EXTENDED_PADDING, rec.y - FACE_EXTENDED_PADDING, rec.width + 2*FACE_EXTENDED_PADDING, rec.height + 2*FACE_EXTENDED_PADDING);
+        image.crop(rec.x - View::FACE_EXTENDED_PADDING, rec.y - View::FACE_EXTENDED_PADDING, rec.width + 2 * View::FACE_EXTENDED_PADDING, rec.height + 2 * View::FACE_EXTENDED_PADDING);
         image.save(outImage);
         return true;
     }
@@ -98,14 +125,14 @@ bool Analyzer::videoAnalyze(string fileName, ofVideoPlayer& player, ofxFaceTrack
                 forhead.addVertex(landmarks.getImagePoint(16).x, landmarks.getImagePoint(46).y, 0);
                 forhead.addVertex(landmarks.getImagePoint(16).x, landmarks.getImagePoint(46).y - face.height/4, 0);
                 forhead.addVertex(landmarks.getImagePoint(0).x, landmarks.getImagePoint(41).y - face.height/4, 0);
-                view.parts[View::FORHEAD] = nose.getBoundingBox();
+                view.parts[View::FORHEAD] = forhead.getBoundingBox();
                 
                 ofRectangle head(face);
                 head.y -= face.height/4;
                 head.setHeight(1.25 * face.height);
                 view.parts[View::HEAD] = head;
             
-                
+     if (profile) { // easrs
                  // TODO:: add
                 //view->landmarks[] = landmarks.getImagePoint(<#int i#>);
                 ofPixels pixels;
@@ -201,6 +228,27 @@ bool Analyzer::faceInflate(ofxFaceTracker2& tracker, User& user, bool profile) {
             user.measures[View::EYES] = view.parts[View::EYES].height / faceLength;
             user.measures[View::NOSE] = view.parts[View::NOSE].height / faceLength;
             user.measures[View::MOUTH] = view.parts[View::MOUTH].height / faceLength;
+        } else {
+            ofVec3f translation;
+            ofVec3f scale;
+            ofQuaternion rotation;
+            ofQuaternion so;
+            camFace.getPoseMatrix().decompose(translation, rotation, scale, so);
+            float rotAdd = EAR_ROTATION_FACTOR * rotation.asVec3().x;
+            //left ear
+            ofRectangle earL;
+            earL.setX(landmarks.getImagePoint(2).x - (EAR_WIDTH + rotAdd));
+            earL.setY(landmarks.getImagePoint(0).y);
+            earL.setWidth(MAX(EAR_WIDTH + rotAdd, 0));
+            earL.setHeight(landmarks.getImagePoint(2).y - earL.getY() + EXTRA_EAR_LENGTH);
+            view.parts[View::LEFT_EAR] = earL;
+            // right ear
+            ofRectangle earR;
+            earR.setX(landmarks.getImagePoint(14).x);
+            earR.setY(landmarks.getImagePoint(16).y);
+            earR.setWidth(MAX(EAR_WIDTH - rotAdd, 0));
+            earR.setHeight(landmarks.getImagePoint(14).y - earR.getY() + EXTRA_EAR_LENGTH);
+            view.parts[View::RIGHT_EAR] = earR;
         }
         return true;
     }
