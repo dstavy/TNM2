@@ -9,6 +9,7 @@
 #define View_hpp
 
 #include "ofMain.h"
+#include "ofxFaceTracker2.h"
 
 class View {
 public:
@@ -22,6 +23,31 @@ public:
         RIGHT_EAR,
        // SAVED_IMAGE
     };
+    
+    static inline const string featureToString(Features f)
+    {
+        switch (f)
+        {
+            case HEAD:      return "Visage";
+            case FORHEAD:   return "Front";
+            case EYES:      return "Yeux";
+            case NOSE:      return "Nez";
+            case MOUTH:     return "Bouche";
+            case LEFT_EAR:
+            case RIGHT_EAR:
+                            return "Oreille";
+            default:        return "";
+        }
+    }
+    
+    static inline const string proflieToString(bool p)
+    {
+        if (p) {
+            return "Profil";
+        } else {
+            return "Frontale";
+        }
+    }
     
     struct Letter {
         string s;
@@ -62,6 +88,7 @@ public:
     static const int LANDMARKS_NUM = 5;
     static const int PARTS_NUM = 7;
     static const string FACES_DIR ;
+    //ofxFaceTracker2Landmarks landmarks2;
     static const glm::vec4 partPeddings[PARTS_NUM];
     char letter[LANDMARKS_NUM];
     ofRectangle parts[PARTS_NUM];

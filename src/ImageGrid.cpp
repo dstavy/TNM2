@@ -6,11 +6,11 @@
 //
 
 #include "ImageGrid.hpp"
+#include "ofxSmartFont.h"
 
-void ImageGrid::setup(ofShader* shader, Group* group, bool profile, int wElement, int hElement, int userPerLevel, string title, float scale, ofColor bg) {
+void ImageGrid::setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, string title, float scale, ofColor bg) {
     this->shader = shader;
     this->group = group;
-    this->profile = profile;
     this->w = wElement;
     this->h = hElement;
     this->userPerLevel = userPerLevel;
@@ -29,29 +29,33 @@ void ImageGrid::setup(ofShader* shader, Group* group, bool profile, int wElement
     fbo.begin();
     ofClear(0,0,0,255);
     fbo.end();
+    getSize();
 }
 
-// call this to calculate where eto drasw next
+// call this to calculate where to draw next
 ofPoint ImageGrid::getSize() {
     return ofPoint(wholeSize.x/scale, wholeSize.y/scale);
+    ofLogNotice("Grid:" + getTitle() + "size: " + ofToString(wholeSize.x/scale) + " " + ofToString(wholeSize.y/scale));
 }
 
 void ImageGrid::update() {
     int x = 0;
     int y = 0;
-    currUser = 0;
     vector<User*> users(0);
     group->getGridUsers(userPerLevel, users);
-    fbo.begin();
     ofPushStyle();
-    ofSetColor(ofColor::antiqueWhite);
+    ofSetColor(bg);
     ofFill();
+    fbo.begin();
+    drawHeader();
+    y += HEADER_HEIGHT;
+    vector<User*>::iterator it;
     for(int i = group->numLevels -1; i >=0; i--) {
-        drawLine(y, users);
+        drawLine(y, users.begin() + (i * userPerLevel));
         y += lineSize.y + Y_SPACING;
     }
-    ofPopStyle();
     fbo.end();
+    ofPopStyle();
 }
 
 void ImageGrid::calculateSizes() {
@@ -60,7 +64,7 @@ void ImageGrid::calculateSizes() {
     lineSize.x = PADDING_LINE_SIDE_TOP * 2 + userPerLevel * elementSize.x;
     lineSize.y = PADDING_LINE_SIDE_TOP + elementSize.y;
     wholeSize.x = lineSize.x;
-    wholeSize.y = lineSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
+    wholeSize.y = HEADER_HEIGHT + lineSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
 }
 
 void ImageGrid::draw(int x, int y) {
@@ -71,21 +75,37 @@ void ImageGrid::draw(int x, int y) {
     ofPopMatrix();
 }
 
-void ImageGrid::drawLine(int y, vector<User*> users) {
+string ImageGrid::getTitle() {
+    return View::featureToString(group->feature) + " / " + View::proflieToString(group->profile);
+}
+                
+void ImageGrid::drawHeader() {
+    //ofSetColor(bg);
+    ofDrawRectangle(0,0, wholeSize.x, HEADER_HEIGHT);
+    shared_ptr<ofxSmartFont> font = ofxSmartFont::get("BodonPoster");
+    ofSetColor(ofColor::black);
+    string title = getTitle();
+    int hs = font->height(title);
+    int ws = font->width(title);
+    font->draw(title, wholeSize.x / 2 - ws /2, HEADER_HEIGHT/2 + hs /2);
+    ofSetColor(bg);
+}
+
+void ImageGrid::drawLine(int y, vector<User*>::iterator it) {
     int x = 0;
     ofDrawRectangle(x, y, lineSize.x, lineSize.y);
     y += PADDING_LINE_SIDE_TOP;
     x += PADDING_LINE_SIDE_TOP;
     for (int j = 0; j < userPerLevel; j++) {
-        drawElement(users[currUser], x, y);
-        currUser++;
+        drawElement(*it, x, y);
+        it++;
         x += elementSize.x;
     }
 }
 
 void ImageGrid::drawElement(User* user, int x, int y) {
     if (user != NULL) {
-        View& view = user->getView(profile);
+        View& view = user->getView(group->profile);
         ofImage& face = view.getImage();
         ofRectangle& box = view.getBounderyBox(group->feature);
         box = adjustAspectRatio(box, aspectRatio);
@@ -95,11 +115,19 @@ void ImageGrid::drawElement(User* user, int x, int y) {
         face.drawSubsection(x + ELEMENT_SIDE_PADDING, y, w, h, box.x, box.y, box.width, box.height);
         shader->end();
         face.unbind();
-        drawScoreArea(x , y - h);
+        drawScoreArea(user->score, x , y + h);
     }
 }
 
-void ImageGrid::drawScoreArea(int x, int y) {
+void ImageGrid::drawScoreArea(float score, int x, int y) {
+    shared_ptr<ofxSmartFont> font = ofxSmartFont::get("AmericanTypewriter");
+    ofSetHexColor(0x242124);
+    
+    string sScore = ofToString(std::floor(score * 100.) / 100.);
+    int hs = font->height(sScore);
+    int ws = font->width(sScore);
+    font->draw(sScore, x + w - ws, y + SCORE_AREA_HEIGHT/2 + hs/2);
+    ofSetColor(bg);
 }
 
 ofRectangle& ImageGrid::adjustAspectRatio(ofRectangle& box, float aspectRatio) { // x/y

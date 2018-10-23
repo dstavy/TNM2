@@ -1,4 +1,5 @@
 #include "ofApp.h"
+#include "ofxSmartFont.h"
 
 const long ofApp::VIDEO_GRID_REFRESH = 2000;
 const long ofApp::PRESENTATION_UPDATE_REFRESH = 3000000;
@@ -9,6 +10,8 @@ void ofApp::setup(){
     //ofSetBackgroundAuto(false);
     ofSetVerticalSync(true);
     //glDisable(GL_DEPTH_TEST);
+    
+    setupFonts();
     
     if (!tablePage.load("Assets/table_page.png"))
     {
@@ -36,12 +39,14 @@ void ofApp::setup(){
     //frontTracker.setFaceRotation(90);
     //fprofileTracker.setFaceRotation(90);
   
-    Group* g = groupManager.groupFactory(View::EYES, Group::GENERIC, 7);
+    // here you set the groups
+    Group* g = groupManager.groupFactory(View::EYES, Group::GENERIC, false, 4);
     currentUser = NULL;
     presentationUpdate.setup(users, &frontPlayer, &profilePlayer, &frontTracker, &profileTracker, &groupManager);
     currentUser = presentationUpdate.update();
     
-    grids[0].setup(&sepiaShader,g, false, 165, 80, 4, "test", 1.0);
+    // buold grid here. if you use same one  more thne once but diffrent scales just change the scale before you draw;
+    grids[0].setup(&sepiaShader,g, 165, 80, 4, "test", 1.0);
     grids[0].update();
     //Group* g = groupManager.getGroup(View::HEAD, Group::GENERIC);
     //vector<User*> gridUsers(0);
@@ -49,7 +54,7 @@ void ofApp::setup(){
 
     gridSize = 600;
     nextGrid = -1;
-    gridFbo.allocate(gridSize, gridSize);
+    //gridFbo.allocate(gridSize, gridSize);
     // Clear the FBO's
     // otherwise it will bring some junk with it from the memory
     //gridFbo.begin();
@@ -131,7 +136,7 @@ void ofApp::drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, in
     int boxSize = 400;
     ofColor dark(0,0,0,125);
         ofPath path;
-        
+     /*
     player.bind();
     sepiaShader.begin();
     player.getTexture().drawSubsection(x, y, w, h, face.x - 0.5* (w - face.width), face.y -  0.25* (h - face.height), w, h);
@@ -158,6 +163,7 @@ void ofApp::drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, in
            gridFbo.end();
           gridFbo.draw ( 800, 100);
         }
+      */
     sepiaShader.end();
     player.unbind();
     
@@ -259,3 +265,18 @@ void ofApp::presentationUpdater()
         //frontPlayer.firstFrame();
     }
 }
+
+// font setup here!!
+void ofApp::setupFonts()
+{
+    static const string FONT_DIR = "Assets/fonts/";
+    ofxSmartFont::add(FONT_DIR + "AmericanTypewriter.ttc", 16, "AmericanTypewriter");
+    ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 16, "BodonPoster");
+    ofxSmartFont::add(FONT_DIR + "Crimson Text 600.ttf", 18, "CrimsonText600");
+   // ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 18, "BodonPoster");
+   // ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 18, "BodonPoster");
+  //  ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 18, "BodonPoster");
+   // ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 18, "BodonPoster");
+   // ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 18, "BodonPoster");
+}
+    

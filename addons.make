@@ -4,4 +4,4 @@ ofxFaceTracker21
 ofxJSON
 ofxOpenCv
 ofxPoco
-ofxTextAlign
+ofxSmartFont

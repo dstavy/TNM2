@@ -21,25 +21,25 @@ void GroupManager::exit() {
     }
 }
 
-Group* GroupManager::getGroup(View::Features feature, Group::GroupBy by) {
+Group* GroupManager::getGroup(View::Features feature, Group::GroupBy by, bool profile) {
     for(auto const& group: groups) {
-        if ((group->grouBy == by) && (group->feature == feature )) {
+        if ((group->grouBy == by) && (group->feature == feature ) && (group->profile == profile )) {
             return group;
         }
     }
 	return NULL;
 }
 
-Group* GroupManager::groupFactory(View::Features feature, Group::GroupBy by, int levels) {
+Group* GroupManager::groupFactory(View::Features feature, Group::GroupBy by, bool profile, int levels) {
   
-    Group* group = getGroup(feature, by);
+    Group* group = getGroup(feature, by, profile);
     if (group != NULL) {
         return group;
     }
     else {
         switch ((int)by) {
             case Group::GENERIC:
-                Group* g  = new GenericGroup(feature, by, levels);
+                Group* g  = new GenericGroup(feature, by, profile, levels);
                 groups.push_back(g);
                 return g;
         }
