@@ -204,9 +204,9 @@ bool Analyzer::faceInflate(ofxFaceTracker2& tracker, User& user, bool profile) {
         view.parts[View::MOUTH] = mouth.getBoundingBox();
         
         ofPolyline nose;
-        nose.addVertex(landmarks.getImagePoint(19).x, landmarks.getImagePoint(19).y, 0);
-        nose.addVertex(landmarks.getImagePoint(24).x, landmarks.getImagePoint(24).y, 0);
-        nose.addVertex(landmarks.getImagePoint(51).x, landmarks.getImagePoint(51).y, 0);
+        nose.addVertex(landmarks.getImagePoint(18).x, landmarks.getImagePoint(19).y, 0);
+        nose.addVertex(landmarks.getImagePoint(25).x, landmarks.getImagePoint(24).y, 0);
+        nose.addVertex(landmarks.getImagePoint(33).x, landmarks.getImagePoint(33).y, 0);
         view.parts[View::NOSE] = nose.getBoundingBox();
         
         ofPolyline forhead;
