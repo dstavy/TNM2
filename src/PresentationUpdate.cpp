@@ -50,8 +50,8 @@ User* PresentationUpdate::update() {
             file.close();
             //loadLibrary(JSON_FILE);
             if (datasetJson.open(JSON_FILE)) {
-                frontTracker->setThreaded(false);
-                profileTracker->setThreaded(false);
+                //frontTracker->setThreaded(false);
+               // profileTracker->setThreaded(false);
                 for (unsigned int i = 0; i < datasetJson.size(); ++i)
                 {
                     Json::Value v = datasetJson[i];
@@ -77,8 +77,8 @@ User* PresentationUpdate::update() {
            file.close();
         }
     }
-    frontTracker->setThreaded(true);
-    profileTracker->setThreaded(true);
+   // frontTracker->setThreaded(true);
+   // profileTracker->setThreaded(true);
     return user;
 }
 
@@ -144,7 +144,9 @@ User* PresentationUpdate::createUser(string id) {
         return user;
     }
     else {
-        delete(user);
+        if (user != NULL) {
+            delete(user);
+        }
         return NULL;
     }
 }

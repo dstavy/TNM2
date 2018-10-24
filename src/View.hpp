@@ -16,12 +16,11 @@ public:
     enum Features {
         HEAD = 0,
         FORHEAD,
-        EYES,
         NOSE,
         MOUTH,
+        EYES,
         LEFT_EAR,
         RIGHT_EAR,
-       // SAVED_IMAGE
     };
     
     static inline const string featureToString(Features f)

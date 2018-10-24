@@ -18,7 +18,7 @@ void ImageGrid::setup(ofShader* shader, Group* group, int wElement, int hElement
     this->scale = scale;
     this->bg = bg;
     //this->leftPanel = leftPanel;
-    aspectRatio = w/h;
+    aspectRatio = (float)w/h;
     
     calculateSizes();
     int fboW = wholeSize.x;

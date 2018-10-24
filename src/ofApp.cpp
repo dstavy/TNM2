@@ -33,6 +33,8 @@ void ofApp::setup(){
     frontPlayer.setFrame(30);
     //profilePlayer.play();
     
+    frontTracker.setThreaded(false);
+    profileTracker.setThreaded(false);
     frontTracker.setup("Model/shape_predictor_68_face_landmarks.dat");
     profileTracker.setup("Model/shape_predictor_68_face_landmarks.dat");
     
@@ -58,7 +60,7 @@ void ofApp::setup(){
                                   Group::GENERIC,
                                   false,
                                   4);
-    grids[1].setup(&sepiaShader,g, 150, 162, 5, 0.5);
+    grids[1].setup(&sepiaShader,g, 100, 150, 5, 0.5);
     
     g = groupManager.groupFactory(
                                   View::MOUTH,
@@ -72,7 +74,7 @@ void ofApp::setup(){
                                   Group::GENERIC,
                                   false,
                                   5);
-    grids[3].setup(&sepiaShader,g, 150, 90, 5, 0.5);
+    grids[3].setup(&sepiaShader,g, 150, 75, 5, 0.5);
     
     g = groupManager.groupFactory(
                                   View::HEAD,

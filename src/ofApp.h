@@ -42,7 +42,7 @@ public:
     int rotation;
     ImageGrid grids[NUM_IMAGE_GRIDS];
     //Group* groups[NUM_GROUPS];
-    LeftPanelImageGrid lgrid;
+    //LeftPanelImageGrid lgrid;
     
     ofPoint  getGridLocation();
     
