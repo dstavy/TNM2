@@ -13,28 +13,25 @@
 
 class LeftPanelImageGrid  {
 public:
-    void setImageGrid(ImageGrid* imageGrid);
+    void setImageGrid(ImageGrid* imageGrid) {
+        grid = imageGrid;
+    };
+    
     void update();
     void draw(int x, int y);
     static const int LEFT_PANEL_WIDTH = 70;
+    static const int LINE_WIDTH = 6;
     static const int FBO_W = 1920;
     static const int FBO_H = 1080;
     
     ofPoint getSize();
-    LeftPanelImageGrid() {
-        fbo.allocate(FBO_W, FBO_H);
-        // Clear the FBO's
-        // otherwise it will bring some junk with it from the memory
-        fbo.begin();
-        ofClear(0,0,0,255);
-        fbo.end();
-        //getSize();
-    };
-    
+    void setup();
     ~LeftPanelImageGrid() {
         fbo.clear();
     };
 private:
     ofFbo fbo;
+    ImageGrid* grid;
+    void drawPanel(int y, string text);
 };
 #endif /* LeftPanelImageGrid_hpp */

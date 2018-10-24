@@ -51,7 +51,7 @@ void ImageGrid::update() {
     y += HEADER_HEIGHT;
     vector<User*>::iterator it;
     for(int i = group->numLevels -1; i >=0; i--) {
-        drawLine(y, users.begin() + (i * userPerLevel));
+        drawRow(y, users.begin() + (i * userPerLevel));
         y += lineSize.y + Y_SPACING;
     }
     fbo.end();
@@ -61,8 +61,8 @@ void ImageGrid::update() {
 void ImageGrid::calculateSizes() {
     elementSize.x = w + ELEMENT_SIDE_PADDING * 2;
     elementSize.y = h + SCORE_AREA_HEIGHT;
-    lineSize.x = PADDING_LINE_SIDE_TOP * 2 + userPerLevel * elementSize.x;
-    lineSize.y = PADDING_LINE_SIDE_TOP + elementSize.y;
+    lineSize.x = PADDING_ROW * 2 + userPerLevel * elementSize.x;
+    lineSize.y = PADDING_ROW *2 + elementSize.y;
     wholeSize.x = lineSize.x;
     wholeSize.y = HEADER_HEIGHT + lineSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
 }
@@ -91,11 +91,11 @@ void ImageGrid::drawHeader() {
     ofSetColor(bg);
 }
 
-void ImageGrid::drawLine(int y, vector<User*>::iterator it) {
+void ImageGrid::drawRow(int y, vector<User*>::iterator it) {
     int x = 0;
     ofDrawRectangle(x, y, lineSize.x, lineSize.y);
-    y += PADDING_LINE_SIDE_TOP;
-    x += PADDING_LINE_SIDE_TOP;
+    y += PADDING_ROW;
+    x += PADDING_ROW;
     for (int j = 0; j < userPerLevel; j++) {
         drawElement(*it, x, y);
         it++;

@@ -16,19 +16,20 @@ public:
     void setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, string title, float scale, ofColor bg = ofColor::antiqueWhite);
     void update();
     void draw(int x, int y);
-    static const int PADDING_LINE_SIDE_TOP = 4;
+    static const int PADDING_ROW = 4;
     static const int SCORE_AREA_HEIGHT = 33;
     static const int ELEMENT_SIDE_PADDING = 1;
     static const int HEADER_HEIGHT = 60;
-    static const int LEFT_PANEL_WIDTH = 70;
     static const int Y_SPACING = 4;
     ofPoint getSize();
+    ofColor getBgColor() {
+        return bg;
+    };
     
     ~ImageGrid() {
         fbo.clear();
     };
     
-private:
     ofFbo fbo;
     Group *group;
     int w;
@@ -43,7 +44,7 @@ private:
     void calculateSizes();
     string getTitle();
     void drawHeader();
-    void drawLine(int y, vector<User*>::iterator it);
+    void drawRow(int y, vector<User*>::iterator it);
     void drawLeftPanel();
     void drawElement(User* user, int x, int y);
     void drawScoreArea(float score, bool isCurrent, int x, int y);

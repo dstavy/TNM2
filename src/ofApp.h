@@ -11,6 +11,7 @@
 #include "GroupManager.hpp"
 #include "User.hpp"
 #include "ImageGrid.hpp"
+#include "LeftPanelImageGrid.hpp"
 
 class ofApp : public ofBaseApp{
 public:
@@ -39,6 +40,7 @@ public:
     ofRectangle profileFace;
     int rotation;
     ImageGrid grids[NUM_IMAGE_GRIDS];
+    LeftPanelImageGrid lgrid;
     
     ofPoint  getGridLocation();
     

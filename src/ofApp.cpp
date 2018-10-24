@@ -46,8 +46,13 @@ void ofApp::setup(){
     currentUser = presentationUpdate.update();
     
     // buold grid here. if you use same one  more thne once but diffrent scales just change the scale before you draw;
+    //grids[0].setup(&sepiaShader,g, 165, 80, 4, "test", 1.0);
+    //grids[0].update();
+    //lgrid.setup();
     grids[0].setup(&sepiaShader,g, 165, 80, 4, "test", 1.0);
     grids[0].update();
+    //lgrid.setImageGrid(&grids[0]);
+    //lgrid.update();
     //Group* g = groupManager.getGroup(View::HEAD, Group::GENERIC);
     //vector<User*> gridUsers(0);
     //g->getGridUsers(1, gridUsers);
@@ -123,6 +128,7 @@ void ofApp::draw(){
     drawTablePage();
     //drawGrid(View::FORHEAD, Group::GENERIC, false, 165, 80, 142, 118, 4);
     grids[0].draw(600, 80);
+    //lgrid.draw(100, 100);
 }
 
 void ofApp::drawTablePage() {
@@ -273,10 +279,10 @@ void ofApp::setupFonts()
     ofxSmartFont::add(FONT_DIR + "AmericanTypewriter.ttc", 16, "AmericanTypewriter");
     ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 16, "BodonPoster");
     ofxSmartFont::add(FONT_DIR + "Crimson Text 600.ttf", 18, "CrimsonText600");
-   // ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 18, "BodonPoster");
-   // ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 18, "BodonPoster");
-  //  ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 18, "BodonPoster");
-   // ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 18, "BodonPoster");
-   // ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 18, "BodonPoster");
+    ofxSmartFont::add(FONT_DIR + "Crimson Text 600italic.ttf", 18, "CrimsonText600I");
+    ofxSmartFont::add(FONT_DIR + "Crimson Text 700.ttf", 18, "CrimsonText700");
+    ofxSmartFont::add(FONT_DIR + "Crimson Text 700italic.ttf", 18, "CrimsonText700I");
+    ofxSmartFont::add(FONT_DIR + "Crimson Text italic.ttf", 18, "CrimsonTextI");
+    ofxSmartFont::add(FONT_DIR + "Crimson Text regular.ttf", 18, "CrimsonRegular");
 }
     
