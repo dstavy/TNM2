@@ -28,11 +28,11 @@ public:
     {
         switch (f)
         {
-            case HEAD:      return "Visage";
-            case FORHEAD:   return "Front";
-            case EYES:      return "Yeux";
-            case NOSE:      return "Nez";
-            case MOUTH:     return "Bouche";
+            case HEAD:      return "Face";// return "Visage";
+            case FORHEAD:   return "Forehead";// return "Front";
+            case EYES:      return "Eyes";// return "Yeux";
+            case NOSE:      return "Nose";// return "Nez";
+            case MOUTH:     return "Mouth";// return "Bouche";
             case LEFT_EAR:
             case RIGHT_EAR:
                             return "Oreille";
