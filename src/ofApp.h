@@ -16,6 +16,7 @@
 class ofApp : public ofBaseApp{
 public:
     static const int NUM_IMAGE_GRIDS = 8;
+    //static const int NUM_GROUPS = 8;
     void setup();
     void exit();
     void update();
@@ -40,6 +41,7 @@ public:
     ofRectangle profileFace;
     int rotation;
     ImageGrid grids[NUM_IMAGE_GRIDS];
+    //Group* groups[NUM_GROUPS];
     LeftPanelImageGrid lgrid;
     
     ofPoint  getGridLocation();

@@ -9,12 +9,15 @@
 #include "ofxSmartFont.h"
 
 void LeftPanelImageGrid::setup() {
-    fbo.allocate(1920, 700);
+    GLint maxTextureSize;
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+    std::cout <<"Max texture size: " << maxTextureSize << std::endl;
+    bigFbo.allocate(100, 700);
     // Clear the FBO's
     // otherwise it will bring some junk with it from the memory
-    fbo.begin();
+    bigFbo.begin();
     ofClear(0,0,0,255);
-    fbo.end();
+    bigFbo.end();
     //getSize();
 };
 
@@ -23,7 +26,7 @@ void LeftPanelImageGrid::update() {
     grid->update();
     ofFill();
     ofSetColor(grid->getBgColor());
-    fbo.begin();
+    bigFbo.begin();
     ofDrawRectangle(0, 0, LEFT_PANEL_WIDTH, ImageGrid::HEADER_HEIGHT);
     string letter;
     for(int i = 0; i < grid->group->numLevels; i++) {
@@ -32,7 +35,7 @@ void LeftPanelImageGrid::update() {
         y += grid->lineSize.y + ImageGrid::Y_SPACING;
     }
     grid->fbo.draw(LEFT_PANEL_WIDTH, 0);
-    fbo.end();
+    bigFbo.end();
 }
 
 void LeftPanelImageGrid::drawPanel(int y, string text) {
@@ -58,6 +61,6 @@ void LeftPanelImageGrid::draw(int x, int y) {
     ofPushMatrix();
     ofTranslate(x,y);
     //ofScale(scale);
-    fbo.getTexture().drawSubsection(0, 0, size.x, size.y, 0, 0, size.x, size.y);
+    bigFbo.getTexture().drawSubsection(0, 0, size.x, size.y, 0, 0, size.x, size.y);
     ofPopMatrix();
 }

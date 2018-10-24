@@ -27,10 +27,10 @@ public:
     ofPoint getSize();
     void setup();
     ~LeftPanelImageGrid() {
-        fbo.clear();
+        bigFbo.clear();
     };
 private:
-    ofFbo fbo;
+    ofFbo bigFbo;
     ImageGrid* grid;
     void drawPanel(int y, string text);
 };

@@ -8,7 +8,7 @@
 #include "ImageGrid.hpp"
 #include "ofxSmartFont.h"
 
-void ImageGrid::setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, string title, float scale, ofColor bg) {
+void ImageGrid::setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, float scale, string title, ofColor bg) {
     this->shader = shader;
     this->group = group;
     this->w = wElement;

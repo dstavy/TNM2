@@ -39,23 +39,22 @@ void ofApp::setup(){
     //frontTracker.setFaceRotation(90);
     //fprofileTracker.setFaceRotation(90);
   
-    // here you set the groups
+    // here you set the groups and grids
+    //if you use same grid more then once but diffrent scales just change the scale before you draw;
     Group* g = groupManager.groupFactory(View::EYES, Group::GENERIC, false, 4);
+    grids[0].setup(&sepiaShader,g, 165, 80, 4, 1.0);
+    g = groupManager.groupFactory(View::NOSE, Group::GENERIC, false, 5);
+    grids[1].setup(&sepiaShader,g, 80, 80, 5, 0.5);
+    
+    
     currentUser = NULL;
+    //update
     presentationUpdate.setup(users, &frontPlayer, &profilePlayer, &frontTracker, &profileTracker, &groupManager);
     currentUser = presentationUpdate.update();
-    
-    // buold grid here. if you use same one  more thne once but diffrent scales just change the scale before you draw;
-    //grids[0].setup(&sepiaShader,g, 165, 80, 4, "test", 1.0);
-    //grids[0].update();
-    //lgrid.setup();
-    grids[0].setup(&sepiaShader,g, 165, 80, 4, "test", 1.0);
     grids[0].update();
-    //lgrid.setImageGrid(&grids[0]);
-    //lgrid.update();
-    //Group* g = groupManager.getGroup(View::HEAD, Group::GENERIC);
-    //vector<User*> gridUsers(0);
-    //g->getGridUsers(1, gridUsers);
+    grids[1].update();
+    //lgrid.setup();
+    
 
     gridSize = 600;
     nextGrid = -1;
@@ -127,8 +126,8 @@ void ofApp::draw(){
     }
     drawTablePage();
     //drawGrid(View::FORHEAD, Group::GENERIC, false, 165, 80, 142, 118, 4);
-    grids[0].draw(600, 80);
-    //lgrid.draw(100, 100);
+    grids[0].draw(960, 20);
+    grids[1].draw(960, 500);
 }
 
 void ofApp::drawTablePage() {

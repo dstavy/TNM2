@@ -13,7 +13,7 @@
 
 class ImageGrid  {
 public:
-    void setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, string title, float scale, ofColor bg = ofColor::antiqueWhite);
+    void setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, float scale = 1.0, string title = "", ofColor bg = ofColor::antiqueWhite);
     void update();
     void draw(int x, int y);
     static const int PADDING_ROW = 4;
@@ -22,6 +22,10 @@ public:
     static const int HEADER_HEIGHT = 60;
     static const int Y_SPACING = 4;
     ofPoint getSize();
+    void setScale(float scale) {
+        this->scale = scale;
+    };
+    
     ofColor getBgColor() {
         return bg;
     };
