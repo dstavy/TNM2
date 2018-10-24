@@ -43,9 +43,9 @@ public:
     static inline const string proflieToString(bool p)
     {
         if (p) {
-            return "Profil";
+            return "Side";
         } else {
-            return "Frontale";
+            return "Front";
         }
     }
     

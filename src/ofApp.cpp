@@ -45,7 +45,7 @@ void ofApp::setup(){
                                     View::EYES, // fragment
                                     Group::GENERIC, // type of group
                                     false, // is profile?
-                                    4); //number of levels
+                                    6); //number of levels
     grids[0].setup(&sepiaShader, // shader
                                    g,
                                    187,62, // width and height of element
@@ -78,7 +78,7 @@ void ofApp::setup(){
                                   Group::GENERIC,
                                   false,
                                   4);
-    grids[4].setup(&sepiaShader,g, 150, 32, 5, 0.5);
+    grids[4].setup(&sepiaShader,g, 150, 132, 5, 0.5);
     
     
     currentUser = NULL;
