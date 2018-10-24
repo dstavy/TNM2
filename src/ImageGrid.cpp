@@ -115,14 +115,21 @@ void ImageGrid::drawElement(User* user, int x, int y) {
         face.drawSubsection(x + ELEMENT_SIDE_PADDING, y, w, h, box.x, box.y, box.width, box.height);
         shader->end();
         face.unbind();
-        drawScoreArea(user->score, x , y + h);
+        drawScoreArea(user->score, user->currentUser, x , y + h);
     }
 }
 
-void ImageGrid::drawScoreArea(float score, int x, int y) {
-    shared_ptr<ofxSmartFont> font = ofxSmartFont::get("AmericanTypewriter");
-    ofSetHexColor(0x242124);
+void ImageGrid::drawScoreArea(float score, bool isCurrent, int x, int y) {
+    shared_ptr<ofxSmartFont> font;
+    if (isCurrent) {
+        font = ofxSmartFont::get("AmericanTypewriter"); // change to bold
+        ofSetColor(ofColor::lightGrey);
+        ofDrawRectangle(x, y, w, SCORE_AREA_HEIGHT);
+    } else {
+        font = ofxSmartFont::get("AmericanTypewriter");
+    }
     
+    ofSetHexColor(0x242124);
     string sScore = ofToString(std::floor(score * 100.) / 100.);
     int hs = font->height(sScore);
     int ws = font->width(sScore);

@@ -46,7 +46,7 @@ private:
     void drawLine(int y, vector<User*>::iterator it);
     void drawLeftPanel();
     void drawElement(User* user, int x, int y);
-    void drawScoreArea(float score, int x, int y);
+    void drawScoreArea(float score, bool isCurrent, int x, int y);
     ofPoint lineSize;
     ofPoint elementSize;
     ofPoint wholeSize;
