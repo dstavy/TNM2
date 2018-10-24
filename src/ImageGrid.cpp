@@ -83,7 +83,7 @@ void ImageGrid::drawHeader() {
     //ofSetColor(bg);
     ofDrawRectangle(0,0, wholeSize.x, HEADER_HEIGHT);
     shared_ptr<ofxSmartFont> font = ofxSmartFont::get("BodonPoster");
-    ofSetColor(ofColor::black);
+    ofSetColor(0,0,0); //(ofColor::black);
     string title = getTitle();
     int hs = font->height(title);
     int ws = font->width(title);

@@ -13,9 +13,9 @@ void ofApp::setup(){
     
     setupFonts();
     
-    if (!tablePage.load("Assets/table_page.png"))
+    if (!tablePage.load("Assets/dark.png")) //"Assets/table_page.png"
     {
-        ofLogNotice("cant load Assets/table_page.png");
+        ofLogNotice("cant load Assets/dark.png"); //"Assets/table_page.png"
     }
     if (!sepiaShader.load("Shaders/sepia")) {
         ofLogNotice("cant load Shaders/sepia");
@@ -41,17 +41,55 @@ void ofApp::setup(){
   
     // here you et the groups and grids
     //if you use same grid more then once but diffrent scales just change the scale before you draw;
-    Group* g = groupManager.groupFactory(View::EYES, Group::GENERIC, false, 4);
-    grids[0].setup(&sepiaShader,g, 165, 80, 4, 1.0);
-    g = groupManager.groupFactory(View::NOSE, Group::GENERIC, false, 5);
-    grids[1].setup(&sepiaShader,g, 80, 80, 5, 0.5);
 
+    Group* g = groupManager.groupFactory(
+                                    View::EYES, // fragment
+                                    Group::GENERIC, // type of group
+                                    false, // is profile?
+                                    6); //number of levels
+    grids[0].setup(&sepiaShader, // shader
+                                   g,
+                                   187,62, // width and height of element
+                                   4, // user per level
+                                   0.5); // scale
+    
+    g = groupManager.groupFactory(
+                                  View::NOSE,
+                                  Group::GENERIC,
+                                  false,
+                                  4);
+    grids[1].setup(&sepiaShader,g, 150, 162, 5, 0.5);
+    
+    g = groupManager.groupFactory(
+                                  View::MOUTH,
+                                  Group::GENERIC,
+                                  false,
+                                  6);
+    grids[2].setup(&sepiaShader,g, 125, 112, 5, 0.5);
+    
+    g = groupManager.groupFactory(
+                                  View::FORHEAD,
+                                  Group::GENERIC,
+                                  false,
+                                  5);
+    grids[3].setup(&sepiaShader,g, 150, 90, 5, 0.5);
+    
+    g = groupManager.groupFactory(
+                                  View::HEAD,
+                                  Group::GENERIC,
+                                  false,
+                                  4);
+    grids[4].setup(&sepiaShader,g, 150, 132, 5, 0.5);
+    
     currentUser = NULL;
     //update
     presentationUpdate.setup(users, &frontPlayer, &profilePlayer, &frontTracker, &profileTracker, &groupManager);
     currentUser = presentationUpdate.update();
     grids[0].update();
     grids[1].update();
+    grids[2].update();
+    grids[3].update();
+    grids[4].update();
     //lgrid.setup();
     
 
@@ -124,9 +162,12 @@ void ofApp::draw(){
        //}
     }
     drawTablePage();
-    // draw grids
-    grids[0].draw(960, 20);
-    grids[1].draw(960, 500);
+
+    grids[0].draw(50, 50);
+    grids[1].draw(450, 50);
+    grids[2].draw(850, 50);
+    grids[3].draw(50, 410);
+    grids[4].draw(450, 500);
 }
 
 void ofApp::drawTablePage() {
