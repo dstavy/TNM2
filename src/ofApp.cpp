@@ -166,8 +166,8 @@ void ofApp::draw(){
     grids[0].draw(50, 50);
     grids[1].draw(450, 50);
     grids[2].draw(850, 50);
-    grids[3].draw(50, 550);
-    grids[4].draw(450, 550);
+    grids[3].draw(50, 410);
+    grids[4].draw(450, 500);
 }
 
 void ofApp::drawTablePage() {
