@@ -315,7 +315,9 @@ void ofApp::presentationUpdater()
 void ofApp::setupFonts()
 {
     static const string FONT_DIR = "Assets/fonts/";
-    ofxSmartFont::add(FONT_DIR + "AmericanTypewriter.ttc", 16, "AmericanTypewriter");
+    ofxSmartFont::add(FONT_DIR + "AmericanTypewriterStd-Med.otf", 16, "AmericanTypewriter");
+    ofxSmartFont::add(FONT_DIR + "AmericanTypewriterStd-Bold.otf", 16, "AmericanTypewriter700");
+    ofxSmartFont::add(FONT_DIR + "AmericanTypewriterStd-Light.otf", 16, "AmericanTypewriter300");
     ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 16, "BodonPoster");
     ofxSmartFont::add(FONT_DIR + "Crimson Text 600.ttf", 18, "CrimsonText600");
     ofxSmartFont::add(FONT_DIR + "Crimson Text 600italic.ttf", 18, "CrimsonText600I");
