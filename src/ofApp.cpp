@@ -60,7 +60,7 @@ void ofApp::setup(){
                                   Group::GENERIC,
                                   false,
                                   4);
-    grids[1].setup(&sepiaShader,g, 100, 150, 5, 0.5);
+    grids[1].setup(&sepiaShader,g, 105, 145, 7, 0.5);
     
     g = groupManager.groupFactory(
                                   View::MOUTH,
