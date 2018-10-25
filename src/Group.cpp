@@ -18,11 +18,14 @@ void Group::getGridUsers(int usersPerLevel, vector<User*>& outUsers) {
             }
         }
         else {
-            float ratio = (float)users[i].size() / usersPerLevel;
+            float ratio = (float)users[i].size() / usersPerLevel - 0.001;// so we dont get to index plus one;
             int index = 0;
             int nextIndex = 0;
             for(int j = 0; j < usersPerLevel; j++) {
-                int nextIndex = floor(ratio * j);
+                int nextIndex = floor(ratio * (j + 1));
+                if (nextIndex <= index) {
+                    nextIndex = MIN(index+1, users[i].size() -1);
+                }
                 bool put = false;
                 if (!currentFound) {
                     for (int k = index +1; k < nextIndex; k++) {

@@ -52,12 +52,12 @@ User* PresentationUpdate::update() {
             if (datasetJson.open(JSON_FILE)) {
                 //frontTracker->setThreaded(false);
                // profileTracker->setThreaded(false);
-                for (unsigned int i = 0; i < datasetJson.size(); ++i)
-                {
+                for (unsigned int i = 0; i < datasetJson.size(); ++i) {
                     Json::Value v = datasetJson[i];
                     string id = v["id"].asString();
                     int vScore = v["vScore"].asInt();
                     int xScore = v["xScore"].asInt();
+                    if (id.size() > 0) {
                     UserMap::iterator it = users.find(id);
                     if (it == users.end()) {
                         // not found
@@ -69,13 +69,14 @@ User* PresentationUpdate::update() {
                     } else {
                         updateUser(it->second, vScore, xScore);
                     }
+                    }
                 }
-                groupManager->update(getUsersList());
-                lastUpdate = ofGetSystemTimeMillis();
             }
         } else {
            file.close();
         }
+        groupManager->update(getUsersList());
+        lastUpdate = ofGetSystemTimeMillis();
     }
    // frontTracker->setThreaded(true);
    // profileTracker->setThreaded(true);
@@ -95,13 +96,14 @@ vector<User*> PresentationUpdate::getUsersList() {
 }
 
 User* PresentationUpdate::createUser(string id) {
-    User* user = new User(id);
+    User* user = NULL;
     bool profile = false;
     bool res = false;
     //look if we have face image
     ofFile file;
     string imageFileName = FACE_DIR + id + "_" + std::to_string(profile) + ".png";
     if (file.doesFileExist(imageFileName)) {
+        user = new User(id);
         res = Analyzer::faceAnalyze(imageFileName, *frontTracker, *user, profile);
         profile = true;
         imageFileName = FACE_DIR + id + "_" + std::to_string(profile) + ".png";
@@ -115,6 +117,7 @@ User* PresentationUpdate::createUser(string id) {
         if (file.doesFileExist(videoFileName)) {
             file.open(videoFileName);
             if (std::filesystem::last_write_time(file) > lastUpdate) { // new
+                user = new User(id);
                 file.close();
                 frontPlayer->close();
                 profilePlayer->close();
@@ -122,18 +125,18 @@ User* PresentationUpdate::createUser(string id) {
                 if (res) {
                     user->currentUser = true;
                 }
-            } else {
-                file.close();
-            }
-        }
-        profile = true;
-        videoFileName = MOVIE_DIR + id + std::to_string(profile) + ".mov";
-        imageFileName = FACE_DIR + id + std::to_string(profile) + ".png";
-        if (file.doesFileExist(videoFileName)) {
-            file.open(videoFileName);
-            if (std::filesystem::last_write_time(file) > lastUpdate) { // new
-                file.close();
-                Analyzer::videoAnalyze(videoFileName, *profilePlayer, *profileTracker, *user, profile, imageFileName);
+                profile = true;
+                videoFileName = MOVIE_DIR + id + std::to_string(profile) + ".mov";
+                imageFileName = FACE_DIR + id + std::to_string(profile) + ".png";
+                if (file.doesFileExist(videoFileName)) {
+                    file.open(videoFileName);
+                    if (std::filesystem::last_write_time(file) > lastUpdate) { // new
+                        file.close();
+                        Analyzer::videoAnalyze(videoFileName, *profilePlayer, *profileTracker, *user, profile, imageFileName);
+                    } else {
+                        file.close();
+                    }
+                }
             } else {
                 file.close();
             }
