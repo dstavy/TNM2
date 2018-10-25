@@ -8,6 +8,8 @@
 #include "ImageGrid.hpp"
 #include "ofxSmartFont.h"
 
+#define FIXED_FLOAT(x) std::fixed <<std::setprecision(2)<<(x)
+
 void ImageGrid::setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, float scale, string title, ofColor bg) {
     this->shader = shader;
     this->group = group;
@@ -130,7 +132,9 @@ void ImageGrid::drawScoreArea(float score, bool isCurrent, int x, int y) {
     }
     
     ofSetHexColor(0x242124);
-    string sScore = ofToString(std::floor(score * 100.) / 100.);
+    std::stringstream buffer;
+    buffer << FIXED_FLOAT(score);
+    string sScore = buffer.str();
     int hs = font->height(sScore);
     int ws = font->width(sScore);
     font->draw(sScore, x + w - ws, y + SCORE_AREA_HEIGHT/2 + hs/2);
