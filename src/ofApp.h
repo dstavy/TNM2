@@ -25,7 +25,8 @@ public:
     ofRectangle getBoundingBox(ofRectangle rec1, ofRectangle rec2);
     void drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, int w, int h);
     void presentationUpdater();
-    void drawTablePage();
+    void drawPagesBg();
+    void drawReportPage();
     
     ofxFaceTracker2 frontTracker;
     ofxFaceTracker2 profileTracker;
@@ -34,6 +35,7 @@ public:
     PresentationUpdate presentationUpdate;
     UserMap users;
     ofImage tablePage;
+    ofImage reportPage;
     GroupManager groupManager;
     
     ofShader sepiaShader;

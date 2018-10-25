@@ -33,8 +33,8 @@ public:
             case NOSE:      return "Nose";// return "Nez";
             case MOUTH:     return "Mouth";// return "Bouche";
             case LEFT_EAR:
-            case RIGHT_EAR:
-                            return "Oreille";
+            case RIGHT_EAR: 
+                            return "Ear";
             default:        return "";
         }
     }
@@ -52,8 +52,10 @@ public:
         string s;
         int color;
     };
+    
+    map<ofVec2f, Letter> pointToLetterFront;
     /*
-    const map<int, Letter> pointToLetterFront = {
+     = {
         {1,  {"D", 0 },
         {16,  {"D'", 0 },
         {2,  {"I", 0 },
@@ -83,6 +85,15 @@ public:
                      O    under 48-47
 };
      */
+    void drawLetters(bool profile) {
+        if (!profile) {
+            drawLettersFront();
+        } else {
+            drawLettersProfile();
+        }
+    };
+    void drawLettersFront();
+    void drawLettersProfile();
     static const int FACE_EXTENDED_PADDING = 150;
     static const int LANDMARKS_NUM = 5;
     static const int PARTS_NUM = 7;
@@ -91,9 +102,9 @@ public:
     static const glm::vec4 partPeddings[PARTS_NUM];
     char letter[LANDMARKS_NUM];
     ofRectangle parts[PARTS_NUM];
-    ofPoint landmarks[LANDMARKS_NUM];
     ofImage face;
     bool profile;
+    vector<ofVec2f> landmarks;
     
     ofImage& getImage() {
         return face;

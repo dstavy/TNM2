@@ -17,6 +17,12 @@ void ofApp::setup(){
     {
         ofLogNotice("cant load Assets/dark.png"); //"Assets/table_page.png"
     }
+    
+    if (!reportPage.load("Assets/report_page.png")) //"Assets/table_page.png"
+    {
+        ofLogNotice("cant load Assets/report_page.png"); //"Assets/table_page.png"
+    }
+    
     if (!sepiaShader.load("Shaders/sepia")) {
         ofLogNotice("cant load Shaders/sepia");
     }
@@ -47,7 +53,7 @@ void ofApp::setup(){
     Group* g = groupManager.groupFactory(
                                     View::EYES, // fragment
                                     Group::GENERIC, // type of group
-                                    false, // is profile?
+                                    true, // is profile?
                                     6); //number of levels
     grids[0].setup(&sepiaShader, // shader
                                    g,
@@ -58,30 +64,37 @@ void ofApp::setup(){
     g = groupManager.groupFactory(
                                   View::NOSE,
                                   Group::GENERIC,
-                                  false,
+                                  true,
                                   4);
     grids[1].setup(&sepiaShader,g, 105, 145, 7, 0.5);
     
     g = groupManager.groupFactory(
                                   View::MOUTH,
                                   Group::GENERIC,
-                                  false,
+                                  true,
                                   6);
     grids[2].setup(&sepiaShader,g, 125, 112, 5, 0.5);
     
     g = groupManager.groupFactory(
                                   View::FORHEAD,
                                   Group::GENERIC,
-                                  false,
+                                  true,
                                   5);
     grids[3].setup(&sepiaShader,g, 150, 75, 5, 0.5);
     
     g = groupManager.groupFactory(
                                   View::HEAD,
                                   Group::GENERIC,
-                                  false,
+                                  true,
                                   4);
     grids[4].setup(&sepiaShader,g, 150, 132, 5, 0.5);
+    
+    g = groupManager.groupFactory(
+                                  View::LEFT_EAR,
+                                  Group::GENERIC,
+                                  true,
+                                  1);
+    grids[5].setup(&sepiaShader,g, 100, 250, 1, 1);
     
     currentUser = NULL;
     //update
@@ -92,7 +105,7 @@ void ofApp::setup(){
     grids[2].update();
     grids[3].update();
     grids[4].update();
-    //lgrid.setup();
+    grids[5].update();
     
 
     gridSize = 600;
@@ -163,17 +176,38 @@ void ofApp::draw(){
         drawVideo(profilePlayer, profileFace, 100, 1000, 600, 600);
        //}
     }
-    drawTablePage();
-
+    
+    ofPushMatrix();
+    ofScale(0.5, 0.5);
+    drawPagesBg();
+    ofTranslate(1920, 0);
     grids[0].draw(50, 50);
     grids[1].draw(450, 50);
     grids[2].draw(850, 50);
     grids[3].draw(50, 410);
     grids[4].draw(450, 500);
+    grids[5].draw(1250, 50);
+    ofPopMatrix();
 }
 
-void ofApp::drawTablePage() {
-    tablePage.draw(0,0, 1920,1080);
+void ofApp::drawPagesBg() {
+    reportPage.draw(0,0, 1920,1080);
+    tablePage.draw(1920,0, 1920,1080);
+}
+
+void ofApp::drawReportPage() {
+    User* drawnUser = currentUser;
+    if (drawnUser == NULL) {
+        int randomUser = (int)floor(ofRandom(users.size()));
+        // show content:
+        int index;
+        for (UserMap::iterator it=users.begin(); it!=users.end(); ++it, index++) {
+            if (index == randomUser)
+            {
+                drawnUser = it->second;
+            }
+        }
+    }
 }
 
 void ofApp::drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, int w, int h) {

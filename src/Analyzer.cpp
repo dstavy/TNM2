@@ -161,20 +161,20 @@ bool Analyzer::faceInflate(ofxFaceTracker2& tracker, User& user, bool profile) {
             camFace.getPoseMatrix().decompose(translation, rotation, scale, so);
             float rotAdd = EAR_ROTATION_FACTOR * rotation.asVec3().x;
             //left ear
-            ofRectangle earL;
-            earL.setX(landmarks.getImagePoint(2).x - (EAR_WIDTH + rotAdd));
-            earL.setY(landmarks.getImagePoint(0).y);
-            earL.setWidth(MAX(EAR_WIDTH + rotAdd, 0));
-            earL.setHeight(landmarks.getImagePoint(2).y - earL.getY() + EXTRA_EAR_LENGTH);
-            view.parts[View::LEFT_EAR] = earL;
-            // right ear
             ofRectangle earR;
-            earR.setX(landmarks.getImagePoint(14).x);
-            earR.setY(landmarks.getImagePoint(16).y);
-            earR.setWidth(MAX(EAR_WIDTH - rotAdd, 0));
-            earR.setHeight(landmarks.getImagePoint(14).y - earR.getY() + EXTRA_EAR_LENGTH);
+            earR.setY(landmarks.getImagePoint(0).y);
+            earR.setWidth(MAX((landmarks.getImagePoint(2).y - earR.getY()) * rotAdd / 2, 0));
+            earR.setX(landmarks.getImagePoint(2).x - earR.width);
             view.parts[View::RIGHT_EAR] = earR;
+            // right ear
+            ofRectangle earL;
+            earL.setX(landmarks.getImagePoint(14).x);
+            earL.setY(landmarks.getImagePoint(16).y);
+            earL.setWidth(MAX((landmarks.getImagePoint(14).y - earL.getY()) * (-rotAdd) /2, 0));
+            earL.setHeight((landmarks.getImagePoint(14).y - earL.getY()));
+            view.parts[View::LEFT_EAR] = earL;
         }
+        view.landmarks = landmarks.getImagePoints();
         return true;
     }
     return false;
