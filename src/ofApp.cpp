@@ -43,6 +43,8 @@ void ofApp::setup(){
     profileTracker.setThreaded(false);
     frontTracker.setup("Model/shape_predictor_68_face_landmarks.dat");
     profileTracker.setup("Model/shape_predictor_68_face_landmarks.dat");
+    frontTracker.setThreaded(false);
+    profileTracker.setThreaded(false);
     
     //frontTracker.setFaceRotation(90);
     //fprofileTracker.setFaceRotation(90);
@@ -94,7 +96,14 @@ void ofApp::setup(){
                                   Group::GENERIC,
                                   true,
                                   1);
-    grids[5].setup(&sepiaShader,g, 100, 250, 1, 1);
+    grids[5].setup(&sepiaShader,g, 100, 250, 5, 0.5);
+    
+    g = groupManager.groupFactory(
+                                  View::RIGHT_EAR,
+                                  Group::GENERIC,
+                                  true,
+                                  4);
+    grids[6].setup(&sepiaShader,g, 100, 250, 4, 0.5);
     
     currentUser = NULL;
     //update
@@ -106,6 +115,7 @@ void ofApp::setup(){
     grids[3].update();
     grids[4].update();
     grids[5].update();
+    grids[6].update();
     
 
     gridSize = 600;
@@ -178,21 +188,22 @@ void ofApp::draw(){
     }
     
     ofPushMatrix();
-    ofScale(0.5, 0.5);
+    //ofScale(0.5, 0.5);
     drawPagesBg();
-    ofTranslate(1920, 0);
+    //ofTranslate(1920, 0);
     grids[0].draw(50, 50);
     grids[1].draw(450, 50);
     grids[2].draw(850, 50);
     grids[3].draw(50, 410);
     grids[4].draw(450, 500);
-    grids[5].draw(1250, 50);
+    grids[5].draw(850, 600);
+    grids[6].draw(1200, 50);
     ofPopMatrix();
 }
 
 void ofApp::drawPagesBg() {
-    reportPage.draw(0,0, 1920,1080);
-    tablePage.draw(1920,0, 1920,1080);
+   // reportPage.draw(0,0, 1920,1080);
+    tablePage.draw(0,0, 1920,1080);
 }
 
 void ofApp::drawReportPage() {
