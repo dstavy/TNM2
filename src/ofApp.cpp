@@ -96,7 +96,7 @@ void ofApp::setup(){
                                   Group::GENERIC,
                                   true,
                                   1);
-    grids[5].setup(&sepiaShader,g, 100, 250, 5, 0.5);
+    grids[5].setup(&sepiaShader,g, 100, 150, 5, 0.5);
     
     g = groupManager.groupFactory(
                                   View::RIGHT_EAR,

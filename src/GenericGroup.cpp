@@ -7,12 +7,14 @@
 
 #include "GenericGroup.hpp"
 
-void GenericGroup::update(vector<User*> newUsers) {
+void GenericGroup::update(vector<User*>& newUsers) {
     Group::clear();
     for(auto const& user: newUsers) {
-        int level = floor(user->score/ (1.0/numLevels));
-        users[level].push_back(user);
-        levelScores[level] += user->score;
+       if (user->getView(profile).isActive()) {
+            int level = floor(user->score/ (1.0/numLevels));
+            users[level].push_back(user);
+            levelScores[level] += user->score;
+        }
     }
     
     for (int i = 0; i < numLevels; i++) {

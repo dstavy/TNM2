@@ -22,7 +22,11 @@ public:
         LEFT_EAR,
         RIGHT_EAR,
     };
-    
+    /*
+    View(bool profile) {
+        this->profile = profile;
+    };
+    */
     static inline const string featureToString(Features f)
     {
         switch (f)
@@ -37,7 +41,7 @@ public:
                             return "Ear";
             default:        return "";
         }
-    }
+    };
     
     static inline const string proflieToString(bool p)
     {
@@ -46,45 +50,8 @@ public:
         } else {
             return "Front";
         }
-    }
-    
-    struct Letter {
-        string s;
-        int color;
     };
-    
-    map<ofVec2f, Letter> pointToLetterFront;
-    /*
-     = {
-        {1,  {"D", 0 },
-        {16,  {"D'", 0 },
-        {2,  {"I", 0 },
-        D    [ 1 , (1-(3-1)) ]
-        D'   [ 17, (17-(15-17)) ]
-        I    2
-        I'   16
-        K    4
-        K'   14
-        L    49
-        L'   55
-        J    32
-        J'   36
-        G    40
-        G'   43
-        H    37
-        H'   46
-        E    22
-        E'   23
-        F    18
-        F'   27
-        A    [ 28 , (28-(34-28)) ]
-        B    [ 28 , (34 +2*(34-28) ]
-                     O    above 38-39
-                     O    under 42-42
-                     O    above 44-45
-                     O    under 48-47
-};
-     */
+   
     void drawLetters(bool profile) {
         if (!profile) {
             drawLettersFront();
@@ -105,14 +72,34 @@ public:
     ofImage face;
     bool profile;
     vector<ofVec2f> landmarks;
+    bool active;
     
     ofImage& getImage() {
         return face;
-    }
+    };
+    
+    bool loadImage(string path) {
+        bool ret = face.load(path);
+        if (ret)
+        {
+            face.update();
+        }
+        return ret;
+    };
     
     ofRectangle& getBounderyBox(Features feature) {
         return parts[feature];
-    }
+    };
+    
+    bool isActive()
+    {
+        return active;
+    };
+    
+    bool setActive(bool active)
+    {
+        this->active = active;
+    };
 };
 
 #endif /* View_hpp */

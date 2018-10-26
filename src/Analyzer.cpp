@@ -84,6 +84,7 @@ bool Analyzer::faceAnalyze(string fileName, ofxFaceTracker2& tracker, User& user
     if (image.load(fileName))
     {
         // tracker.setFaceRotation(0);
+        image.update();
         tracker.update(image);
         return faceInflate(tracker, user, profile);
     } else
@@ -160,13 +161,14 @@ bool Analyzer::faceInflate(ofxFaceTracker2& tracker, User& user, bool profile) {
             ofQuaternion so;
             camFace.getPoseMatrix().decompose(translation, rotation, scale, so);
             float rotAdd = EAR_ROTATION_FACTOR * rotation.asVec3().x;
-            //left ear
+            //right ear
             ofRectangle earR;
             earR.setY(landmarks.getImagePoint(0).y);
+            earR.setHeight((landmarks.getImagePoint(2).y - earR.getY()));
             earR.setWidth(MAX((landmarks.getImagePoint(2).y - earR.getY()) * rotAdd / 2, 0));
-            earR.setX(landmarks.getImagePoint(2).x - earR.width);
+            earR.setX(landmarks.getImagePoint(2 ).x - earR.width);
             view.parts[View::RIGHT_EAR] = earR;
-            // right ear
+            // left ear
             ofRectangle earL;
             earL.setX(landmarks.getImagePoint(14).x);
             earL.setY(landmarks.getImagePoint(16).y);
@@ -175,7 +177,9 @@ bool Analyzer::faceInflate(ofxFaceTracker2& tracker, User& user, bool profile) {
             view.parts[View::LEFT_EAR] = earL;
         }
         view.landmarks = landmarks.getImagePoints();
+        view.setActive(true);
         return true;
     }
+    view.setActive(false);
     return false;
 }

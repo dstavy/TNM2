@@ -14,7 +14,7 @@
 class GenericGroup : public Group {
 public:
     GenericGroup(View::Features feature, GroupBy grouBy, bool profile, int levels) : Group(feature, grouBy, profile, levels ) {};
-    void update(vector<User*> newUsers) override;
+    void update(vector<User*>& newUsers) override;
     ~GenericGroup() {};
 };
 
