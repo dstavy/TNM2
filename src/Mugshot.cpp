@@ -22,7 +22,7 @@ void Mugshot::setup(ofShader* shader) {
 void Mugshot::update(User* user, View::Features feature) {
      int x = 0;
      float aspectRatio = (float)(MG_WIDTH - MG_SPACE)/2. / MG_HEIGHT;
-     shared_ptr<ofxSmartFont> font = ofxSmartFont::get("BodonPosterMugshot");
+     shared_ptr<ofxSmartFont> font = ofxSmartFont::get("CrimsonText700Mugshot");
      bool profile = true;
      int mugSize = (MG_WIDTH - MG_SPACE) / 2;
      fbo.begin();
@@ -70,7 +70,7 @@ void Mugshot::update(User* user, View::Features feature) {
 }
 
 void Mugshot::drawLettersFront(ofRectangle* parts, vector<ofVec2f>& landmarks, shared_ptr<ofxSmartFont> font) {
-    ofSetColor(ofColor::white);
+    ofSetColor(ofColor::fromHex(0xE9DDC4));
     FontUtil::draw("D", font, FontUtil::CENTER, ofVec2f(landmarks[0].x, landmarks[0].y - (landmarks[3].y - landmarks[0].y)));
     FontUtil::draw("D'", font, FontUtil::CENTER, ofVec2f(landmarks[16].x, landmarks[16].y - (landmarks[13].y - landmarks[16].y)));
     FontUtil::draw("I", font, FontUtil::CENTER, landmarks[1]);
@@ -85,7 +85,7 @@ void Mugshot::drawLettersFront(ofRectangle* parts, vector<ofVec2f>& landmarks, s
     FontUtil::draw("O", font, FontUtil::ABOVE, ofVec2f((landmarks[37].x + landmarks[38].x) /2, MAX(landmarks[37].y, landmarks[38].y)));
     FontUtil::draw("O", font, FontUtil::ABOVE, ofVec2f((landmarks[43].x + landmarks[44].x) /2, MAX(landmarks[43].y,landmarks[44].y)));
     
-    ofSetColor(ofColor::black);
+    ofSetColor(ofColor::fromHex(0x4F4733));
     ofVec2f a(landmarks[27].x, landmarks[27].y - (landmarks[51].y - landmarks[27].y));
     FontUtil::draw("A", font, FontUtil::ABOVE, a);
     ofVec2f b(landmarks[27].x, landmarks[8].y );
@@ -105,14 +105,14 @@ void Mugshot::drawLettersFront(ofRectangle* parts, vector<ofVec2f>& landmarks, s
 }
 
 void Mugshot::drawLettersProfile(ofRectangle* parts, vector<ofVec2f>& landmarks, shared_ptr<ofxSmartFont> font) {
-    ofSetColor(ofColor::white);
+    ofSetColor(ofColor::fromHex(0xE9DDC4));
     FontUtil::draw("A", font, FontUtil::LEFT, ofVec2f(landmarks[27].x, landmarks[27].y - (landmarks[51].y - landmarks[27].y)));
     FontUtil::draw("D", font, FontUtil::LEFT, landmarks[31]);
     FontUtil::draw("G'", font, FontUtil::LEFT, landmarks[42]);
     FontUtil::draw("B", font, FontUtil::ABOVE, landmarks[22]);
     FontUtil::draw("H", font, FontUtil::RIGHT, landmarks[45]);
     
-    ofSetColor(ofColor::black);
+    ofSetColor(ofColor::fromHex(0x4F4733));
     FontUtil::draw("F", font, FontUtil::ABOVE, landmarks[8]);
     FontUtil::draw("E", font, FontUtil::RIGHT, landmarks[35]);
     FontUtil::draw("L", font, FontUtil::ABOVE, ofVec2f((landmarks[43].x + landmarks[44].x) /2, MAX(landmarks[43].y, landmarks[44].y)));
@@ -121,7 +121,7 @@ void Mugshot::drawLettersProfile(ofRectangle* parts, vector<ofVec2f>& landmarks,
    // ofSetLineWidth(1);
     ofDrawLine(landmarks[15], landmarks[45]);
     ofDrawLine(landmarks[15], ofVec2f(landmarks[45].x, landmarks[29].y));
-    ofSetColor(ofColor::white);
+    ofSetColor(ofColor::fromHex(0xE9DDC4));
 }
 
 void Mugshot::drawDottedLine(ofVec2f start, ofVec2f end) {
