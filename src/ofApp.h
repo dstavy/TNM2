@@ -38,6 +38,7 @@ public:
     UserMap users;
     ofImage tablePage;
     ofImage mugshotPage;
+    ofImage tableHeader;
     GroupManager groupManager;
     
     ofShader sepiaShader;

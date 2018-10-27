@@ -13,7 +13,7 @@
 
 class ImageGrid  {
 public:
-    void setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, float scale = 1.0, string title = "", ofColor bg = ofColor::antiqueWhite);
+    void setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, float scale = 1.0, string title = "", ofColor bg = ofColor::fromHex(0xd5d3c7));
     void update();
     void draw(int x, int y);
     static const int PADDING_ROW = 4;
