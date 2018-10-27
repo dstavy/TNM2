@@ -1,0 +1,26 @@
+[
+   {
+      "id" : "dan_1",
+      "others" : [
+         {
+            "id" : "test1.oni",
+            "selection" : false
+         },
+         {
+            "id" : "test1.oni",
+            "selection" : true
+         },
+         {
+            "id" : "test1.oni",
+            "selection" : false
+         },
+         {
+            "id" : "test1.oni",
+            "selection" : false
+         }
+      ],
+      "vScore" : 1,
+      "xScore" : 99
+   }
+]
+

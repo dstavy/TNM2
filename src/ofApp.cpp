@@ -61,49 +61,49 @@ void ofApp::setup(){
                                    g,
                                    187,62, // width and height of element
                                    4, // user per level
-                                   0.5); // scale
+                                   1); // scale
     
     g = groupManager.groupFactory(
                                   View::NOSE,
                                   Group::GENERIC,
                                   false,
                                   4);
-    grids[1].setup(&sepiaShader,g, 105, 145, 7, 0.5);
+    grids[1].setup(&sepiaShader,g, 105, 145, 7, 1);
     
     g = groupManager.groupFactory(
                                   View::MOUTH,
                                   Group::GENERIC,
                                   false,
                                   6);
-    grids[2].setup(&sepiaShader,g, 125, 112, 5, 0.5);
+    grids[2].setup(&sepiaShader,g, 125, 112, 5, 1);
     
     g = groupManager.groupFactory(
                                   View::FORHEAD,
                                   Group::GENERIC,
                                   false,
                                   5);
-    grids[3].setup(&sepiaShader,g, 150, 75, 5, 0.5);
+    grids[3].setup(&sepiaShader,g, 150, 75, 5, 1);
     
     g = groupManager.groupFactory(
                                   View::HEAD,
                                   Group::GENERIC,
                                   false,
                                   4);
-    grids[4].setup(&sepiaShader,g, 150, 132, 5, 0.5);
+    grids[4].setup(&sepiaShader,g, 150, 132, 5, 1);
     
     g = groupManager.groupFactory(
                                   View::LEFT_EAR,
                                   Group::GENERIC,
                                   true,
                                   1);
-    grids[5].setup(&sepiaShader,g, 100, 150, 5, 0.5);
+    grids[5].setup(&sepiaShader,g, 100, 150, 5, 1);
     
     g = groupManager.groupFactory(
                                   View::RIGHT_EAR,
                                   Group::GENERIC,
                                   true,
                                   4);
-    grids[6].setup(&sepiaShader,g, 100, 250, 4, 0.5);
+    grids[6].setup(&sepiaShader,g, 100, 250, 4, 1);
     
     currentUser = NULL;
     //update
@@ -197,8 +197,8 @@ void ofApp::draw(){
         drawVideo(profilePlayer, profileFace, 100, 1000, 600, 600);
        //}
     }
-    drawMugshotPage();
-    //drawGridPage();
+//    drawMugshotPage();
+    drawGridPage();
     /*
     ofPushMatrix();
     //ofScale(0.5, 0.5);;
@@ -222,14 +222,14 @@ void ofApp::drawMugshotPage() {
 void ofApp::drawGridPage() {
     ofPushMatrix();
     ofTranslate(0, 0);
-    ofScale(1, 1);
+    ofScale(0.75, 0.75);
     grids[0].draw(50, 50);
-    grids[1].draw(450, 50);
-    grids[2].draw(850, 50);
-    grids[3].draw(50, 410);
-    grids[4].draw(450, 500);
-    grids[5].draw(850, 600);
-    grids[6].draw(1200, 50);
+    grids[1].draw(840, 46);
+    grids[2].draw(1630, 50);
+    grids[3].draw(50, 780);
+    grids[4].draw(845, 910);
+    grids[5].draw(1630, 1070);
+    grids[6].draw(2290, 53);
     ofPopMatrix();
 }
 
