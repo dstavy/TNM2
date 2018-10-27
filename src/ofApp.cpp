@@ -220,6 +220,9 @@ void ofApp::drawMugshotPage() {
 }
 
 void ofApp::drawGridPage() {
+    ofPushMatrix();
+    ofTranslate(0, 0);
+    ofScale(1, 1);
     grids[0].draw(50, 50);
     grids[1].draw(450, 50);
     grids[2].draw(850, 50);
@@ -227,6 +230,7 @@ void ofApp::drawGridPage() {
     grids[4].draw(450, 500);
     grids[5].draw(850, 600);
     grids[6].draw(1200, 50);
+    ofPopMatrix();
 }
 
 /*
