@@ -34,10 +34,10 @@ void Mugshot::update(User* user, View::Features feature) {
          faceRec.x += faceRec.x/2;
          ofRectangle& box = ImageGrid::adjustAspectRatio(faceRec, aspectRatio);
          face.bind();
-         shader->begin();
-         shader->setUniform1f("factor", 0.9); // SET A UNIFORM
+         //shader->begin();
+        // shader->setUniform1f("factor", 0.9); // SET A UNIFORM
          face.drawSubsection(0, 0, mugSize ,MG_HEIGHT, box.x, box.y, box.width, box.height);
-         shader->end();
+        // shader->end();
          face.unbind();
          ofPushMatrix();
          ofScale( (float)mugSize/box.width, (float)MG_HEIGHT/box.height);
@@ -52,10 +52,10 @@ void Mugshot::update(User* user, View::Features feature) {
          ofImage& face = view.getImage();
          ofRectangle& box = ImageGrid::adjustAspectRatio(view.parts[View::HEAD], aspectRatio);
          face.bind();
-         shader->begin();
-         shader->setUniform1f("factor", 0.9); // SET A UNIFORM
+         //shader->begin();
+        // shader->setUniform1f("factor", 0.9); // SET A UNIFORM
          face.drawSubsection(mugSize + MG_SPACE, 0, mugSize, MG_HEIGHT, box.x, box.y, box.width, box.height);
-         shader->end();
+        // shader->end();
          face.unbind();
          ofPushMatrix();
          ofTranslate(mugSize + MG_SPACE, 0);
