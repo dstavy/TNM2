@@ -399,6 +399,6 @@ void ofApp::setupFonts()
     ofxSmartFont::add(FONT_DIR + "Crimson Text 700italic.ttf", 18, "CrimsonText700I");
     ofxSmartFont::add(FONT_DIR + "Crimson Text italic.ttf", 18, "CrimsonTextI");
     ofxSmartFont::add(FONT_DIR + "Crimson Text regular.ttf", 18, "CrimsonRegular");
-    ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 80, "BodonPosterMugshot");
+    ofxSmartFont::add(FONT_DIR + "Crimson Text 700.ttf", 80, "CrimsonText700Mugshot");
 }
     
