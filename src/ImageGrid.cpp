@@ -25,7 +25,7 @@ void ImageGrid::setup(ofShader* shader, Group* group, int wElement, int hElement
     calculateSizes();
     int fboW = wholeSize.x;
     int fboH = wholeSize.y;
-    fbo.allocate(fboW, fboH);
+    fbo.allocate(fboW, fboH/*,GL_RGB*/);
     // Clear the FBO's
     // otherwise it will bring some junk with it from the memory
     fbo.begin();
@@ -108,16 +108,18 @@ void ImageGrid::drawRow(int y, vector<User*>::iterator it) {
 void ImageGrid::drawElement(User* user, int x, int y) {
     if (user != NULL) {
         View& view = user->getView(group->profile);
-        ofImage& face = view.getImage();
-        ofRectangle& box = view.getBounderyBox(group->feature);
-        box = adjustAspectRatio(box, aspectRatio);
-        face.bind();
-        shader->begin();
-        shader->setUniform1f("factor", ofRandom(0.7, 1.0)); // SET A UNIFORM
-        face.drawSubsection(x + ELEMENT_SIDE_PADDING, y, w, h, box.x, box.y, box.width, box.height);
-        shader->end();
-        face.unbind();
-        drawScoreArea(user->score, user->currentUser, x , y + h);
+        if (view.isActive()) {
+            ofImage& face = view.getImage();
+            ofRectangle& box = view.getBounderyBox(group->feature);
+            box = adjustAspectRatio(box, aspectRatio);
+            face.bind();
+            shader->begin();
+            shader->setUniform1f("factor", ofRandom(0.75, 1.0)); // SET A UNIFORM
+            face.drawSubsection(x + ELEMENT_SIDE_PADDING, y, w, h, box.x, box.y, box.width, box.height);
+            shader->end();
+            face.unbind();
+            drawScoreArea(user->score, user->currentUser, x , y + h);
+        }
     }
 }
 

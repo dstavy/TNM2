@@ -81,6 +81,7 @@ bool Analyzer::videoAnalyze(string fileName, ofVideoPlayer& player, ofxFaceTrack
 
 bool Analyzer::faceAnalyze(string fileName, ofxFaceTracker2& tracker, User& user, bool profile)  {
     ofImage& image = user.getView(profile).getImage();
+    image.setUseTexture(true);
     if (image.load(fileName))
     {
         // tracker.setFaceRotation(0);
@@ -141,8 +142,8 @@ bool Analyzer::faceInflate(ofxFaceTracker2& tracker, User& user, bool profile) {
         view.parts[View::FORHEAD] = forhead.getBoundingBox();
         
         ofRectangle head(face);
-        head.y -= face.height/4;
-        head.setHeight(1.25 * face.height);
+        head.y -= 0.3 * face.height; //MAX(0, face.height/2); TODO:: poptential bug if goes below 0. only effect imported pics
+        head.setHeight(1.3 * face.height);
         view.parts[View::HEAD] = head;
         
         if (!profile) {

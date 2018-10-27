@@ -16,7 +16,7 @@
 		250A95BA26587BE85DB0A353 /* ofxCvColorImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE9C7160245B19131DAE6128 /* ofxCvColorImage.cpp */; };
 		311DF864378748129984EA1D /* Kalman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77A1A692522820F935B58762 /* Kalman.cpp */; };
 		371261F9218236980029EA9E /* FontUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 371261F7218236980029EA9E /* FontUtil.cpp */; };
-		372C1296217FDEAB000C367F /* LeftPanelImageGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372C1294217FDEAB000C367F /* LeftPanelImageGrid.cpp */; };
+		371C860021834AC300C0D29A /* Mugshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 371C85FF21834AC200C0D29A /* Mugshot.cpp */; };
 		3848005BF139E3EA77120E0C /* ofxFaceTracker2Landmarks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DEF795FE76D4D59A9EBA93FD /* ofxFaceTracker2Landmarks.cpp */; };
 		45CC483A999BF1065A6B926C /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DBD717072C35D324E101669 /* Distance.cpp */; };
 		53A78B50E064F5BB2DA0FF5F /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AB42376EF72A2D370DF02CBE /* Utils.cpp */; };
@@ -177,8 +177,8 @@
 		36F0FF7F8D7342D220CC6319 /* dummy.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = dummy.h; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/flann/dummy.h; sourceTree = SOURCE_ROOT; };
 		371261F7218236980029EA9E /* FontUtil.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FontUtil.cpp; sourceTree = "<group>"; };
 		371261F8218236980029EA9E /* FontUtil.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FontUtil.hpp; sourceTree = "<group>"; };
-		372C1294217FDEAB000C367F /* LeftPanelImageGrid.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LeftPanelImageGrid.cpp; sourceTree = "<group>"; };
-		372C1295217FDEAB000C367F /* LeftPanelImageGrid.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LeftPanelImageGrid.hpp; sourceTree = "<group>"; };
+		371C85FE21834AC200C0D29A /* Mugshot.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Mugshot.hpp; sourceTree = "<group>"; };
+		371C85FF21834AC200C0D29A /* Mugshot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mugshot.cpp; sourceTree = "<group>"; };
 		37A00AAE55CA7B437073B0C9 /* bio.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = bio.h; path = ../../../addons/ofxPoco/libs/openssl/include/openssl/bio.h; sourceTree = SOURCE_ROOT; };
 		38CE51261A669D518D6E739B /* extrapolation.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = extrapolation.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/cudev/ptr2d/extrapolation.hpp; sourceTree = SOURCE_ROOT; };
 		3989467E93E3290D1BB5EA97 /* photo.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = photo.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/photo.hpp; sourceTree = SOURCE_ROOT; };
@@ -1729,10 +1729,10 @@
 				A99AC8B76823EAAA895DC194 /* Group.cpp */,
 				5DDB1E8EC621C69D3AEE710F /* GenericGroup.hpp */,
 				E42AC12B695160CF1F48F02A /* PresentationUpdate.hpp */,
-				372C1294217FDEAB000C367F /* LeftPanelImageGrid.cpp */,
-				372C1295217FDEAB000C367F /* LeftPanelImageGrid.hpp */,
 				371261F7218236980029EA9E /* FontUtil.cpp */,
 				371261F8218236980029EA9E /* FontUtil.hpp */,
+				371C85FF21834AC200C0D29A /* Mugshot.cpp */,
+				371C85FE21834AC200C0D29A /* Mugshot.hpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1935,12 +1935,12 @@
 				5FC3CD20BD90653292704826 /* PresentationUpdate.cpp in Sources */,
 				CD72B58DE92B9558B5E86D5E /* View.cpp in Sources */,
 				A9D8C7CC986604120578C96F /* GroupManager.cpp in Sources */,
+				371C860021834AC300C0D29A /* Mugshot.cpp in Sources */,
 				0CA1F37EF966E5F9BFC36D89 /* Analyzer.cpp in Sources */,
 				B55C4B5C2C846B0D2C4EFC7D /* ImageGrid.cpp in Sources */,
 				A5C7D7C073773C0816ECA2C4 /* User.cpp in Sources */,
 				D55170E94C2E8B38D3DC6454 /* Group.cpp in Sources */,
 				371261F9218236980029EA9E /* FontUtil.cpp in Sources */,
-				372C1296217FDEAB000C367F /* LeftPanelImageGrid.cpp in Sources */,
 				B6840996567E78436F7ECFAB /* ETF.cpp in Sources */,
 				F76B4A79BD8DE4854141CB47 /* fdog.cpp in Sources */,
 				EBCDE831EFAE08274E799C97 /* Calibration.cpp in Sources */,

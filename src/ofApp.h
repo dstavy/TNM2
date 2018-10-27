@@ -11,7 +11,8 @@
 #include "GroupManager.hpp"
 #include "User.hpp"
 #include "ImageGrid.hpp"
-#include "LeftPanelImageGrid.hpp"
+#include "Mugshot.hpp"
+
 
 class ofApp : public ofBaseApp{
 public:
@@ -25,9 +26,10 @@ public:
     ofRectangle getBoundingBox(ofRectangle rec1, ofRectangle rec2);
     void drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, int w, int h);
     void presentationUpdater();
-    void drawPagesBg();
-    void drawReportPage();
-    
+    void drawMugshotPage();
+    User* getRandomUser();
+    void drawGridPage();
+
     ofxFaceTracker2 frontTracker;
     ofxFaceTracker2 profileTracker;
     ofVideoPlayer frontPlayer;
@@ -35,7 +37,7 @@ public:
     PresentationUpdate presentationUpdate;
     UserMap users;
     ofImage tablePage;
-    ofImage reportPage;
+    ofImage mugshotPage;
     GroupManager groupManager;
     
     ofShader sepiaShader;
@@ -43,8 +45,7 @@ public:
     ofRectangle profileFace;
     int rotation;
     ImageGrid grids[NUM_IMAGE_GRIDS];
-    //Group* groups[NUM_GROUPS];
-    //LeftPanelImageGrid lgrid;
+    Mugshot mugshot;
     
     ofPoint  getGridLocation();
     

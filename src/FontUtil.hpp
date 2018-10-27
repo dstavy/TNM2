@@ -18,7 +18,9 @@ class FontUtil {
         LEFT,
         RIGHT,
         ABOVE,
-        BELOW
+        BELOW,
+        BELOW_RIGHT,
+        BELOW_LEFT
     };
     static void draw(string text, shared_ptr<ofxSmartFont> font, Align align, ofVec2f p);
 };

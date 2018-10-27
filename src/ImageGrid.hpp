@@ -55,7 +55,7 @@ public:
     ofPoint lineSize;
     ofPoint elementSize;
     ofPoint wholeSize;
-    ofRectangle& adjustAspectRatio(ofRectangle& box, float aspectRatio);
+    static ofRectangle& adjustAspectRatio(ofRectangle& box, float aspectRatio);
 };
 #endif /* ImageGrid_hpp */
 

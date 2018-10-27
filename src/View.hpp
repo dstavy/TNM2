@@ -52,15 +52,6 @@ public:
         }
     };
    
-    void drawLetters(bool profile) {
-        if (!profile) {
-            drawLettersFront();
-        } else {
-            drawLettersProfile();
-        }
-    };
-    void drawLettersFront();
-    void drawLettersProfile();
     static const int FACE_EXTENDED_PADDING = 150;
     static const int LANDMARKS_NUM = 5;
     static const int PARTS_NUM = 7;
@@ -76,6 +67,10 @@ public:
     
     ofImage& getImage() {
         return face;
+    };
+    
+    vector<ofVec2f>& getLandmarks() {
+        return landmarks;
     };
     
     bool loadImage(string path) {

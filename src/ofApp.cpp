@@ -6,7 +6,7 @@ const long ofApp::PRESENTATION_UPDATE_REFRESH = 3000000;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    //ofBackground(0,0,0,0);
+    ofBackground(0,0,0,255);
     //ofSetBackgroundAuto(false);
     ofSetVerticalSync(true);
     //glDisable(GL_DEPTH_TEST);
@@ -18,9 +18,9 @@ void ofApp::setup(){
         ofLogNotice("cant load Assets/dark.png"); //"Assets/table_page.png"
     }
     
-    if (!reportPage.load("Assets/report_page.png")) //"Assets/table_page.png"
+    if (!mugshotPage.load("Assets/mugshot_page.png")) //"Assets/table_page.png"
     {
-        ofLogNotice("cant load Assets/report_page.png"); //"Assets/table_page.png"
+        ofLogNotice("cant load Assets/mugshot_page.png"); //"Assets/table_page.png"
     }
     
     if (!sepiaShader.load("Shaders/sepia")) {
@@ -55,7 +55,7 @@ void ofApp::setup(){
     Group* g = groupManager.groupFactory(
                                     View::EYES, // fragment
                                     Group::GENERIC, // type of group
-                                    true, // is profile?
+                                    false, // is profile?
                                     6); //number of levels
     grids[0].setup(&sepiaShader, // shader
                                    g,
@@ -66,28 +66,28 @@ void ofApp::setup(){
     g = groupManager.groupFactory(
                                   View::NOSE,
                                   Group::GENERIC,
-                                  true,
+                                  false,
                                   4);
     grids[1].setup(&sepiaShader,g, 105, 145, 7, 0.5);
     
     g = groupManager.groupFactory(
                                   View::MOUTH,
                                   Group::GENERIC,
-                                  true,
+                                  false,
                                   6);
     grids[2].setup(&sepiaShader,g, 125, 112, 5, 0.5);
     
     g = groupManager.groupFactory(
                                   View::FORHEAD,
                                   Group::GENERIC,
-                                  true,
+                                  false,
                                   5);
     grids[3].setup(&sepiaShader,g, 150, 75, 5, 0.5);
     
     g = groupManager.groupFactory(
                                   View::HEAD,
                                   Group::GENERIC,
-                                  true,
+                                  false,
                                   4);
     grids[4].setup(&sepiaShader,g, 150, 132, 5, 0.5);
     
@@ -109,6 +109,12 @@ void ofApp::setup(){
     //update
     presentationUpdate.setup(users, &frontPlayer, &profilePlayer, &frontTracker, &profileTracker, &groupManager);
     currentUser = presentationUpdate.update();
+    bool randSelect = false;
+    if (currentUser == NULL) {
+        currentUser = getRandomUser();
+        randSelect = true;
+    }
+    
     grids[0].update();
     grids[1].update();
     grids[2].update();
@@ -117,6 +123,11 @@ void ofApp::setup(){
     grids[5].update();
     grids[6].update();
     
+    mugshot.setup(&sepiaShader);
+    mugshot.update(currentUser, View::HEAD);
+    if (randSelect) {
+        currentUser = NULL; // return to null after rendering random user
+    }
 
     gridSize = 600;
     nextGrid = -1;
@@ -186,10 +197,11 @@ void ofApp::draw(){
         drawVideo(profilePlayer, profileFace, 100, 1000, 600, 600);
        //}
     }
-    
+    drawMugshotPage();
+    //drawGridPage();
+    /*
     ofPushMatrix();
-    //ofScale(0.5, 0.5);
-    drawPagesBg();
+    //ofScale(0.5, 0.5);;
     //ofTranslate(1920, 0);
     grids[0].draw(50, 50);
     grids[1].draw(450, 50);
@@ -199,26 +211,41 @@ void ofApp::draw(){
     grids[5].draw(850, 600);
     grids[6].draw(1200, 50);
     ofPopMatrix();
+    */
 }
 
+void ofApp::drawMugshotPage() {
+    mugshotPage.draw(0, 0);
+    mugshot.draw(910,340);
+}
+
+void ofApp::drawGridPage() {
+    grids[0].draw(50, 50);
+    grids[1].draw(450, 50);
+    grids[2].draw(850, 50);
+    grids[3].draw(50, 410);
+    grids[4].draw(450, 500);
+    grids[5].draw(850, 600);
+    grids[6].draw(1200, 50);
+}
+
+/*
 void ofApp::drawPagesBg() {
    // reportPage.draw(0,0, 1920,1080);
     tablePage.draw(0,0, 1920,1080);
 }
+*/
 
-void ofApp::drawReportPage() {
-    User* drawnUser = currentUser;
-    if (drawnUser == NULL) {
-        int randomUser = (int)floor(ofRandom(users.size()));
-        // show content:
-        int index;
-        for (UserMap::iterator it=users.begin(); it!=users.end(); ++it, index++) {
-            if (index == randomUser)
-            {
-                drawnUser = it->second;
-            }
+User* ofApp::getRandomUser() {
+    int randomUser = (int)floor(ofRandom(users.size()));
+    int index;
+    for (UserMap::iterator it=users.begin(); it!=users.end(); ++it, index++) {
+        if (index == randomUser)
+        {
+            return (it->second);
         }
     }
+    return NULL;
 }
 
 void ofApp::drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, int w, int h) {
@@ -372,5 +399,6 @@ void ofApp::setupFonts()
     ofxSmartFont::add(FONT_DIR + "Crimson Text 700italic.ttf", 18, "CrimsonText700I");
     ofxSmartFont::add(FONT_DIR + "Crimson Text italic.ttf", 18, "CrimsonTextI");
     ofxSmartFont::add(FONT_DIR + "Crimson Text regular.ttf", 18, "CrimsonRegular");
+    ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 80, "BodonPosterMugshot");
 }
     

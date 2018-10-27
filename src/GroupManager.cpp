@@ -42,6 +42,12 @@ Group* GroupManager::groupFactory(View::Features feature, Group::GroupBy by, boo
                 Group* g  = new GenericGroup(feature, by, profile, levels);
                 groups.push_back(g);
                 return g;
+                /*
+        case Group::GENERIC:
+                Group* g  = new GenericGroup(feature, by, profile, levels);
+                groups.push_back(g);
+                return g;
+                 */
         }
     }
     return NULL;
