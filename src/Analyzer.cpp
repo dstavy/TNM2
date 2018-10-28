@@ -170,12 +170,15 @@ bool Analyzer::faceInflate(ofxFaceTracker2& tracker, User& user, bool profile) {
             earR.setX(landmarks.getImagePoint(2 ).x - earR.width);
             view.parts[View::RIGHT_EAR] = earR;
             // left ear
+            // not doing it
+            /*
             ofRectangle earL;
             earL.setX(landmarks.getImagePoint(14).x);
             earL.setY(landmarks.getImagePoint(16).y);
             earL.setWidth(MAX((landmarks.getImagePoint(14).y - earL.getY()) * (-rotAdd) /2, 0));
             earL.setHeight((landmarks.getImagePoint(14).y - earL.getY()));
             view.parts[View::LEFT_EAR] = earL;
+            */
         }
         view.landmarks = landmarks.getImagePoints();
         view.setActive(true);
