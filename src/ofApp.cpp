@@ -242,7 +242,7 @@ void ofApp::drawPagesBg() {
 
 User* ofApp::getRandomUser() {
     int randomUser = (int)floor(ofRandom(users.size()));
-    int index;
+    int index = 0;
     for (UserMap::iterator it=users.begin(); it!=users.end(); ++it, index++) {
         if (index == randomUser)
         {

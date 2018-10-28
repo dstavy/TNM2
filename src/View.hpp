@@ -62,14 +62,14 @@ public:
     ofRectangle parts[PARTS_NUM];
     ofImage face;
     bool profile;
-    vector<ofVec2f> landmarks;
+    vector<glm::vec2> landmarks;
     bool active;
     
     ofImage& getImage() {
         return face;
     };
     
-    vector<ofVec2f>& getLandmarks() {
+	vector<glm::vec2>& getLandmarks() {
         return landmarks;
     };
     
@@ -91,7 +91,7 @@ public:
         return active;
     };
     
-    bool setActive(bool active)
+    void setActive(bool active)
     {
         this->active = active;
     };
