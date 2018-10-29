@@ -62,12 +62,13 @@ bool Analyzer::videoAnalyze(string fileName, ofVideoPlayer& player, ofxFaceTrack
     lastFrame = i;
     player.setFrame(bestFrame);
     tracker.update(player);
-    if (faceInflate(tracker, user, profile)) {
+    View& view = user.getView(profile);
+    if (faceInflate(tracker, view, profile)) {
         ofPixels pixels;
         player.getPixels();
         
         // TODO:: crop
-        View& view = user.getView(profile);
+        //View& view = user.getView(profile);
         ofImage& image = view.getImage();
         image.setFromPixels(pixels);
         image.rotate90(90);
@@ -78,16 +79,18 @@ bool Analyzer::videoAnalyze(string fileName, ofVideoPlayer& player, ofxFaceTrack
     }
     return false;
 }
-
+    
 bool Analyzer::faceAnalyze(string fileName, ofxFaceTracker2& tracker, User& user, bool profile)  {
-    ofImage& image = user.getView(profile).getImage();
+    View& view =user.getView(profile);
+    ofImage& image = view.getImage();
+    image.clear();
     image.setUseTexture(true);
     if (image.load(fileName))
     {
         // tracker.setFaceRotation(0);
         image.update();
         tracker.update(image);
-        return faceInflate(tracker, user, profile);
+        return faceInflate(tracker, view, profile);
     } else
     {
         ofLogNotice("cant load " + fileName);
@@ -95,8 +98,8 @@ bool Analyzer::faceAnalyze(string fileName, ofxFaceTracker2& tracker, User& user
     return false;
 }
 
-bool Analyzer::faceInflate(ofxFaceTracker2& tracker, User& user, bool profile) {
-    View& view = user.getView(profile);
+bool Analyzer::faceInflate(ofxFaceTracker2& tracker, View& view, bool profile) {
+    //View& view = user.getView(profile);
     if(tracker.size()){
         ofxFaceTracker2Instance camFace = tracker.getInstances()[0];
         //  if (headingforwad && !proflie || headingside && profile)
@@ -190,5 +193,26 @@ bool Analyzer::faceInflate(ofxFaceTracker2& tracker, User& user, bool profile) {
         return true;
     }
     view.setActive(false);
+    view.profile = profile;
     return false;
+}
+
+float Analyzer::getFaceScore(ofImage& image,ofxFaceTracker2& tracker, bool profile) {
+    ofVec3f translation;
+    ofVec3f scale;
+    ofQuaternion rotation;
+    ofQuaternion so;
+    ofVec3f middle(0.,0., 0.);
+    
+    tracker.update(image);
+    if(tracker.size()){
+        ofxFaceTracker2Instance camFace = tracker.getInstances()[0];
+        camFace.getPoseMatrix().decompose(translation, rotation, scale, so);
+        if (!profile) {
+            return  rotation.asVec3().distance(middle);
+        } else {
+            return rotation.asVec3().x;
+        }
+    }
+    return -1.;
 }

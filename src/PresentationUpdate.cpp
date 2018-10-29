@@ -7,11 +7,15 @@
 
 #include "PresentationUpdate.hpp"
 #include "Analyzer.hpp"
+//#defne USE_MOVIE
 
-long PresentationUpdate::lastUpdate = 0;
 const string PresentationUpdate::JSON_FILE = "Records/dataset.json";
 const string PresentationUpdate::FACE_DIR = "Faces/";
 const string PresentationUpdate::MOVIE_DIR = "Movies/";
+const string PresentationUpdate::SEQ_IMAGE_DIR = "SeqImages/";
+const string PresentationUpdate::IMAGE_EXT = "png";
+const string PresentationUpdate::IMAGE_SUF= "." + IMAGE_EXT;
+
 
 /*
 ofxJSONElement PresentationUpdate::loadLibrary(string url)
@@ -101,19 +105,21 @@ User* PresentationUpdate::createUser(string id) {
     bool res = false;
     //look if we have face image
     ofFile file;
-    string imageFileName = FACE_DIR + id + "_" + std::to_string(profile) + ".png";
+    string imageFileName = FACE_DIR + id + "_" + std::to_string(profile) + IMAGE_SUF;
     if (file.doesFileExist(imageFileName)) {
         user = new User(id);
         res = Analyzer::faceAnalyze(imageFileName, *frontTracker, *user, profile);
         profile = true;
-        imageFileName = FACE_DIR + id + "_" + std::to_string(profile) + ".png";
+        imageFileName = FACE_DIR + id + "_" + std::to_string(profile) + IMAGE_SUF;
         if (file.doesFileExist(imageFileName)) {
             Analyzer::faceAnalyze(imageFileName, *profileTracker, *user, profile);
         }
     } else // we dont have a face file . maybe new
     {
-        string videoFileName = MOVIE_DIR + id + std::to_string(profile) + ".mov";
-        imageFileName = FACE_DIR + id + std::to_string(profile) + ".png";
+        profile = false;
+#ifdef USE_MOVIE
+        string videoFileName = MOVIE_DIR + id + "_" + std::to_string(profile) + ".mov";
+        imageFileName = FACE_DIR + id + "_" + std::to_string(profile) + IMAGE_SUF;
         if (file.doesFileExist(videoFileName)) {
             file.open(videoFileName);
             if (std::filesystem::last_write_time(file) > lastUpdate) { // new
@@ -121,13 +127,13 @@ User* PresentationUpdate::createUser(string id) {
                 file.close();
                 frontPlayer->close();
                 profilePlayer->close();
-                res = Analyzer::videoAnalyze(videoFileName, *frontPlayer, *frontTracker, *user, profile, imageFileName);
+                res = Analyzer::videoAnalyze(videoFileName, *frontPlayer, *profileTracker, *user, profile, imageFileName);
                 if (res) {
                     user->currentUser = true;
                 }
                 profile = true;
-                videoFileName = MOVIE_DIR + id + std::to_string(profile) + ".mov";
-                imageFileName = FACE_DIR + id + std::to_string(profile) + ".png";
+                videoFileName = MOVIE_DIR + id + "_" + std::to_string(profile) + ".mov";
+                imageFileName = FACE_DIR + id + "_" + std::to_string(profile) + IMAGE_SUF;
                 if (file.doesFileExist(videoFileName)) {
                     file.open(videoFileName);
                     if (std::filesystem::last_write_time(file) > lastUpdate) { // new
@@ -141,7 +147,50 @@ User* PresentationUpdate::createUser(string id) {
                 file.close();
             }
         }
+#endif
+        user = new User(id);
+        for (bool profileb : { false, true }) {
+            bool resb;
+            //some path, may be absolute or relative to bin/data
+            string path = SEQ_IMAGE_DIR + id  + "_" + std::to_string(profileb);
+            ofDirectory dir(path);
+            if (dir.exists() && std::filesystem::last_write_time(file) > lastUpdate) {
+                if (std::filesystem::last_write_time(file) > lastUpdate) { // new
+                    //only show png files
+                    dir.allowExt(IMAGE_EXT);
+                    //populate the directory object
+                    dir.listDir();
+                    ofImage image;
+                    float highScore = -1;
+                    int selected = -1;
+                    
+                    //go through and print out all the paths
+                    for(int i = 0; i < dir.size(); i++){
+                        ofLogNotice(dir.getPath(i));
+                        image.load(dir.getPath(i));
+                        image.update();
+                        float score = abs(Analyzer::getFaceScore(image, *frontTracker, profileb));
+                        if (score > highScore) {
+                            highScore = score;
+                            selected = i;
+                        }
+                        image.clear();
+                    }
+                    resb = Analyzer::faceAnalyze(dir.getPath(selected), *profileTracker, *user, profileb);
+                    if (resb) {
+                        string outImage = FACE_DIR + id + "_" + std::to_string(profileb) + IMAGE_SUF;
+                        resb = saveUserImage(outImage, user->getView(profileb));
+                        resb = Analyzer::faceAnalyze(dir.getPath(selected), *profileTracker, *user, profileb); // do again on smaller image
+                        if (resb && !profileb) {
+                            user->currentUser = true;
+                            res = resb;
+                        }
+                    }
+                }
+            }
+        }
     }
+    
     if (res) {
         user->id = id;
         return user;
@@ -158,4 +207,11 @@ void PresentationUpdate::updateUser(User* user, int vScore, int xScore) {
     user->xScore = xScore;
     user->vScore = vScore;
     user->score = (float)vScore / (vScore + xScore);
+}
+
+bool PresentationUpdate::saveUserImage(string fileName, View& view) {
+    ofImage  image = view.getImage();
+    ofRectangle& rec = view.getBounderyBox(View::HEAD);
+    image.crop(rec.x - View::FACE_EXTENDED_PADDING, rec.y - View::FACE_EXTENDED_PADDING, rec.width + 2 * View::FACE_EXTENDED_PADDING, rec.height + 2 * View::FACE_EXTENDED_PADDING);
+    return image.save(fileName);
 }

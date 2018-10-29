@@ -19,8 +19,9 @@ public:
     static const int EAR_ROTATION_FACTOR = 5;
     static bool videoAnalyze(string fileName, ofVideoPlayer& player, ofxFaceTracker2& tracker, User& user, bool profile, string outImage);
     static bool faceAnalyze(string fileName, ofxFaceTracker2& tracker, User& user, bool profile);
+    static float getFaceScore(ofImage& image,ofxFaceTracker2& tracker, bool profile);
 private:
-    static bool faceInflate(ofxFaceTracker2& tracker, User& user, bool profile);
+    static bool faceInflate(ofxFaceTracker2& tracker, View& view, bool profile);
 };
 
 #endif /* Analyzer_hpp */

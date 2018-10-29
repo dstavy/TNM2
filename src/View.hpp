@@ -63,7 +63,7 @@ public:
     ofImage face;
     bool profile;
     vector<ofVec2f> landmarks;
-    bool active;
+    bool active = false;
     
     ofImage& getImage() {
         return face;

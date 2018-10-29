@@ -111,14 +111,16 @@ void ImageGrid::drawElement(User* user, int x, int y) {
         if (view.isActive()) {
             ofImage& face = view.getImage();
             ofRectangle& box = view.getBounderyBox(group->feature);
-            box = adjustAspectRatio(box, aspectRatio);
-            face.bind();
-            shader->begin();
-            shader->setUniform1f("factor", ofRandom(0.75, 1.0)); // SET A UNIFORM
-            face.drawSubsection(x + ELEMENT_SIDE_PADDING, y, w, h, box.x, box.y, box.width, box.height);
-            shader->end();
-            face.unbind();
-            drawScoreArea(user->score, user->currentUser, x , y + h);
+            if (box.width > 0) {
+                box = adjustAspectRatio(box, aspectRatio);
+                face.bind();
+                shader->begin();
+                shader->setUniform1f("factor", ofRandom(0.75, 1.0)); // SET A UNIFORM
+                face.drawSubsection(x + ELEMENT_SIDE_PADDING, y, w, h, box.x, box.y, box.width, box.height);
+                shader->end();
+                face.unbind();
+                drawScoreArea(user->score, user->currentUser, x , y + h);
+            }
         }
     }
 }

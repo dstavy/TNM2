@@ -20,7 +20,9 @@ public:
     static const string JSON_FILE;
     static const string FACE_DIR;
     static const string MOVIE_DIR;
-    static long lastUpdate;
+    static const string SEQ_IMAGE_DIR;
+    static const string IMAGE_EXT;
+    static const string IMAGE_SUF;
     string frontVideo;
     string profileVideo;
     ofVideoPlayer* frontPlayer;
@@ -37,15 +39,18 @@ public:
         this->frontTracker = frontTracker;
         this->profileTracker = profileTracker;
         this->groupManager = groupManager;
+        this->lastUpdate = 0;
     };
     
     User* update();
 private:
+    long lastUpdate;
     //ofxJSONElement loadLibrary(string url);
     //ofxJSONElement datasetJson;
     User* createUser(string id);
     static void updateUser(User* user, int vScore, int xScore);
     vector<User*> getUsersList();
     ofxJSONElement datasetJson;
+    static bool saveUserImage(string fileName, View& view);
 };
 #endif /* PresentationUpdate_hpp */
