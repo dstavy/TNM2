@@ -180,7 +180,12 @@ bool Analyzer::faceInflate(ofxFaceTracker2& tracker, User& user, bool profile) {
             view.parts[View::LEFT_EAR] = earL;
             */
         }
+#ifdef TARGET_OSX
         view.landmarks = landmarks.getImagePoints();
+#endif
+#ifdef TARGET_WIN32
+        view.landmarks = (vector<ofVec2f>)landmarks.getImagePoints();
+#endif
         view.setActive(true);
         return true;
     }
