@@ -17,7 +17,7 @@ public:
     void update();
     void draw(int x, int y);
     static const int PADDING_ROW = 4;
-    static const int SCORE_AREA_HEIGHT = 33;
+    static const int SCORE_AREA_HEIGHT = 0; // 33;
     static const int ELEMENT_SIDE_PADDING = 1;
     static const int HEADER_HEIGHT = 60;
     static const int Y_SPACING = 4;

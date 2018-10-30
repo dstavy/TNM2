@@ -39,6 +39,7 @@ public:
     ofImage tablePage;
     ofImage mugshotPage;
     ofImage tableHeader;
+    ofImage table_bg;
     GroupManager groupManager;
     
     ofShader sepiaShader;
