@@ -12,7 +12,7 @@
 const string PresentationUpdate::JSON_FILE = "Records/dataset.json";
 const string PresentationUpdate::FACE_DIR = "Faces/";
 const string PresentationUpdate::MOVIE_DIR = "Movies/";
-const string PresentationUpdate::SEQ_IMAGE_DIR = "SeqImages/";
+const string PresentationUpdate::SEQ_IMAGE_DIR = "SeqImag/";
 const string PresentationUpdate::IMAGE_EXT = "png";
 const string PresentationUpdate::IMAGE_SUF= "." + IMAGE_EXT;
 
@@ -167,14 +167,15 @@ User* PresentationUpdate::createUser(string id) {
                     //go through and print out all the paths
                     for(int i = 0; i < dir.size(); i++){
                         ofLogNotice(dir.getPath(i));
-                        image.load(dir.getPath(i));
-                        image.update();
-                        float score = abs(Analyzer::getFaceScore(image, *frontTracker, profileb));
-                        if (score > highScore) {
-                            highScore = score;
-                            selected = i;
+                        if (image.load(dir.getPath(i))) {
+                            image.update();
+                            float score = abs(Analyzer::getFaceScore(image, *frontTracker, profileb));
+                            if (score > highScore) {
+                                highScore = score;
+                                selected = i;
+                            }
+                            image.clear();
                         }
-                        image.clear();
                     }
                     resb = Analyzer::faceAnalyze(dir.getPath(selected), *profileTracker, *user, profileb);
                     if (resb) {
