@@ -52,7 +52,7 @@ public:
         }
     };
    
-    static const int FACE_EXTENDED_PADDING = 150;
+    static constexpr float FACE_EXTENDED_PADDING = 1.2;
     static const int LANDMARKS_NUM = 5;
     static const int PARTS_NUM = 7;
     static const string FACES_DIR ;

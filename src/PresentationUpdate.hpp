@@ -30,9 +30,9 @@ public:
     ofxFaceTracker2* frontTracker;
     ofxFaceTracker2* profileTracker;
     GroupManager* groupManager;
-    UserMap users;
+    UserMap* users;
     
-    void setup(UserMap &users, ofVideoPlayer* frontPlayer, ofVideoPlayer* profilePlayer, ofxFaceTracker2* frontTracker, ofxFaceTracker2* profileTracker, GroupManager* groupManager) {
+    void setup(UserMap* users, ofVideoPlayer* frontPlayer, ofVideoPlayer* profilePlayer, ofxFaceTracker2* frontTracker, ofxFaceTracker2* profileTracker, GroupManager* groupManager) {
         this->users = users;
         this->frontPlayer = frontPlayer;
         this->profilePlayer = profilePlayer;
@@ -49,7 +49,7 @@ private:
     //ofxJSONElement datasetJson;
     User* createUser(string id);
     static void updateUser(User* user, int vScore, int xScore);
-	static void setUser(User* user, int vScore, int xScore, int shouldersWidth, int torsoLength, int totalHeight);
+	static void setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight);
     vector<User*> getUsersList();
     ofxJSONElement datasetJson;
     static bool saveUserImage(string fileName, View& view);
