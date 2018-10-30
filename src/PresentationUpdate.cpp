@@ -12,8 +12,8 @@
 const string PresentationUpdate::JSON_FILE = "Records/dataset.json";
 const string PresentationUpdate::FACE_DIR = "Faces/";
 const string PresentationUpdate::MOVIE_DIR = "Movies/";
-const string PresentationUpdate::SEQ_IMAGE_DIR = "SeqImages/";
-const string PresentationUpdate::IMAGE_EXT = "png";
+const string PresentationUpdate::SEQ_IMAGE_DIR = "SeqImg/";
+const string PresentationUpdate::IMAGE_EXT = "jpg";
 const string PresentationUpdate::IMAGE_SUF= "." + IMAGE_EXT;
 
 
@@ -61,14 +61,19 @@ User* PresentationUpdate::update() {
                     string id = v["id"].asString();
                     int vScore = v["vScore"].asInt();
                     int xScore = v["xScore"].asInt();
+					float shouldersWidth = v["shouldersWidth"].asFloat();
+					float torsoLength = v["torsoLength"].asFloat();
+					float totalHeight = v["totalHeight"].asFloat();
+                    float headHeight = v["headHeight"].asFloat();
                     if (id.size() > 0) {
-                    UserMap::iterator it = users.find(id);
-                    if (it == users.end()) {
+                    UserMap::iterator it = users->find(id);
+                    if (it == users->end()) {
                         // not found
-                        user = createUser(id);
-                        if (user!= NULL) {
-                            updateUser(user, vScore, xScore);
-                            users.insert(std::pair<string, User*>(id, user));
+                        User* tmp = createUser(id);
+                        if (tmp!= NULL) {
+                            setUser(tmp, vScore, xScore, shouldersWidth, torsoLength, totalHeight, headHeight);
+                            users->insert(std::pair<string, User*>(id, tmp));
+                            user = tmp;
                         }
                     } else {
                         updateUser(it->second, vScore, xScore);
@@ -89,7 +94,7 @@ User* PresentationUpdate::update() {
 
 vector<User*> PresentationUpdate::getUsersList() {
     vector<User*> usersOnly;
-    std::for_each(users.begin(), users.end(), [&](const std::pair<const string, User*>& ref) {
+    std::for_each(users->begin(), users->end(), [&](const std::pair<const string, User*>& ref) {
         usersOnly.push_back(ref.second);
     });
     //sort
@@ -154,40 +159,39 @@ User* PresentationUpdate::createUser(string id) {
             //some path, may be absolute or relative to bin/data
             string path = SEQ_IMAGE_DIR + id  + "_" + std::to_string(profileb);
             ofDirectory dir(path);
-            if (dir.exists() && std::filesystem::last_write_time(file) > lastUpdate) {
-                if (std::filesystem::last_write_time(file) > lastUpdate) { // new
+            if (dir.exists()) {
                     //only show png files
                     dir.allowExt(IMAGE_EXT);
                     //populate the directory object
                     dir.listDir();
                     ofImage image;
-                    float highScore = -1;
+                    float highScore = 10;
                     int selected = -1;
                     
                     //go through and print out all the paths
                     for(int i = 0; i < dir.size(); i++){
                         ofLogNotice(dir.getPath(i));
-                        image.load(dir.getPath(i));
-                        image.update();
-                        float score = abs(Analyzer::getFaceScore(image, *frontTracker, profileb));
-                        if (score > highScore) {
-                            highScore = score;
-                            selected = i;
+                        if (image.load(dir.getPath(i))) {
+                            image.update();
+                            float score = abs(Analyzer::getFaceScore(image, *frontTracker, profileb));
+                            if (!profile && score < highScore) {
+                                highScore = score;
+                                selected = i;
+                            }
+                            image.clear();
                         }
-                        image.clear();
                     }
                     resb = Analyzer::faceAnalyze(dir.getPath(selected), *profileTracker, *user, profileb);
                     if (resb) {
                         string outImage = FACE_DIR + id + "_" + std::to_string(profileb) + IMAGE_SUF;
                         resb = saveUserImage(outImage, user->getView(profileb));
-                        resb = Analyzer::faceAnalyze(dir.getPath(selected), *profileTracker, *user, profileb); // do again on smaller image
+                        resb = Analyzer::faceAnalyze(outImage, *profileTracker, *user, profileb); // do again on smaller image
                         if (resb && !profileb) {
                             user->currentUser = true;
                             res = resb;
                         }
                     }
                 }
-            }
         }
     }
     
@@ -206,12 +210,24 @@ User* PresentationUpdate::createUser(string id) {
 void PresentationUpdate::updateUser(User* user, int vScore, int xScore) {
     user->xScore = xScore;
     user->vScore = vScore;
-    user->score = (float)vScore / (vScore + xScore);
+    user->score = (float)vScore / (vScore + xScore + 1); // avoid getting 100%
+}
+
+void PresentationUpdate::setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight)
+{
+	user->shouldersWidth = shouldersWidth;
+	user->torsoLength = torsoLength;
+	user->torsoLength = torsoLength;
+	updateUser(user, vScore, xScore);
 }
 
 bool PresentationUpdate::saveUserImage(string fileName, View& view) {
     ofImage  image = view.getImage();
     ofRectangle& rec = view.getBounderyBox(View::HEAD);
-    image.crop(rec.x - View::FACE_EXTENDED_PADDING, rec.y - View::FACE_EXTENDED_PADDING, rec.width + 2 * View::FACE_EXTENDED_PADDING, rec.height + 2 * View::FACE_EXTENDED_PADDING);
+    int newW  = View::FACE_EXTENDED_PADDING * rec.width;
+    int newH  = View::FACE_EXTENDED_PADDING * rec.height;
+    int moveX = (newW - rec.width ) /2;
+    int moveY = (newH - rec.height ) /2;
+    image.crop(rec.x -moveX, rec.y - moveY, newW, newH);
     return image.save(fileName);
 }

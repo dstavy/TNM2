@@ -52,7 +52,7 @@ public:
         }
     };
    
-    static const int FACE_EXTENDED_PADDING = 150;
+    static constexpr float FACE_EXTENDED_PADDING = 1.2;
     static const int LANDMARKS_NUM = 5;
     static const int PARTS_NUM = 7;
     static const string FACES_DIR ;
@@ -62,14 +62,14 @@ public:
     ofRectangle parts[PARTS_NUM];
     ofImage face;
     bool profile;
-    vector<ofVec2f> landmarks;
+	vector<glm::vec2> landmarks;
     bool active = false;
     
     ofImage& getImage() {
         return face;
     };
     
-    vector<ofVec2f>& getLandmarks() {
+	vector<glm::vec2>& getLandmarks() {
         return landmarks;
     };
     

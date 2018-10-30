@@ -19,6 +19,9 @@ public:
     float score;
     int vScore;
     int xScore;
+	int shouldersWidth;
+	float torsoLength;
+	float totalHeight;
     View frontView;
     View profileView;
     int measures[5];
@@ -28,7 +31,6 @@ public:
         this->id = id;
     };
     
-    void setup();
     View& getView(bool profile) {
         if(profile) return profileView;
         else return frontView;

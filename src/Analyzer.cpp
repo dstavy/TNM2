@@ -187,7 +187,7 @@ bool Analyzer::faceInflate(ofxFaceTracker2& tracker, View& view, bool profile) {
         view.landmarks = landmarks.getImagePoints();
 #endif
 #ifdef TARGET_WIN32
-        view.landmarks = (vector<ofVec2f>)landmarks.getImagePoints();
+        view.landmarks = landmarks.getImagePoints();
 #endif
         view.setActive(true);
         return true;
@@ -202,7 +202,7 @@ float Analyzer::getFaceScore(ofImage& image,ofxFaceTracker2& tracker, bool profi
     ofVec3f scale;
     ofQuaternion rotation;
     ofQuaternion so;
-    ofVec3f middle(0.,0., 0.);
+    ofVec3f middle(0.,0., 1.); //todo::check
     
     tracker.update(image);
     if(tracker.size()){

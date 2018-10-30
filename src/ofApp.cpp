@@ -132,7 +132,7 @@ void ofApp::setup(){
     
     currentUser = NULL;
     //update
-    presentationUpdate.setup(users, &frontPlayer, &profilePlayer, &frontTracker, &profileTracker, &groupManager);
+    presentationUpdate.setup(&users, &frontPlayer, &profilePlayer, &frontTracker, &profileTracker, &groupManager);
     currentUser = presentationUpdate.update();
     bool randSelect = false;
     if (currentUser == NULL) {
@@ -185,6 +185,7 @@ void ofApp::update(){
         lastPresentationUpdate = ofGetElapsedTimeMillis();
         presentationUpdater();
     }
+    /*
     if (currentUser != NULL) {
         frontPlayer.update();
         profilePlayer.update();
@@ -210,10 +211,12 @@ void ofApp::update(){
             }
         }
     }
+     */
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    /*
     if (currentUser != NULL) {
         //if (frontTracker.size()) {
         drawVideo(frontPlayer, frontFace, 100, 100, 600, 600);
@@ -222,8 +225,9 @@ void ofApp::draw(){
         drawVideo(profilePlayer, profileFace, 100, 1000, 600, 600);
        //}
     }
-//    drawMugshotPage();
-    drawGridPage();
+     */
+    drawMugshotPage();
+   // drawGridPage();
     /*
     ofPushMatrix();
     //ofScale(0.5, 0.5);;
@@ -287,12 +291,6 @@ void ofApp::drawGridPage() {
     ofPopMatrix();
 }
 
-/*
-void ofApp::drawPagesBg() {
-   // reportPage.draw(0,0, 1920,1080);
-    tablePage.draw(0,0, 1920,1080);
-}
-*/
 
 User* ofApp::getRandomUser() {
     int randomUser = (int)floor(ofRandom(users.size()));
@@ -383,13 +381,13 @@ void ofApp::keyReleased(int key){
    /* if (key == 'r'){
         rotation += 90;
         rotation = rotation % 360;
-        tracker.setFaceRotation(rotation);
+        //tracker.setFaceRotation(rotation);
         ; // do something
     } else */ if (key == 'y'){
         rotation -= 90;
         rotation = rotation % 360;
-        frontTracker.setFaceRotation(rotation);
-        profileTracker.setFaceRotation(rotation);
+        //frontTracker.setFaceRotation(rotation);
+       // profileTracker.setFaceRotation(rotation);
     } /*else if (key == 'c'){
         ofPixels crop = grabber.getPixels();
         
