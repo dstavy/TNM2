@@ -45,6 +45,7 @@ private:
     //ofxJSONElement datasetJson;
     User* createUser(string id);
     static void updateUser(User* user, int vScore, int xScore);
+	static void setUser(User* user, int vScore, int xScore, int shouldersWidth, int torsoLength, int totalHeight);
     vector<User*> getUsersList();
     ofxJSONElement datasetJson;
 };
