@@ -61,13 +61,16 @@ User* PresentationUpdate::update() {
                     string id = v["id"].asString();
                     int vScore = v["vScore"].asInt();
                     int xScore = v["xScore"].asInt();
+					float shouldersWidth = v["shouldersWidth"].asFloat();
+					float torsoLength = v["torsoLength"].asFloat();
+					float totalHeight = v["totalHeight"].asFloat();
                     if (id.size() > 0) {
                     UserMap::iterator it = users.find(id);
                     if (it == users.end()) {
                         // not found
                         user = createUser(id);
                         if (user!= NULL) {
-                            updateUser(user, vScore, xScore);
+                            setUser(user, vScore, xScore, shouldersWidth, torsoLength, totalHeight);
                             users.insert(std::pair<string, User*>(id, user));
                         }
                     } else {
@@ -207,7 +210,15 @@ User* PresentationUpdate::createUser(string id) {
 void PresentationUpdate::updateUser(User* user, int vScore, int xScore) {
     user->xScore = xScore;
     user->vScore = vScore;
-    user->score = (float)vScore / (vScore + xScore);
+    user->score = (float)vScore / (vScore + xScore) + 1; // avoid getting 100% 
+}
+
+void PresentationUpdate::setUser(User* user, int vScore, int xScore, int shouldersWidth, int torsoLength, int totalHeight)
+{
+	user->shouldersWidth = shouldersWidth;
+	user->torsoLength = torsoLength;
+	user->torsoLength = torsoLength;
+	updateUser(user, vScore, xScore);
 }
 
 bool PresentationUpdate::saveUserImage(string fileName, View& view) {
