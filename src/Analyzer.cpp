@@ -202,7 +202,7 @@ float Analyzer::getFaceScore(ofImage& image,ofxFaceTracker2& tracker, bool profi
     ofVec3f scale;
     ofQuaternion rotation;
     ofQuaternion so;
-    ofVec3f middle(0.,0., 0.);
+    ofVec3f middle(0.,0., 1.); //todo::check
     
     tracker.update(image);
     if(tracker.size()){
