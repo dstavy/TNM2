@@ -187,7 +187,7 @@ bool Analyzer::faceInflate(ofxFaceTracker2& tracker, View& view, bool profile) {
         view.landmarks = landmarks.getImagePoints();
 #endif
 #ifdef TARGET_WIN32
-        view.landmarks = (vector<ofVec2f>)landmarks.getImagePoints();
+        view.landmarks = landmarks.getImagePoints();
 #endif
         view.setActive(true);
         return true;
