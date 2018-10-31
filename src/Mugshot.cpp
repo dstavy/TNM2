@@ -69,7 +69,12 @@ void Mugshot::update(User* user, View::Features feature) {
     
 }
 
+#ifdef TARGET_OSX
+void Mugshot::drawLettersFront(ofRectangle* parts, vector<ofVec2f>& landmarks, shared_ptr<ofxSmartFont> font) {
+#endif
+#ifdef TARGET_WIN32
 void Mugshot::drawLettersFront(ofRectangle* parts, vector<glm::vec2>& landmarks, shared_ptr<ofxSmartFont> font) {
+#endif
     ofSetColor(ofColor::fromHex(0xE9DDC4));
     FontUtil::draw("D", font, FontUtil::CENTER, ofVec2f(landmarks[0].x, landmarks[0].y - (landmarks[3].y - landmarks[0].y)));
     FontUtil::draw("D'", font, FontUtil::CENTER, ofVec2f(landmarks[16].x, landmarks[16].y - (landmarks[13].y - landmarks[16].y)));
@@ -104,7 +109,12 @@ void Mugshot::drawLettersFront(ofRectangle* parts, vector<glm::vec2>& landmarks,
     ofDrawLine( a, b);
 }
 
-void Mugshot::drawLettersProfile(ofRectangle* parts, vector<glm::vec2>& landmarks, shared_ptr<ofxSmartFont> font) {
+#ifdef TARGET_OSX
+    void Mugshot::drawLettersProfile(ofRectangle* parts, vector<ofVec2f>& landmarks, shared_ptr<ofxSmartFont> font) {
+#endif
+#ifdef TARGET_WIN32
+        void Mugshot::drawLettersProfile(ofRectangle* parts, vector<glm::vec2>& landmarks, shared_ptr<ofxSmartFont> font) {
+#endif
     ofSetColor(ofColor::fromHex(0xE9DDC4));
     FontUtil::draw("A", font, FontUtil::LEFT, ofVec2f(landmarks[27].x, landmarks[27].y - (landmarks[51].y - landmarks[27].y)));
     FontUtil::draw("D", font, FontUtil::LEFT, landmarks[31]);

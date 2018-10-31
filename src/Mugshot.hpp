@@ -22,8 +22,14 @@ public:
     void setup(ofShader* shader);
     void update(User* user, View::Features feature);
     void draw(int x, int y);
+#ifdef TARGET_OSX
+    static void drawLettersFront(ofRectangle* parts, vector<ofVec2f>& landmarks, shared_ptr<ofxSmartFont> font);
+    static void drawLettersProfile(ofRectangle* parts, vector<ofVec2f>& landmarks, shared_ptr<ofxSmartFont> font);
+#endif
+#ifdef TARGET_WIN32
     static void drawLettersFront(ofRectangle* parts, vector<glm::vec2>& landmarks, shared_ptr<ofxSmartFont> font);
     static void drawLettersProfile(ofRectangle* parts, vector<glm::vec2>& landmarks, shared_ptr<ofxSmartFont> font);
+#endif
     static void drawDottedLine(ofVec2f start, ofVec2f end);
     ~Mugshot() {
         fbo.clear();
