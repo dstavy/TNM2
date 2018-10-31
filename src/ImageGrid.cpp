@@ -49,8 +49,8 @@ void ImageGrid::update() {
     ofSetColor(bg);
     ofFill();
     fbo.begin();
-    drawHeader();
-    y += HEADER_HEIGHT;
+//    drawHeader();
+//    y += HEADER_HEIGHT;
     vector<User*>::iterator it;
     for(int i = group->numLevels -1; i >=0; i--) {
         drawRow(y, users.begin() + (i * userPerLevel));
@@ -66,7 +66,8 @@ void ImageGrid::calculateSizes() {
     lineSize.x = PADDING_ROW * 2 + userPerLevel * elementSize.x;
     lineSize.y = PADDING_ROW *2 + elementSize.y;
     wholeSize.x = lineSize.x;
-    wholeSize.y = HEADER_HEIGHT + lineSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
+    wholeSize.y = lineSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
+//    wholeSize.y = HEADER_HEIGHT + lineSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
 }
 
 void ImageGrid::draw(int x, int y) {
@@ -110,7 +111,7 @@ void ImageGrid::drawElement(User* user, int x, int y) {
         View& view = user->getView(group->profile);
         if (view.isActive()) {
             ofImage& face = view.getImage();
-            ofRectangle& box = view.getBounderyBox(group->feature);
+            ofRectangle box(view.getBounderyBox(group->feature));
             if (box.width > 0) {
                 box = adjustAspectRatio(box, aspectRatio);
                 face.bind();

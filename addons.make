@@ -5,3 +5,4 @@ ofxJSON
 ofxOpenCv
 ofxPoco
 ofxSmartFont
+ofxWatchdog

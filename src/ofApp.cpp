@@ -18,14 +18,19 @@ void ofApp::setup(){
         ofLogNotice("cant load Assets/dark.png"); //"Assets/table_page.png"
     }
     
-    if (!mugshotPage.load("Assets/mugshot_page.png")) //"Assets/table_page.png"
+    if (!mugshotPage.load("Assets/sample_sheet.png")) //"Assets/table_page.png"
     {
-        ofLogNotice("cant load Assets/mugshot_page.png"); //"Assets/table_page.png"
+        ofLogNotice("cant load Assets/sample_sheet.png"); //"Assets/table_page.png"
     }
     
     if (!tableHeader.load("Assets/table_header.png")) //"Assets/table_page.png"
     {
-        ofLogNotice("cant load Assets/mugshot_page.png"); //"Assets/table_page.png"
+        ofLogNotice("cant load Assets/table_header.png"); //"Assets/table_page.png"
+    }
+    
+    if (!table_bg.load("Assets/table_bg.png")) //"Assets/table_page.png"
+    {
+        ofLogNotice("cant load Assets/table_bg.png"); //"Assets/table_page.png"
     }
     
     if (!sepiaShader.load("Shaders/sepia")) {
@@ -57,37 +62,52 @@ void ofApp::setup(){
     // here you et the groups and grids
     //if you use same grid more then once but diffrent scales just change the scale before you draw;
 
+    // Groups:
+    // EYES
+    // NOSE
+    // MOUTH
+    // FORHEAD
+    // HEAD
+    
     Group* g = groupManager.groupFactory(
-                                    View::EYES, // fragment
+                                    View::FORHEAD, // fragment
                                     Group::GENERIC, // type of group
                                     false, // is profile?
-                                    6); //number of levels
+                                    7); //number of levels
     grids[0].setup(&sepiaShader, // shader
                                    g,
-                                   187,62, // width and height of element
-                                   4, // user per level
+                                   204,112, // width and height of element
+                                   1, // user per level
                                    1); // scale
-    
+//
+//    g = groupManager.groupFactory(
+//                                  View::NOSE,
+//                                  Group::GENERIC,
+//                                  false,
+//                                  4);
+//    grids[1].setup(&sepiaShader,g, 105, 145, 6, 1);
+
     g = groupManager.groupFactory(
-                                  View::NOSE,
+                                  View::HEAD,
                                   Group::GENERIC,
                                   false,
-                                  4);
-    grids[1].setup(&sepiaShader,g, 105, 145, 6, 1);
+                                  2);
+    grids[1].setup(&sepiaShader,g, 100, 110, 5, 1);
+
     
     g = groupManager.groupFactory(
                                   View::MOUTH,
                                   Group::GENERIC,
                                   false,
-                                  6);
-    grids[2].setup(&sepiaShader,g, 125, 112, 5, 1);
+                                  1);
+    grids[2].setup(&sepiaShader,g, 110, 110, 5, 1);
     
     g = groupManager.groupFactory(
-                                  View::FORHEAD,
+                                  View::EYES,
                                   Group::GENERIC,
                                   false,
-                                  5);
-    grids[3].setup(&sepiaShader,g, 160, 75, 4, 1);
+                                  7);
+    grids[3].setup(&sepiaShader,g, 182, 87, 1, 1);
     
     g = groupManager.groupFactory(
                                   View::HEAD,
@@ -102,7 +122,7 @@ void ofApp::setup(){
                                   true,
                                   4);
     grids[5].setup(&sepiaShader,g, 80, 80, 8, 1);
-    
+
     g = groupManager.groupFactory(
                                   View::RIGHT_EAR,
                                   Group::GENERIC,
@@ -110,6 +130,7 @@ void ofApp::setup(){
                                   3);
     grids[6].setup(&sepiaShader,g, 80, 80, 8, 1);
     
+    mugshot.setup(&sepiaShader);
     currentUser = NULL;
     //update
     presentationUpdate.setup(&users, &frontPlayer, &profilePlayer, &frontTracker, &profileTracker, &groupManager);
@@ -120,19 +141,20 @@ void ofApp::setup(){
         randSelect = true;
     }
     
-    grids[0].update();
-    grids[1].update();
-    grids[2].update();
-    grids[3].update();
-    grids[4].update();
-    grids[5].update();
-    grids[6].update();
-    
-    mugshot.setup(&sepiaShader);
-    mugshot.update(currentUser, View::HEAD);
-    if (randSelect) {
-        currentUser = NULL; // return to null after rendering random user
+    if (currentUser != NULL) {
+        grids[0].update();
+        grids[1].update();
+        grids[2].update();
+        grids[3].update();
+        grids[4].update();
+        grids[5].update();
+        grids[6].update();
+        
+        mugshot.update(currentUser, View::HEAD);
     }
+    //if (randSelect) {
+    //    currentUser = NULL; // return to null after rendering random user
+    //}
 
     gridSize = 600;
     nextGrid = -1;
@@ -163,11 +185,23 @@ void ofApp::exit(){
 void ofApp::update(){
     if ((ofGetElapsedTimeMillis() -  lastPresentationUpdate) > PRESENTATION_UPDATE_REFRESH) {
         lastPresentationUpdate = ofGetElapsedTimeMillis();
-        presentationUpdater();
+         User* user = presentationUpdate.update();
+        if(user != NULL) {
+            currentUser = user;
+        }
+       // }
+        //presentationUpdater();
     }
-    /*
+    
     if (currentUser != NULL) {
-        frontPlayer.update();
+        if ((ofGetElapsedTimeMillis() -  lastMugshotUpdate) > MUGSHOT_REFRESH) {
+            lastMugshotUpdate = ofGetElapsedTimeMillis();
+            curFeature = selectNextFeature(curFeature);
+            mugshot.update(currentUser, curFeature);
+            
+        }
+    }
+      /*  frontPlayer.update();
         profilePlayer.update();
     
         // Update tracker when there are new frames
@@ -196,9 +230,9 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    /*
+    
     if (currentUser != NULL) {
-        //if (frontTracker.size()) {
+  /*      //if (frontTracker.size()) {
         drawVideo(frontPlayer, frontFace, 100, 100, 600, 600);
         //}
        //if (profileTracker.size()) {
@@ -207,7 +241,7 @@ void ofApp::draw(){
     }
      */
     drawMugshotPage();
-   // drawGridPage();
+ // drawGridPage();
     /*
     ofPushMatrix();
     //ofScale(0.5, 0.5);;
@@ -221,6 +255,7 @@ void ofApp::draw(){
     grids[6].draw(1200, 50);
     ofPopMatrix();
     */
+    }
 }
 
 void ofApp::drawMugshotPage() {
@@ -230,18 +265,29 @@ void ofApp::drawMugshotPage() {
 
 void ofApp::drawGridPage() {
     ofPushMatrix();
-    ofTranslate(30, 30);
+//    ofTranslate(30, 30);
+    ofTranslate(30, -1304);
     ofScale(0.66);
     
-    tableHeader.draw(0, 0);
-    grids[0].draw(0, tableHeader.getHeight());
-    grids[1].draw(grids[0].getSize()[0]+25, tableHeader.getHeight());
-    grids[2].draw(grids[0].getSize()[0] + grids[1].getSize()[0]+50, tableHeader.getHeight());
-    grids[3].draw(grids[0].getSize()[0] + grids[1].getSize()[0]+ grids[2].getSize()[0]+80, tableHeader.getHeight());
+
+    table_bg.draw(0, 0);
+    grids[0].draw(494, 904);
+    grids[1].draw(2055, 1266);
+    grids[1].draw(2055, 1266);
+    grids[2].draw(1406, 606);
+    grids[3].draw(91, 2752);
+    grids[3].draw(503, 2752);
+    
+    
+//    tableHeader.draw(0, 0);
+//    grids[0].draw(0, tableHeader.getHeight());
+//    grids[1].draw(grids[0].getSize()[0]+25, tableHeader.getHeight());
+//    grids[2].draw(grids[0].getSize()[0] + grids[1].getSize()[0]+50, tableHeader.getHeight());
+//    grids[3].draw(grids[0].getSize()[0] + grids[1].getSize()[0]+ grids[2].getSize()[0]+80, tableHeader.getHeight());
 //    grids[3].draw(50, 780);
-    grids[4].draw(0, tableHeader.getHeight()+grids[0].getSize()[1]+5);
-    grids[5].draw(grids[0].getSize()[0]+25, tableHeader.getHeight()+grids[1].getSize()[1]+5);
-    grids[6].draw(grids[0].getSize()[0] + grids[1].getSize()[0]+50, tableHeader.getHeight()+grids[2].getSize()[1]+5);
+//    grids[4].draw(0, tableHeader.getHeight()+grids[0].getSize()[1]+5);
+//    grids[5].draw(grids[0].getSize()[0]+25, tableHeader.getHeight()+grids[1].getSize()[1]+5);
+//    grids[6].draw(grids[0].getSize()[0] + grids[1].getSize()[0]+50, tableHeader.getHeight()+grids[2].getSize()[1]+5);
 //    grids[4].draw(845, 910);
 //    grids[5].draw(1630, 1070);
 //    grids[6].draw(2290, 53);
@@ -427,3 +473,10 @@ void ofApp::setupFonts()
     ofxSmartFont::add(FONT_DIR + "Crimson Text 700.ttf", 80, "CrimsonText700Mugshot");
 }
     
+View::Features ofApp::selectNextFeature(View::Features feature) {
+    View::Features f = feature;
+    while (f == feature) {
+        f = (View::Features)(floor(ofRandom(5)));
+    }
+    return f;
+}
