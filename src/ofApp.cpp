@@ -18,14 +18,14 @@ void ofApp::setup(){
         ofLogNotice("cant load Assets/dark.png"); //"Assets/table_page.png"
     }
     
-    if (!mugshotPage.load("Assets/mugshot_page.png")) //"Assets/table_page.png"
+    if (!mugshotPage.load("Assets/sample_sheet.png")) //"Assets/table_page.png"
     {
-        ofLogNotice("cant load Assets/mugshot_page.png"); //"Assets/table_page.png"
+        ofLogNotice("cant load Assets/sample_sheet.png"); //"Assets/table_page.png"
     }
     
     if (!tableHeader.load("Assets/table_header.png")) //"Assets/table_page.png"
     {
-        ofLogNotice("cant load Assets/mugshot_page.png"); //"Assets/table_page.png"
+        ofLogNotice("cant load Assets/table_header.png"); //"Assets/table_page.png"
     }
     
     if (!table_bg.load("Assets/table_bg.png")) //"Assets/table_page.png"
@@ -240,8 +240,8 @@ void ofApp::draw(){
        //}
     }
      */
-   // drawMugshotPage();
-  drawGridPage();
+    drawMugshotPage();
+ // drawGridPage();
     /*
     ofPushMatrix();
     //ofScale(0.5, 0.5);;
