@@ -62,25 +62,15 @@ public:
     ofRectangle parts[PARTS_NUM];
     ofImage face;
     bool profile;
-#ifdef TARGET_OSX
-    vector<ofVec2f> landmarks;
-    
-    vector<ofVec2f>& getLandmarks() {
-        return landmarks;
-    };
-#endif
-#ifdef TARGET_WIN32
-    vector<glm::vec2>& landmarks;
-    
-    vector<glm::vec2>& getLandmarks() {
-        return landmarks;
-    };
-#endif
-    
+	vector<glm::vec2> landmarks;
     bool active = false;
     
     ofImage& getImage() {
         return face;
+    };
+    
+	vector<glm::vec2>& getLandmarks() {
+        return landmarks;
     };
     
     bool loadImage(string path) {

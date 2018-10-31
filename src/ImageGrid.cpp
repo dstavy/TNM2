@@ -64,7 +64,7 @@ void ImageGrid::calculateSizes() {
     elementSize.x = w + ELEMENT_SIDE_PADDING * 2;
     elementSize.y = h + SCORE_AREA_HEIGHT;
     lineSize.x = PADDING_ROW * 2 + userPerLevel * elementSize.x;
-    lineSize.y = PADDING_ROW *2 + elementSize.y;
+    lineSize.y = PADDING_ROW *2 + elementSize.y + 10;
     wholeSize.x = lineSize.x;
     wholeSize.y = lineSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
 //    wholeSize.y = HEADER_HEIGHT + lineSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
@@ -111,7 +111,7 @@ void ImageGrid::drawElement(User* user, int x, int y) {
         View& view = user->getView(group->profile);
         if (view.isActive()) {
             ofImage& face = view.getImage();
-            ofRectangle box(view.getBounderyBox(group->feature));
+            ofRectangle& box = view.getBounderyBox(group->feature);
             if (box.width > 0) {
                 box = adjustAspectRatio(box, aspectRatio);
                 face.bind();
@@ -120,7 +120,7 @@ void ImageGrid::drawElement(User* user, int x, int y) {
                 face.drawSubsection(x + ELEMENT_SIDE_PADDING, y, w, h, box.x, box.y, box.width, box.height);
                 shader->end();
                 face.unbind();
-                drawScoreArea(user->score, user->currentUser, x , y + h);
+                drawScoreArea(user->score, user->currentUser, x , y + h - 10);
             }
         }
     }
@@ -129,14 +129,16 @@ void ImageGrid::drawElement(User* user, int x, int y) {
 void ImageGrid::drawScoreArea(float score, bool isCurrent, int x, int y) {
     shared_ptr<ofxSmartFont> font;
     if (isCurrent) {
-        font = ofxSmartFont::get("AmericanTypewriter"); // change to bold
+        font = ofxSmartFont::get("AmericanTypewriter700"); // change to bold
         ofSetColor(ofColor::lightGrey);
+//        ofColor::fromHex(0xf1efe3);
         ofDrawRectangle(x, y, w, SCORE_AREA_HEIGHT);
     } else {
-        font = ofxSmartFont::get("AmericanTypewriter");
+        font = ofxSmartFont::get("AmericanTypewriter700");
     }
     
-    ofSetHexColor(0x242124);
+//    ofSetHexColor(0x242124);
+    ofColor::fromHex(0xf1efe3);
     std::stringstream buffer;
     buffer << FIXED_FLOAT(score);
     string sScore = buffer.str();
