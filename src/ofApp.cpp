@@ -18,14 +18,14 @@ void ofApp::setup(){
         ofLogNotice("cant load Assets/dark.png"); //"Assets/table_page.png"
     }
     
-    if (!mugshotPage.load("Assets/mugshot_page.png")) //"Assets/table_page.png"
+    if (!mugshotPage.load("Assets/sample_sheet.png")) //"Assets/table_page.png"
     {
-        ofLogNotice("cant load Assets/mugshot_page.png"); //"Assets/table_page.png"
+        ofLogNotice("cant load Assets/sample_sheet.png"); //"Assets/table_page.png"
     }
     
     if (!tableHeader.load("Assets/table_header.png")) //"Assets/table_page.png"
     {
-        ofLogNotice("cant load Assets/mugshot_page.png"); //"Assets/table_page.png"
+        ofLogNotice("cant load Assets/table_header.png"); //"Assets/table_page.png"
     }
     
     if (!table_bg.load("Assets/table_bg.png")) //"Assets/table_page.png"
@@ -130,6 +130,7 @@ void ofApp::setup(){
                                   3);
     grids[6].setup(&sepiaShader,g, 80, 80, 8, 1);
     
+    mugshot.setup(&sepiaShader);
     currentUser = NULL;
     //update
     presentationUpdate.setup(&users, &frontPlayer, &profilePlayer, &frontTracker, &profileTracker, &groupManager);
@@ -140,19 +141,20 @@ void ofApp::setup(){
         randSelect = true;
     }
     
-    grids[0].update();
-    grids[1].update();
-    grids[2].update();
-    grids[3].update();
-    grids[4].update();
-    grids[5].update();
-    grids[6].update();
-    
-    mugshot.setup(&sepiaShader);
-    mugshot.update(currentUser, View::HEAD);
-    if (randSelect) {
-        currentUser = NULL; // return to null after rendering random user
+    if (currentUser != NULL) {
+        grids[0].update();
+        grids[1].update();
+        grids[2].update();
+        grids[3].update();
+        grids[4].update();
+        grids[5].update();
+        grids[6].update();
+        
+        mugshot.update(currentUser, View::HEAD);
     }
+    //if (randSelect) {
+    //    currentUser = NULL; // return to null after rendering random user
+    //}
 
     gridSize = 600;
     nextGrid = -1;
@@ -183,11 +185,23 @@ void ofApp::exit(){
 void ofApp::update(){
     if ((ofGetElapsedTimeMillis() -  lastPresentationUpdate) > PRESENTATION_UPDATE_REFRESH) {
         lastPresentationUpdate = ofGetElapsedTimeMillis();
-        presentationUpdater();
+         User* user = presentationUpdate.update();
+        if(user != NULL) {
+            currentUser = user;
+        }
+       // }
+        //presentationUpdater();
     }
-    /*
+    
     if (currentUser != NULL) {
-        frontPlayer.update();
+        if ((ofGetElapsedTimeMillis() -  lastMugshotUpdate) > MUGSHOT_REFRESH) {
+            lastMugshotUpdate = ofGetElapsedTimeMillis();
+            curFeature = selectNextFeature(curFeature);
+            mugshot.update(currentUser, curFeature);
+            
+        }
+    }
+      /*  frontPlayer.update();
         profilePlayer.update();
     
         // Update tracker when there are new frames
@@ -216,9 +230,9 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    /*
+    
     if (currentUser != NULL) {
-        //if (frontTracker.size()) {
+  /*      //if (frontTracker.size()) {
         drawVideo(frontPlayer, frontFace, 100, 100, 600, 600);
         //}
        //if (profileTracker.size()) {
@@ -227,7 +241,7 @@ void ofApp::draw(){
     }
      */
     drawMugshotPage();
-   // drawGridPage();
+ // drawGridPage();
     /*
     ofPushMatrix();
     //ofScale(0.5, 0.5);;
@@ -241,6 +255,7 @@ void ofApp::draw(){
     grids[6].draw(1200, 50);
     ofPopMatrix();
     */
+    }
 }
 
 void ofApp::drawMugshotPage() {
@@ -458,3 +473,10 @@ void ofApp::setupFonts()
     ofxSmartFont::add(FONT_DIR + "Crimson Text 700.ttf", 80, "CrimsonText700Mugshot");
 }
     
+View::Features ofApp::selectNextFeature(View::Features feature) {
+    View::Features f = feature;
+    while (f == feature) {
+        f = (View::Features)(floor(ofRandom(5)));
+    }
+    return f;
+}

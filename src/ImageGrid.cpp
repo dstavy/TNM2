@@ -111,7 +111,7 @@ void ImageGrid::drawElement(User* user, int x, int y) {
         View& view = user->getView(group->profile);
         if (view.isActive()) {
             ofImage& face = view.getImage();
-            ofRectangle& box = view.getBounderyBox(group->feature);
+            ofRectangle box(view.getBounderyBox(group->feature));
             if (box.width > 0) {
                 box = adjustAspectRatio(box, aspectRatio);
                 face.bind();

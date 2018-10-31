@@ -63,6 +63,9 @@ public:
     int frontVideoStartFrame;
     int proflleVideoStartFrame;
     static void setupFonts();
-    
+    static View::Features selectNextFeature(View::Features feature);
+    View::Features curFeature;
+    static const int MUGSHOT_REFRESH = 10000;
+    long lastMugshotUpdate = 0;
     //fonts
 };

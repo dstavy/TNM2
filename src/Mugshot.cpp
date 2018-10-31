@@ -20,56 +20,80 @@ void Mugshot::setup(ofShader* shader) {
 }
 
 void Mugshot::update(User* user, View::Features feature) {
+//     ofPushMatrix();
      int x = 0;
      float aspectRatio = (float)(MG_WIDTH - MG_SPACE)/2. / MG_HEIGHT;
      shared_ptr<ofxSmartFont> font = ofxSmartFont::get("CrimsonText700Mugshot");
-     bool profile = true;
+     bool profile = false;
      int mugSize = (MG_WIDTH - MG_SPACE) / 2;
-     fbo.begin();
+   // fbo.clear();
+   //  fbo.begin();
     
     View& view = user->getView(profile);
     if (view.isActive()) {
          ofImage& face = view.getImage();
-         ofRectangle& faceRec(view.parts[View::HEAD]);
-         faceRec.x += faceRec.x/2;
-         ofRectangle& box = ImageGrid::adjustAspectRatio(faceRec, aspectRatio);
+         ofRectangle faceRec(view.parts[View::HEAD]);
+        //faceRec.x += faceRec.x/4;
+        //faceRec.width -= faceRec.x/4;
+      //   faceRec.y -= faceRec.x/8;
+       // faceRec.width += faceRec.x/2;
+         ofRectangle box(ImageGrid::adjustAspectRatio(faceRec, aspectRatio));
+         fbo.begin();
          face.bind();
          shader->begin();
          shader->setUniform1f("factor", 0.9); // SET A UNIFORM
-         face.drawSubsection(0, 0, mugSize ,MG_HEIGHT, box.x, box.y, box.width, box.height);
+         face.drawSubsection(0, 0, mugSize ,MG_HEIGHT, box.x , box.y, box.width, box.height);
          shader->end();
          face.unbind();
-         ofPushMatrix();
-         ofScale( (float)mugSize/box.width, (float)MG_HEIGHT/box.height);
-         ofTranslate(-box.x, -box.y);
-         drawLettersProfile(view.parts, view.getLandmarks(), font);
-         ofPopMatrix();
-     }
+         //ofPushMatrix();
+         //ofScale( (float)mugSize/box.width, (float)MG_HEIGHT/box.height);
+         //ofTranslate(-box.x, -box.y);
+         //drawLettersProfile(view.parts, view.getLandmarks(), font);
+         //ofPopMatrix();
+   //  }
     
-     profile = false;
-      view = user->getView(profile);
-     if (view.isActive()) {
-         ofImage& face = view.getImage();
-         ofRectangle& box = ImageGrid::adjustAspectRatio(view.parts[View::HEAD], aspectRatio);
-         face.bind();
-         shader->begin();
-         shader->setUniform1f("factor", 0.9); // SET A UNIFORM
-         face.drawSubsection(mugSize + MG_SPACE, 0, mugSize, MG_HEIGHT, box.x, box.y, box.width, box.height);
-         shader->end();
-         face.unbind();
+    // profile = false;
+    // view = user->getView(profile);
+    // if (view.isActive()) {
+            ofColor dark(0,0,0,125);
+            ofPath path;
+           //  ofImage& face = view.getImage();
+           //  ofRectangle& box = ImageGrid::adjustAspectRatio(view.parts[View::HEAD], aspectRatio);
+             ofRectangle& part = view.parts[feature];
+             face.bind();
+             shader->begin();
+             shader->setUniform1f("factor", 0.9); // SET A UNIFORM
+             face.drawSubsection(mugSize + MG_SPACE, 0, mugSize, MG_HEIGHT, box.x, box.y, box.width, box.height);
+             shader->end();
+             face.unbind();
          ofPushMatrix();
+         //path.rectangle(box);
+         //path.rectangle(part);
          ofTranslate(mugSize + MG_SPACE, 0);
          ofScale( (float)mugSize/box.width, (float)MG_HEIGHT/box.height);
          ofTranslate(-box.x, -box.y);
+         path.setFillColor(dark);
+         path.setStrokeColor(ofColor::black);
+         path.setStrokeWidth(10);
+         path.rectangle(box);
+         path.rectangle(part);
+         ofEnableAlphaBlending();
+         path.draw();
+         ofDisableAlphaBlending();
          //ofTranslate(mugSize + MG_SPACE, 0);
          drawLettersFront(view.parts, view.getLandmarks(), font);
          ofPopMatrix();
+        fbo.end();
      }
-     fbo.end();
-    
+// ofPopMatrix();
 }
 
+#ifdef TARGET_OSX
+void Mugshot::drawLettersFront(ofRectangle* parts, vector<ofVec2f>& landmarks, shared_ptr<ofxSmartFont> font) {
+#endif
+#ifdef TARGET_WIN32
 void Mugshot::drawLettersFront(ofRectangle* parts, vector<glm::vec2>& landmarks, shared_ptr<ofxSmartFont> font) {
+#endif
     ofSetColor(ofColor::fromHex(0xE9DDC4));
     FontUtil::draw("D", font, FontUtil::CENTER, ofVec2f(landmarks[0].x, landmarks[0].y - (landmarks[3].y - landmarks[0].y)));
     FontUtil::draw("D'", font, FontUtil::CENTER, ofVec2f(landmarks[16].x, landmarks[16].y - (landmarks[13].y - landmarks[16].y)));
@@ -104,7 +128,12 @@ void Mugshot::drawLettersFront(ofRectangle* parts, vector<glm::vec2>& landmarks,
     ofDrawLine( a, b);
 }
 
-void Mugshot::drawLettersProfile(ofRectangle* parts, vector<glm::vec2>& landmarks, shared_ptr<ofxSmartFont> font) {
+#ifdef TARGET_OSX
+    void Mugshot::drawLettersProfile(ofRectangle* parts, vector<ofVec2f>& landmarks, shared_ptr<ofxSmartFont> font) {
+#endif
+#ifdef TARGET_WIN32
+        void Mugshot::drawLettersProfile(ofRectangle* parts, vector<glm::vec2>& landmarks, shared_ptr<ofxSmartFont> font) {
+#endif
     ofSetColor(ofColor::fromHex(0xE9DDC4));
     FontUtil::draw("A", font, FontUtil::LEFT, ofVec2f(landmarks[27].x, landmarks[27].y - (landmarks[51].y - landmarks[27].y)));
     FontUtil::draw("D", font, FontUtil::LEFT, landmarks[31]);
