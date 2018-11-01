@@ -23,7 +23,7 @@ public:
         RIGHT_EAR,
     };
     
-    View() {};
+    //View() {};
     
     static inline const string featureToString(Features f)
     {
@@ -63,7 +63,7 @@ public:
 #ifdef TARGET_OSX
     vector<ofVec2f> landmarks;
     
-    vector<ofVec2f> getLandmarks() {
+    vector<ofVec2f>& getLandmarks() {
         return landmarks;
     };
 #endif

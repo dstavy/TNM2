@@ -2,7 +2,7 @@
 #include "ofxSmartFont.h"
 
 const long ofApp::VIDEO_GRID_REFRESH = 2000;
-const long ofApp::PRESENTATION_UPDATE_REFRESH = 10000;
+const long ofApp::PRESENTATION_UPDATE_REFRESH = 30000;
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -389,53 +389,9 @@ ofPoint ofApp::getGridLocation() {
 }
 
 void ofApp::keyReleased(int key){
-   /* if (key == 'r'){
-        rotation += 90;
-        rotation = rotation % 360;
-        //tracker.setFaceRotation(rotation);
-        ; // do something
-    } else */ if (key == 'y'){
-        rotation -= 90;
-        rotation = rotation % 360;
-        //frontTracker.setFaceRotation(rotation);
-       // profileTracker.setFaceRotation(rotation);
-    } /*else if (key == 'c'){
-        ofPixels crop = grabber.getPixels();
-        
-        for (int i = 0; i < 8; i++)
-        {
-            ofRectangle rec  =  boundBoxes[i];
-            ofImage img;
-            int padding = 20;
-            img.allocate(rec.width+padding, rec.height+padding, ofImageType::OF_IMAGE_COLOR);
-
-            crop.cropTo(img.getPixelsRef(),rec.x- padding/2,rec.y- padding/2,rec.width+padding,rec.height+padding);
-            std::string id = std::to_string(i);
-            std::ostringstream oss;
-            oss << "img_" << i << ".jpg";
-            img.saveImage(oss.str());
-            img.clear();
-        }
-    } else if(key=='r'){
-        bRecording = !bRecording;
-        if(bRecording && !vidRecorder.isInitialized()) {
-            //vidRecorder.setup(fileName+ofGetTimestampString()+fileExt, grabber.getWidth(), grabber.getHeight(), 30, sampleRate, channels);
-                      vidRecorder.setup(fileName+ std::to_string(sessionId)+fileExt, grabber.getWidth(), grabber.getHeight(), 30); // no audio
-            //            vidRecorder.setup(fileName+ofGetTimestampString()+fileExt, 0,0,0, sampleRate, channels); // no video
-            //          vidRecorder.setupCustomOutput(vidGrabber.getWidth(), vidGrabber.getHeight(), 30, sampleRate, channels, "-vcodec mpeg4 -b 1600k -acodec mp2 -ab 128k -f mpegts udp://localhost:1234"); // for custom ffmpeg output string (streaming, etc)
-            
-            // Start recording
-            vidRecorder.start();
-        }*/
-        /*
-        else if(!bRecording && vidRecorder.isInitialized()) {
-            vidRecorder.setPaused(true);
-        }
-        else if(bRecording && vidRecorder.isInitialized()) {
-            vidRecorder.setPaused(false);
-        }
-         */
-   // }
+    if (key == 'f') {
+        ofToggleFullscreen();
+    }
 }
 
 void ofApp::presentationUpdater()
