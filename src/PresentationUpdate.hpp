@@ -23,6 +23,7 @@ public:
     static const string SEQ_IMAGE_DIR;
     static const string IMAGE_EXT;
     static const string IMAGE_SUF;
+	static const string JSON_FILE_LOCAL;
     string frontVideo;
     string profileVideo;
     ofVideoPlayer* frontPlayer;
@@ -31,6 +32,7 @@ public:
     ofxFaceTracker2* profileTracker;
     GroupManager* groupManager;
     UserMap* users;
+	bool firstUpdate = false;
     
     void setup(UserMap* users, ofVideoPlayer* frontPlayer, ofVideoPlayer* profilePlayer, ofxFaceTracker2* frontTracker, ofxFaceTracker2* profileTracker, GroupManager* groupManager) {
         this->users = users;

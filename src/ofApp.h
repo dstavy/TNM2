@@ -29,6 +29,8 @@ public:
     void drawMugshotPage();
     User* getRandomUser();
     void drawGridPage();
+	void drawBg();
+
 
     ofxFaceTracker2 frontTracker;
     ofxFaceTracker2 profileTracker;
@@ -63,6 +65,9 @@ public:
     int frontVideoStartFrame;
     int proflleVideoStartFrame;
     static void setupFonts();
-    
+    static View::Features selectNextFeature(View::Features feature);
+    View::Features curFeature;
+    static const int MUGSHOT_REFRESH = 10000;
+    long lastMugshotUpdate = 0;
     //fonts
 };
