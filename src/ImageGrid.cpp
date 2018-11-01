@@ -120,7 +120,7 @@ void ImageGrid::drawElement(User* user, int x, int y) {
                 face.drawSubsection(x + ELEMENT_SIDE_PADDING, y, w, h, box.x, box.y, box.width, box.height);
                 shader->end();
                 face.unbind();
-                drawScoreArea(user->score, user->currentUser, x , y + h -10);
+                drawScoreArea(user->getFactrorScore(), user->currentUser, x , y + h -10);
             }
         }
     }

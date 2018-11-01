@@ -11,9 +11,9 @@ void GenericGroup::update(vector<User*>& newUsers) {
     Group::clear();
     for(auto const& user: newUsers) {
        if (user->getView(profile).isActive()) {
-            int level = floor(user->score/ (1.0/numLevels));
+            int level = floor(user->getFactrorScore()/ (1.0/numLevels));
             users[level].push_back(user);
-            levelScores[level] += user->score;
+            levelScores[level] += user->getFactrorScore();
         }
     }
     

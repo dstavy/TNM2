@@ -88,10 +88,15 @@ User* PresentationUpdate::update() {
                     }
                 }
             }
+            vector<User*> sortedUsers = getUsersList();
+            // set factor score
+            User::setHighestScore((*sortedUsers.end())->score);
+            User::setLowestScore((*sortedUsers.begin())->score);
+            
+            groupManager->update(sortedUsers);
         } else {
            file.close();
         }
-        groupManager->update(getUsersList());
         lastUpdate = ofGetSystemTimeMillis();
     }
    // frontTracker->setThreaded(true);
@@ -104,10 +109,11 @@ vector<User*> PresentationUpdate::getUsersList() {
     std::for_each(users->begin(), users->end(), [&](const std::pair<const string, User*>& ref) {
         usersOnly.push_back(ref.second);
     });
-    //sort
+    //sort users by score
     sort(usersOnly.begin(), usersOnly.end(), [](const User* lhs, const User* rhs) {
         return lhs->score < rhs->score;
     });
+    //set refoctor values on users
     return usersOnly;
 }
 

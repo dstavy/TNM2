@@ -14,6 +14,8 @@
 
 class User {
 public:
+    static float highestScore;
+    static float lowestScore;
     string id;
     float selectionScore;
     float score;
@@ -24,13 +26,26 @@ public:
 	float totalHeight;
     View frontView;
     View profileView;
-    int measures[5];
+    //int measures[5];
     bool currentUser = false;
     
     User(string id) {
         this->id = id;
     };
     
+    static void setHighestScore(float score) {
+        highestScore  = score;
+    };
+    
+    static void setLowestScore(float score) {
+        lowestScore  = score;
+    };
+    
+    float getFactrorScore() {
+        return ((score - User::lowestScore) * (User::highestScore - User::lowestScore));
+    };
+        
+        
     View& getView(bool profile) {
         if(profile) return profileView;
         else return frontView;
