@@ -185,6 +185,14 @@ void ofApp::update(){
             mugshot.update(currentUser, curFeature);
             
         }
+        
+        grids[0].update();
+        grids[1].update();
+        grids[2].update();
+        grids[3].update();
+        grids[4].update();
+        //grids[5].update();
+        //grids[6].update();
     }
     /*  frontPlayer.update();
      profilePlayer.update();
