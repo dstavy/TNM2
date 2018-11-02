@@ -13,11 +13,11 @@
 
 class ImageGrid  {
 public:
-    void setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, float scale = 1.0, string title = "", ofColor bg = ofColor::fromHex(0xe6e0d3)); 
+    void setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, float scale = 1.0, string title = "", ofColor bg = ofColor::fromHex(0xe6e0d3));
     void update();
     void draw(int x, int y);
     static const int PADDING_ROW = 4;
-    static const int SCORE_AREA_HEIGHT = 2;
+    static const int SCORE_AREA_HEIGHT = 2; // 33;
     static const int ELEMENT_SIDE_PADDING = 1;
     static const int HEADER_HEIGHT = 60;
     static const int Y_SPACING = 4;
@@ -58,5 +58,4 @@ public:
     static ofRectangle& adjustAspectRatio(ofRectangle& box, float aspectRatio);
 };
 #endif /* ImageGrid_hpp */
-
 

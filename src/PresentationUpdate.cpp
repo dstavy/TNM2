@@ -9,13 +9,13 @@
 #include "Analyzer.hpp"
 //#defne USE_MOVIE
 
-const string PresentationUpdate::JSON_FILE = "Records/dataset.json";
+const string PresentationUpdate::JSON_FILE_LOCAL = "records/dataset.json";
+const string PresentationUpdate::JSON_FILE = "D:\\TNM\\of_v0.9.3_vs_release\\apps\\myApps\\The-Normalizing-Machine\\bin\\Data\\records\\dataset.json";
 const string PresentationUpdate::FACE_DIR = "Faces/";
 const string PresentationUpdate::MOVIE_DIR = "Movies/";
-const string PresentationUpdate::SEQ_IMAGE_DIR = "SeqImg/";
+const string PresentationUpdate::SEQ_IMAGE_DIR = "D:\\TNM\\of_v0.9.3_vs_release\\apps\\myApps\\The-Normalizing-Machine\\bin\\Data\\SeqImg\\";
 const string PresentationUpdate::IMAGE_EXT = "jpg";
-const string PresentationUpdate::IMAGE_SUF= "." + IMAGE_EXT;
-
+const string PresentationUpdate::IMAGE_SUF = "." + IMAGE_EXT;
 
 /*
 ofxJSONElement PresentationUpdate::loadLibrary(string url)
@@ -47,13 +47,20 @@ ofxJSONElement PresentationUpdate::loadLibrary(string url)
 User* PresentationUpdate::update() {
     User* user = NULL;
     ofFile file;
-    if (file.doesFileExist(JSON_FILE)) {
-        file.open(JSON_FILE);
+	string json;
+
+		if (!firstUpdate) {
+			json = JSON_FILE_LOCAL;
+		}
+		else {
+			json = json = JSON_FILE;
+		}
+    if (file.doesFileExist(json)) {
+        file.open(json);
         if (std::filesystem::last_write_time(file) > lastUpdate) {
             long f = std::filesystem::last_write_time(file);
             file.close();
-            //loadLibrary(JSON_FILE);
-            if (datasetJson.open(JSON_FILE)) {
+            if (datasetJson.open(json)) {
                 //frontTracker->setThreaded(false);
                // profileTracker->setThreaded(false);
                 for (unsigned int i = 0; i < datasetJson.size(); ++i) {
@@ -191,6 +198,7 @@ User* PresentationUpdate::createUser(string id) {
                             res = resb;
                         }
                     }
+					dir.remove(true);
                 }
         }
     }

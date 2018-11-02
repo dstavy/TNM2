@@ -22,11 +22,9 @@ public:
         LEFT_EAR,
         RIGHT_EAR,
     };
-    /*
-    View(bool profile) {
-        this->profile = profile;
-    };
-    */
+    
+    //View() {};
+    
     static inline const string featureToString(Features f)
     {
         switch (f)
@@ -37,8 +35,8 @@ public:
             case NOSE:      return "Nose";// return "Nez";
             case MOUTH:     return "Mouth";// return "Bouche";
             case LEFT_EAR:
-            case RIGHT_EAR: 
-                            return "Ear";
+            case RIGHT_EAR:
+                return "Ear";
             default:        return "";
         }
     };
@@ -51,8 +49,8 @@ public:
             return "Front";
         }
     };
-   
-    static constexpr float FACE_EXTENDED_PADDING = 1.2;
+    
+    static constexpr float FACE_EXTENDED_PADDING = 1.3;
     static const int LANDMARKS_NUM = 5;
     static const int PARTS_NUM = 7;
     static const string FACES_DIR ;
@@ -62,15 +60,25 @@ public:
     ofRectangle parts[PARTS_NUM];
     ofImage face;
     bool profile;
-	vector<glm::vec2> landmarks;
+#ifdef TARGET_OSX
+    vector<ofVec2f> landmarks;
+    
+    vector<ofVec2f>& getLandmarks() {
+        return landmarks;
+    };
+#endif
+#ifdef TARGET_WIN32
+    vector<glm::vec2> landmarks;
+    
+    vector<glm::vec2>& getLandmarks() {
+        return landmarks;
+    };
+#endif
+    
     bool active = false;
     
     ofImage& getImage() {
         return face;
-    };
-    
-	vector<glm::vec2>& getLandmarks() {
-        return landmarks;
     };
     
     bool loadImage(string path) {

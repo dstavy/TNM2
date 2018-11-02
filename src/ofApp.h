@@ -29,6 +29,8 @@ public:
     void drawMugshotPage();
     User* getRandomUser();
     void drawGridPage();
+	void drawBg();
+
 
     ofxFaceTracker2 frontTracker;
     ofxFaceTracker2 profileTracker;
