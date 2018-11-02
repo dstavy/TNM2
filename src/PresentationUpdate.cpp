@@ -48,6 +48,7 @@ User* PresentationUpdate::update() {
     User* user = NULL;
     ofFile file;
 	string json;
+    bool updated = false;
 
 		if (!firstUpdate) {
 			json = JSON_FILE_LOCAL;
@@ -81,6 +82,7 @@ User* PresentationUpdate::update() {
                             setUser(tmp, vScore, xScore, shouldersWidth, torsoLength, totalHeight, headHeight);
                             users->insert(std::pair<string, User*>(id, tmp));
                             user = tmp;
+                            updated = true;
                         }
                     } else {
                         updateUser(it->second, vScore, xScore);
@@ -88,12 +90,17 @@ User* PresentationUpdate::update() {
                     }
                 }
             }
-            vector<User*> sortedUsers = getUsersList();
-            // set factor score
-            User::setHighestScore((*sortedUsers.end())->score);
-            User::setLowestScore((*sortedUsers.begin())->score);
-            
-            groupManager->update(sortedUsers);
+            if (updated) {
+                vector<User*> sortedUsers;
+                getUsersList(sortedUsers);
+                    // set factor score
+                if (!sortedUsers.empty()) {
+                    User::setHighestScore(sortedUsers[sortedUsers.size() -1]->score
+                                          + 0.001);//we dont want 1
+                    User::setLowestScore(sortedUsers[0]->score - 0.001); // we dont want 0
+                    groupManager->update(sortedUsers);
+                }
+            }
         } else {
            file.close();
         }
@@ -103,9 +110,7 @@ User* PresentationUpdate::update() {
    // profileTracker->setThreaded(true);
     return user;
 }
-
-vector<User*> PresentationUpdate::getUsersList() {
-    vector<User*> usersOnly;
+void PresentationUpdate::getUsersList(vector<User*>& usersOnly) {
     std::for_each(users->begin(), users->end(), [&](const std::pair<const string, User*>& ref) {
         usersOnly.push_back(ref.second);
     });
@@ -114,7 +119,7 @@ vector<User*> PresentationUpdate::getUsersList() {
         return lhs->score < rhs->score;
     });
     //set refoctor values on users
-    return usersOnly;
+    //return usersOnly;
 }
 
 User* PresentationUpdate::createUser(string id) {

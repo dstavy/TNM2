@@ -9,14 +9,16 @@
 
 void GenericGroup::update(vector<User*>& newUsers) {
     Group::clear();
+ //   cout << User::highestScore << " " << User::lowestScore <<"\n";
     for(auto const& user: newUsers) {
-       if (user->getView(profile).isActive()) {
+      // if (user->getView(!profile).isActive()) {
             int level = floor(user->getFactrorScore()/ (1.0/numLevels));
             users[level].push_back(user);
             levelScores[level] += user->getFactrorScore();
-        }
+           cout<< user->score << " " <<user->getFactrorScore() << " " << level <<"\n";
+      //  }
     }
-    
+
     for (int i = 0; i < numLevels; i++) {
         levelScores[i] /= users[i].size();
     }

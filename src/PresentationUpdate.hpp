@@ -52,7 +52,7 @@ private:
     User* createUser(string id);
     static void updateUser(User* user, int vScore, int xScore);
 	static void setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight);
-    vector<User*> getUsersList();
+    void getUsersList(vector<User*>& usersOnly);
     ofxJSONElement datasetJson;
     static bool saveUserImage(string fileName, View& view);
 };

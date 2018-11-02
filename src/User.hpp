@@ -42,7 +42,7 @@ public:
     };
     
     float getFactrorScore() {
-        return ((score - User::lowestScore) * (User::highestScore - User::lowestScore));
+        return (ofMap(score, User::lowestScore, User::highestScore, 0., 1.));
     };
         
         
