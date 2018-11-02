@@ -69,5 +69,4 @@ public:
     static View::Features selectNextFeature(View::Features feature);
     View::Features curFeature;
     long lastMugshotUpdate = 0;
-    //fonts
 };

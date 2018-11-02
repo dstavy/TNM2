@@ -18,7 +18,6 @@ public:
     static const int MG_WIDTH = 614;
     static const int MG_HEIGHT = 342;
     static const int MG_SPACE = 2;
-
     //static const float MG_ASPECT_RATIO = 0.953271; //(float)(MG_WIDTH - MG_SPACE)/2. / MG_HEIGHT;
     void setup(ofShader* shader);
     void update(User* user, View::Features feature);

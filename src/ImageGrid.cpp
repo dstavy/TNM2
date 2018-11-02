@@ -49,8 +49,8 @@ void ImageGrid::update() {
     ofSetColor(bg);
     ofFill();
     fbo.begin();
-//    drawHeader();
-//    y += HEADER_HEIGHT;
+    //    drawHeader();
+    //    y += HEADER_HEIGHT;
     vector<User*>::iterator it;
     for(int i = group->numLevels -1; i >=0; i--) {
         drawRow(y, users.begin() + (i * userPerLevel));
@@ -67,7 +67,7 @@ void ImageGrid::calculateSizes() {
     lineSize.y = PADDING_ROW *2 + elementSize.y + 10;
     wholeSize.x = lineSize.x;
     wholeSize.y = lineSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
-//    wholeSize.y = HEADER_HEIGHT + lineSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
+    //    wholeSize.y = HEADER_HEIGHT + lineSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
 }
 
 void ImageGrid::draw(int x, int y) {
@@ -81,7 +81,7 @@ void ImageGrid::draw(int x, int y) {
 string ImageGrid::getTitle() {
     return View::featureToString(group->feature) + " / " + View::proflieToString(group->profile);
 }
-                
+
 void ImageGrid::drawHeader() {
     //ofSetColor(bg);
     ofDrawRectangle(0,0, wholeSize.x, HEADER_HEIGHT);
@@ -136,7 +136,7 @@ void ImageGrid::drawScoreArea(float score, bool isCurrent, int x, int y) {
         font = ofxSmartFont::get("AmericanTypewriter700");
     }
     
-	ofColor::fromHex(0xf1efe3);
+    ofColor::fromHex(0xf1efe3);
     //ofSetColor(0x242124);
     std::stringstream buffer;
     buffer << FIXED_FLOAT(score);

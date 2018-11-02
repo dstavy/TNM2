@@ -35,8 +35,8 @@ public:
             case NOSE:      return "Nose";// return "Nez";
             case MOUTH:     return "Mouth";// return "Bouche";
             case LEFT_EAR:
-            case RIGHT_EAR: 
-                            return "Ear";
+            case RIGHT_EAR:
+                return "Ear";
             default:        return "";
         }
     };
@@ -49,7 +49,7 @@ public:
             return "Front";
         }
     };
-   
+    
     static constexpr float FACE_EXTENDED_PADDING = 1.3;
     static const int LANDMARKS_NUM = 5;
     static const int PARTS_NUM = 7;

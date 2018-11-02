@@ -18,10 +18,10 @@ int main( ){
     settings.setSize(3840, 1080);
     
 #ifdef DEBUG
-   // settings.multiMonitorFullScreen = false;
+    // settings.multiMonitorFullScreen = false;
 #else
-   // settings.multiMonitorFullScreen = true;
-  //  setMultiDisplayFullscreen (true);
+    // settings.multiMonitorFullScreen = true;
+    //  setMultiDisplayFullscreen (true);
 #endif
     
     ofCreateWindow(settings);
@@ -31,7 +31,7 @@ int main( ){
     //ofSetFullscreen(true);
 #endif
     // ofxWatchdog::trap(void)
-   // ofxWatchdog::trap();
+    // ofxWatchdog::trap();
     
     // this kicks off the running of my app
     ofRunApp(new ofApp());
