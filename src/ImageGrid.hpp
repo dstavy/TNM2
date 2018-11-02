@@ -59,4 +59,3 @@ public:
 };
 #endif /* ImageGrid_hpp */
 
-
