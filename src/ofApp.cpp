@@ -1,9 +1,6 @@
 #include "ofApp.h"
 #include "ofxSmartFont.h"
 
-const long ofApp::VIDEO_GRID_REFRESH = 2000;
-const long ofApp::PRESENTATION_UPDATE_REFRESH = 30000;
-
 //--------------------------------------------------------------
 void ofApp::setup(){
     ofBackground(0,0,0,255);

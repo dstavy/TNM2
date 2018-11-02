@@ -18,6 +18,9 @@ class ofApp : public ofBaseApp{
 public:
     static const int NUM_IMAGE_GRIDS = 8;
     //static const int NUM_GROUPS = 8;
+    const long VIDEO_GRID_REFRESH = 2000;
+    static const long PRESENTATION_UPDATE_REFRESH = 30000;
+    static const int MUGSHOT_REFRESH = 10000;
     void setup();
     void exit();
     void update();
@@ -57,8 +60,6 @@ public:
     int gridSize = 600;
     //float boxPadding = 200;
     int nextGrid = -1;
-    static const long VIDEO_GRID_REFRESH;
-    static const long PRESENTATION_UPDATE_REFRESH;
     long lastGridUpdate;
     long lastPresentationUpdate;
     User* currentUser = NULL;
@@ -67,7 +68,6 @@ public:
     static void setupFonts();
     static View::Features selectNextFeature(View::Features feature);
     View::Features curFeature;
-    static const int MUGSHOT_REFRESH = 10000;
     long lastMugshotUpdate = 0;
     //fonts
 };
