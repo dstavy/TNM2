@@ -31,8 +31,9 @@ public:
     };
     float getScore(User* user);
     vector<User*>* users;
+    vector<User*> allUsers;
     float* levelScores;
-    virtual void update(vector<User*>& newUsers) = 0;
+    virtual void update(vector<User*>& newUsers) { allUsers = newUsers;};
     void getGridUsers(int usersPerLevel, vector<User*>& outUsers);
     Group(View::Features feature, GroupBy grouBy, bool profile, int levels)
     {

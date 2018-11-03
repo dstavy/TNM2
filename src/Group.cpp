@@ -8,7 +8,7 @@
 #include "Group.hpp"
 
 void Group::getGridUsers(int usersPerLevel, vector<User*>& outUsers) {
-    bool currentFound = false;
+   /* bool currentFound = false;
     
     for (int i = 0; i < numLevels; i++) {
         // if empty level leave empty
@@ -45,6 +45,29 @@ void Group::getGridUsers(int usersPerLevel, vector<User*>& outUsers) {
                 index = nextIndex;
             }
         }
+    }
+    */
+    // do a simple colection based on number of users
+    int numberNeeded = numLevels * usersPerLevel;
+    float ratio = (float)allUsers.size() / numberNeeded;
+    
+    for (int j =0; j <numberNeeded; j++) {
+        outUsers.push_back(allUsers[round(j * ratio)]);
+    }
+    bool found = false;
+    // Iterate over all elements in Vector
+    int i = 0;
+    for(; i < allUsers.size(); i++)
+    {
+        if (allUsers[i]->currentUser)
+        {
+            found = true;
+            break;
+        }
+    }
+    if(found) { // add current User
+       int index = round(ofMap(i, 0, allUsers.size() -1, 0, numberNeeded - 1));
+        allUsers[index] = allUsers[i];
     }
 }
 

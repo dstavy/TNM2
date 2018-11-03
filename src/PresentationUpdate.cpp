@@ -153,7 +153,7 @@ User* PresentationUpdate::createUser(string id) {
                 profilePlayer->close();
                 res = Analyzer::videoAnalyze(videoFileName, *frontPlayer, *profileTracker, *user, profile, imageFileName);
                 if (res) {
-                    user->currentUser = true;
+                    //user->currentUser = true;
                 }
                 profile = true;
                 videoFileName = MOVIE_DIR + id + "_" + std::to_string(profile) + ".mov";
@@ -206,7 +206,7 @@ User* PresentationUpdate::createUser(string id) {
                         resb = saveUserImage(outImage, user->getView(profileb));
                         resb = Analyzer::faceAnalyze(outImage, *profileTracker, *user, profileb); // do again on smaller image
                         if (resb && !profileb) {
-                            user->currentUser = true;
+                            //user->currentUser = true;
                             res = resb;
                         }
                     }

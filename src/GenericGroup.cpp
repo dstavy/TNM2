@@ -9,6 +9,7 @@
 
 void GenericGroup::update(vector<User*>& newUsers) {
     Group::clear();
+    Group::update(newUsers);
  //   cout << User::highestScore << " " << User::lowestScore <<"\n";
     for(auto const& user: newUsers) {
       // if (user->getView(!profile).isActive()) {

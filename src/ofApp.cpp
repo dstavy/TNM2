@@ -127,6 +127,7 @@ void ofApp::setup(){
     }
     
     if (currentUser != NULL) {
+        currentUser->currentUser = true;
         grids[0].update();
         grids[1].update();
         grids[2].update();
@@ -172,10 +173,15 @@ void ofApp::update(){
         lastPresentationUpdate = ofGetElapsedTimeMillis();
         User* user = presentationUpdate.update();
         if(user != NULL) {
+            currentUser->currentUser = false;
             currentUser = user;
+            currentUser->currentUser = true;
+            grids[0].update();
+            grids[1].update();
+            grids[2].update();
+            grids[3].update();
+            grids[4].update();
         }
-        // }
-        //presentationUpdater();
     }
     
     if (currentUser != NULL) {
@@ -185,14 +191,6 @@ void ofApp::update(){
             mugshot.update(currentUser, curFeature);
             
         }
-        
-        grids[0].update();
-        grids[1].update();
-        grids[2].update();
-        grids[3].update();
-        grids[4].update();
-        //grids[5].update();
-        //grids[6].update();
     }
     /*  frontPlayer.update();
      profilePlayer.update();
