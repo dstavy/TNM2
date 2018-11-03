@@ -67,7 +67,7 @@ void Group::getGridUsers(int usersPerLevel, vector<User*>& outUsers) {
     }
     if(found) { // add current User
        int index = round(ofMap(i, 0, allUsers.size() -1, 0, numberNeeded - 1));
-        allUsers[index] = allUsers[i];
+        outUsers[index] = allUsers[i];
     }
 }
 
