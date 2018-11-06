@@ -27,7 +27,7 @@ public:
     View frontView;
     View profileView;
     //int measures[5];
-    bool currentUser = false;
+    bool isCurrent = false;
     
     User(string id) {
         this->id = id;

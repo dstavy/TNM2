@@ -49,17 +49,19 @@ void Group::getGridUsers(int usersPerLevel, vector<User*>& outUsers) {
     */
     // do a simple colection based on number of users
     int numberNeeded = numLevels * usersPerLevel;
-    float ratio = (float)allUsers.size() / numberNeeded;
+    //float ratio = (float)allUsers.size() / (numberNeeded - 1);
+    float increment = 1.0/(numberNeeded -1);
     
     for (int j =0; j <numberNeeded; j++) {
-        outUsers.push_back(allUsers[round(j * ratio)]);
+        //ofLerp(0, allUsers.size(), j*increment);
+        outUsers.push_back(allUsers[round(ofLerp(0, allUsers.size() -1, j*increment))]);
     }
     bool found = false;
     // Iterate over all elements in Vector
     int i = 0;
     for(; i < allUsers.size(); i++)
     {
-        if (allUsers[i]->currentUser)
+        if (allUsers[i]->isCurrent)
         {
             found = true;
             break;

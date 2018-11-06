@@ -51,8 +51,8 @@ User* PresentationUpdate::update() {
     bool updated = false;
 
 		if (!firstUpdate) {
-			json = JSON_FILE_LOCAL;
-            firstUpdate = false;
+			json = JSON_FILE_LOCAL;//JSON_FILE_LOCAL
+            firstUpdate = true;
 		}
 		else {
 			json = json = JSON_FILE;

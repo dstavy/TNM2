@@ -21,6 +21,7 @@ public:
     const long VIDEO_GRID_REFRESH = 2000;
     static const long PRESENTATION_UPDATE_REFRESH = 30000;
     static const int MUGSHOT_REFRESH = 10000;
+    static const int CURRENT_USER_REFRESH = 120000;
     void setup();
     void exit();
     void update();
@@ -69,4 +70,6 @@ public:
     static View::Features selectNextFeature(View::Features feature);
     View::Features curFeature;
     long lastMugshotUpdate = 0;
+    long lastUserUpdate = 0;
+    ofEasyCam cam;
 };

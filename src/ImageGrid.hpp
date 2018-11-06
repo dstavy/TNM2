@@ -13,7 +13,7 @@
 
 class ImageGrid  {
 public:
-    void setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, float scale = 1.0, string title = "", ofColor bg = ofColor::fromHex(0xe6e0d3));
+    void setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, float scale = 1.0, int delayLoading = 100, string title = "", ofColor bg = ofColor::fromHex(0xe6e0d3));
     void update();
     void draw(int x, int y);
     static const int PADDING_ROW = 4;
@@ -55,7 +55,16 @@ public:
     ofPoint lineSize;
     ofPoint elementSize;
     ofPoint wholeSize;
+    bool loading = false;
+    int loadingTime = 0;
+    int delayLoading = 0;
     static ofRectangle& adjustAspectRatio(ofRectangle& box, float aspectRatio);
+    void resetLoading() {
+        loading = true;
+        loadingTime = ofGetElapsedTimeMillis();
+    };
+    //vector<User*> users;
+    static const int DRAW_SEGMENT = 10;
 };
 #endif /* ImageGrid_hpp */
 

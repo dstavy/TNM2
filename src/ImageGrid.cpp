@@ -10,7 +10,7 @@
 
 #define FIXED_FLOAT(x) std::fixed <<std::setprecision(2)<<(x)
 
-void ImageGrid::setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, float scale, string title, ofColor bg) {
+void ImageGrid::setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, float scale, int delayLoading, string title, ofColor bg) {
     this->shader = shader;
     this->group = group;
     this->w = wElement;
@@ -19,6 +19,7 @@ void ImageGrid::setup(ofShader* shader, Group* group, int wElement, int hElement
     this->title = title;
     this->scale = scale;
     this->bg = bg;
+    this->delayLoading = delayLoading;
     //this->leftPanel = leftPanel;
     aspectRatio = (float)w/h;
     
@@ -51,7 +52,7 @@ void ImageGrid::update() {
     fbo.begin();
     //    drawHeader();
     //    y += HEADER_HEIGHT;
-    vector<User*>::iterator it;
+   // vector<User*>::iterator it;
     for(int i = group->numLevels -1; i >=0; i--) {
         drawRow(y, users.begin() + (i * userPerLevel));
         y += lineSize.y + Y_SPACING;
@@ -74,7 +75,16 @@ void ImageGrid::draw(int x, int y) {
     ofPushMatrix();
     ofTranslate(x,y);
     ofScale(scale);
-    fbo.draw(0,0);
+    if (loading) {
+        int section = floor((float)(ofGetElapsedTimeMillis() - loadingTime) / delayLoading) * DRAW_SEGMENT;
+        fbo.getTextureReference().drawSubsection(0, 0, wholeSize.x, section, 0, 0, wholeSize.x, section);
+        if ((wholeSize.y - section) <= DRAW_SEGMENT) {
+            loading = false;
+        }
+    }
+    else {
+        fbo.draw(0,0);
+    }
     ofPopMatrix();
 }
 
@@ -116,11 +126,15 @@ void ImageGrid::drawElement(User* user, int x, int y) {
                 box = adjustAspectRatio(box, aspectRatio);
                 face.bind();
                 shader->begin();
-                shader->setUniform1f("factor", ofRandom(0.75, 1.0)); // SET A UNIFORM
+                if (user->isCurrent) {
+                     shader->setUniform1f("factor", ofRandom(0.50, 1.0));
+                } else {
+                    shader->setUniform1f("factor", ofRandom(0.75, 1.0));
+                }
                 face.drawSubsection(x + ELEMENT_SIDE_PADDING, y, w, h, box.x, box.y, box.width, box.height);
                 shader->end();
                 face.unbind();
-                drawScoreArea(user->getFactrorScore(), user->currentUser, x , y + h -10);
+                drawScoreArea(user->getFactrorScore(), user->isCurrent, x , y + h -10);
             }
         }
     }
@@ -133,7 +147,7 @@ void ImageGrid::drawScoreArea(float score, bool isCurrent, int x, int y) {
         ofSetColor(ofColor::lightGrey);
         ofDrawRectangle(x, y, w, SCORE_AREA_HEIGHT);
     } else {
-        font = ofxSmartFont::get("AmericanTypewriter700");
+        font = ofxSmartFont::get("AmericanTypewriter");
     }
     
     ofColor::fromHex(0xf1efe3);

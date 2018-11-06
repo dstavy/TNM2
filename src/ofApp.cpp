@@ -127,7 +127,7 @@ void ofApp::setup(){
     }
     
     if (currentUser != NULL) {
-        currentUser->currentUser = true;
+        currentUser->isCurrent = true;
         grids[0].update();
         grids[1].update();
         grids[2].update();
@@ -151,6 +151,16 @@ void ofApp::setup(){
     //ofClear(0,0,0,0);
     //gridFbo.end();
     //  ofEnableAlphaBlending();
+    
+    cam.removeAllInteractions();
+    cam.addInteraction(ofEasyCam::TRANSFORM_TRANSLATE_XY,OF_MOUSE_BUTTON_LEFT);
+    cam.addInteraction(ofEasyCam::TRANSFORM_TRANSLATE_Z, OF_MOUSE_BUTTON_RIGHT);
+    
+    cam.enableOrtho();
+    cam.setNearClip(-1000000);
+    cam.setFarClip(1000000);
+    cam.setVFlip(true);
+
 }
 
 //--------------------------------------------------------------
@@ -173,14 +183,16 @@ void ofApp::update(){
         lastPresentationUpdate = ofGetElapsedTimeMillis();
         User* user = presentationUpdate.update();
         if(user != NULL) {
-            currentUser->currentUser = false;
+            currentUser->isCurrent = false;
             currentUser = user;
-            currentUser->currentUser = true;
+            currentUser->isCurrent = true;
             grids[0].update();
             grids[1].update();
             grids[2].update();
             grids[3].update();
             grids[4].update();
+            mugshot.update(currentUser, curFeature);
+            lastUserUpdate = ofGetElapsedTimeMillis();
         }
     }
     
@@ -190,6 +202,18 @@ void ofApp::update(){
             curFeature = selectNextFeature(curFeature);
             mugshot.update(currentUser, curFeature);
             
+        }
+    }
+    
+    if ((ofGetElapsedTimeMillis() -  lastUserUpdate) > CURRENT_USER_REFRESH) {
+        User* user = getRandomUser();
+        if (user != NULL) {
+            currentUser->isCurrent = false;
+            currentUser = user;
+            currentUser->isCurrent = true;
+        }
+        else {
+            ofLogError("should not get here");
         }
     }
     /*  frontPlayer.update();
@@ -221,6 +245,7 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    cam.begin();
     drawBg();
     if (currentUser != NULL) {
         /*      //if (frontTracker.size()) {
@@ -247,6 +272,7 @@ void ofApp::draw(){
          ofPopMatrix();
          */
     }
+    cam.end();
 }
 
 void ofApp::drawBg() {
@@ -394,6 +420,13 @@ ofPoint ofApp::getGridLocation() {
 void ofApp::keyReleased(int key){
     if (key == 'f') {
         ofToggleFullscreen();
+    }
+    else if (key == 'd') {
+        grids[0].resetLoading(); // FOREHEAD
+        grids[1].resetLoading(); // HEAD
+        grids[2].resetLoading(); // NOSE
+        grids[3].resetLoading(); // MOUTH
+        grids[4].resetLoading(); // EYES
     }
 }
 
