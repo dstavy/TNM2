@@ -127,7 +127,7 @@ void ImageGrid::drawElement(User* user, int x, int y) {
                 face.bind();
                 shader->begin();
                 if (user->isCurrent) {
-                     shader->setUniform1f("factor", ofRandom(0.50, 1.0));
+                     shader->setUniform1f("factor", 0.0);// color
                 } else {
                     shader->setUniform1f("factor", ofRandom(0.75, 1.0));
                 }
