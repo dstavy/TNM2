@@ -45,19 +45,22 @@ public:
     float scale;
     ofColor bg;
     //bool leftPanel;
+	
     void calculateSizes();
     string getTitle();
     void drawHeader();
-    void drawRow(int y, vector<User*>::iterator it);
+    void drawRow(int y, vector<User*>::iterator it, int num);
     void drawLeftPanel();
-    void drawElement(User* user, int x, int y,int num);
+    void drawElement(User* user, int x, int y);
     void drawScoreArea(float score, bool isCurrent, int x, int y);
+	
     ofPoint rawSize;
     ofPoint elementSize;
     ofPoint wholeSize;
     bool loading = false;
     int loadingTime = 0;
     int delayLoading = 0;
+	
     static ofRectangle& adjustAspectRatio(ofRectangle& box, float aspectRatio);
     void resetLoading() {
         loading = true;
@@ -66,7 +69,7 @@ public:
     //vector<User*> users;
     static const int DRAW_SEGMENT = 10;
     static const long ELEMENT_DELAY = 200;
-    int currElement = 0;
+    int currElement = 1;
 };
 #endif /* ImageGrid_hpp */
 

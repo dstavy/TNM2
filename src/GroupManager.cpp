@@ -22,11 +22,13 @@ void GroupManager::exit() {
 }
 
 Group* GroupManager::getGroup(View::Features feature, Group::GroupBy by, bool profile) {
+	
     for(auto const& group: groups) {
         if ((group->grouBy == by) && (group->feature == feature ) && (group->profile == profile )) {
             return group;
         }
     }
+	
 	return NULL;
 }
 
@@ -36,20 +38,16 @@ Group* GroupManager::groupFactory(View::Features feature, Group::GroupBy by, boo
     if (group != NULL) {
         return group;
     }
-    else {
-        switch ((int)by) {
-            case Group::GENERIC:
-                Group* g  = new GenericGroup(feature, by, profile, levels);
-                groups.push_back(g);
-                return g;
-                /*
-        case Group::GENERIC:
-                Group* g  = new GenericGroup(feature, by, profile, levels);
-                groups.push_back(g);
-                return g;
-                 */
-        }
-    }
+	
+	// create new group
+	switch ((int)by) {
+		case Group::GENERIC:
+			Group* g  = new GenericGroup(feature, by, profile, levels);
+			groups.push_back(g);
+			return g;
+	}
+	
+	ofLogNotice() << "did not create group for :" << by;
     return NULL;
 }
 

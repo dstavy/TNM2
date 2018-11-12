@@ -24,6 +24,7 @@ public:
     static const string IMAGE_EXT;
     static const string IMAGE_SUF;
 	static const string JSON_FILE_LOCAL;
+	
     string frontVideo;
     string profileVideo;
     ofVideoPlayer* frontPlayer;
@@ -45,6 +46,7 @@ public:
     };
     
     User* update();
+	
 private:
     long lastUpdate;
     //ofxJSONElement loadLibrary(string url);

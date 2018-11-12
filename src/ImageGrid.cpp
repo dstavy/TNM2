@@ -61,7 +61,7 @@ void ImageGrid::update() {
     }
     int remain = currElement - (rawMax * userPerLevel);
     if (remain > 0) {
-         drawRow(y, users.begin() + (i * userPerLevel), remain);
+         drawRow(y, users.begin() + (remain * userPerLevel), remain);
     }
     fbo.end();
     ofPopStyle();

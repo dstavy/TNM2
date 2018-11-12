@@ -21,6 +21,7 @@ public:
         EYES,
         LEFT_EAR,
         RIGHT_EAR,
+		INVALID,
     };
     
     //View() {};

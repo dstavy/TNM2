@@ -68,16 +68,17 @@ void ofApp::setup(){
     // FORHEAD
     // HEAD
     
-    Group* g = groupManager.groupFactory(
+    Group* group = groupManager.groupFactory(
                                          View::FORHEAD, // fragment
                                          Group::GENERIC, // type of group
                                          false, // is profile?
                                          7); //number of levels
     grids[0].setup(&sepiaShader, // shader
-                   g,
+                   group, // newly created group
                    204, 112, // width and height of element
                    1, // user per level
                    1); // scale
+	
    // grids[0].Y_SPACING = 0;
     //grids[0].SCORE_AREA_HEIGHT = 5;
     
@@ -89,34 +90,34 @@ void ofApp::setup(){
     //                                  4);
     //    grids[1].setup(&sepiaShader,g, 105, 145, 6, 1);
     
-    g = groupManager.groupFactory(
+    group = groupManager.groupFactory(
                                   View::HEAD,
                                   Group::GENERIC,
                                   false,
                                   4);
-    grids[1].setup(&sepiaShader, g, 110, 110, 5, 1);
+    grids[1].setup(&sepiaShader, group, 110, 110, 5, 1);
     
     
-    g = groupManager.groupFactory(
+    group = groupManager.groupFactory(
                                   View::NOSE,
                                   Group::GENERIC,
                                   false,
                                   5);
-    grids[2].setup(&sepiaShader, g, 80, 80, 7, 1);
+    grids[2].setup(&sepiaShader, group, 80, 80, 7, 1);
     
-    g = groupManager.groupFactory(
+    group = groupManager.groupFactory(
                                   View::MOUTH,
                                   Group::GENERIC,
                                   false,
                                   3);
-    grids[3].setup(&sepiaShader, g, 110, 110, 5, 1);
+    grids[3].setup(&sepiaShader, group, 110, 110, 5, 1);
     
-    g = groupManager.groupFactory(
+    group = groupManager.groupFactory(
                                   View::EYES,
                                   Group::GENERIC,
                                   false,
                                   6);
-    grids[4].setup(&sepiaShader, g, 196, 87, 3, 1);
+    grids[4].setup(&sepiaShader, group, 196, 87, 3, 1);
     
     currentUser = NULL;
     //update
@@ -175,6 +176,7 @@ void ofApp::setup(){
 	mugshotIsLeft = false;
 	
 	outputFbo.allocate(SCREEN_WIDTH*2, 1080, GL_RGB);
+	currentFeatureToFocus = View::Features::INVALID;
 }
 
 //--------------------------------------------------------------
@@ -315,14 +317,9 @@ void ofApp::draw(){
     }
 	
 	
-    ofDrawBitmapString(ofToString(cam.getX()) + "  " + ofToString(cam.getY()) + "  " + ofToString(cam.getZ()), 50, 50);
-    ofDrawBitmapString(ofToString(cam.getFov()) + "  " + ofToString(cam.getDistance()) + "  " + ofToString(cam.getScale()),50, 70);
-   // ofDrawBitmapString(ofToString(cam.sets) + "  " + ofToString(cam.getY()) + "  " + //ofToString(cam.getZ()), 50, 90);
+    outputFbo.end();
 	
-	outputFbo.end();
-	
-	
-	
+	// draw outputFbo
 	ofPushStyle();
 	ofPushMatrix();
 	ofScale(0.4);
@@ -340,6 +337,14 @@ void ofApp::draw(){
 	
 	ofPopMatrix();
 	ofPopStyle();
+	
+	// draw debug strings
+	ofDrawBitmapString(ofToString(cam.getX()) + "  " + ofToString(cam.getY()) + "  " + ofToString(cam.getZ()), 50, 50);
+	ofDrawBitmapString(ofToString(cam.getFov()) + "  " + ofToString(cam.getDistance()) + "  " + ofToString(cam.getScale()), 50, 70);
+	
+	ofDrawBitmapString("gridY: " + ofToString(gridY), 50, 90);
+	
+	// ofDrawBitmapString(ofToString(cam.sets) + "  " + ofToString(cam.getY()) + "  " + //ofToString(cam.getZ()), 50, 90);
 }
 
 void ofApp::drawBg() {
@@ -349,8 +354,10 @@ void ofApp::drawBg() {
 	ofPushMatrix();
 	
 	if (mugshotIsLeft) {
-		ofTranslate(1950, 30);
+		ofTranslate(SCREEN_WIDTH, 0);
 	}
+	
+	ofTranslate(30, 30);
 	
 	// ofTranslate(30, -1304);
 	ofScale(0.66);
@@ -389,13 +396,17 @@ void ofApp::drawGridPage() {
     ofPushMatrix();
 	
 	if (mugshotIsLeft) {
-		ofTranslate(1950, 30);
+		ofTranslate(SCREEN_WIDTH, 0);
 	}
+	
+	ofTranslate(30, 30 + gridY);
 	
     // ofTranslate(30, -1304);
     ofScale(0.66);
-    
-    //table_bg.draw(0, 0);
+	
+	
+    table_bg.draw(0, 0);
+	
     grids[0].draw(494, 904); // FOREHEAD
     grids[1].draw(2055, 1266); // HEAD
     grids[2].draw(748, 1230); // NOSE
@@ -527,20 +538,25 @@ void ofApp::keyReleased(int key){
         grids[3].resetLoading(); // MOUTH
         grids[4].resetLoading(); // EYES
     } else if (key == 'd') {
-        /*
-        glm::vec3 scaleOut(1., 1., 1.);
-        glm::vec3 scaleIn(.5, .5 , .5);
-        tweenManager.clear();
-        auto t0 = tweenManager.addTween(camScale, scaleOut,scaleIn, 5, 0 , TWEEN::Ease::Sinusoidal::Out);
-        auto t1 = tweenManager.addTween(camScale, scaleIn ,scaleOut, 5, 0 ,TWEEN::Ease::Sinusoidal::In);
-        t0->addChain(t1);
-        t0->autoDelete( false );
-        t1->autoDelete( false );
-        t0->start();
-       // glm::vec3 scale= cam.getScale();
-       // cam.setScale(glm::vec3(scale.x - 0.01, scale.y - 0.01, scale.z - 0.010));
-         */
-    }
+		/*
+		glm::vec3 scaleOut(1., 1., 1.);
+		glm::vec3 scaleIn(.5, .5 , .5);
+		tweenManager.clear();
+		auto t0 = tweenManager.addTween(camScale, scaleOut,scaleIn, 5, 0 , TWEEN::Ease::Sinusoidal::Out);
+		auto t1 = tweenManager.addTween(camScale, scaleIn ,scaleOut, 5, 0 ,TWEEN::Ease::Sinusoidal::In);
+		t0->addChain(t1);
+		t0->autoDelete( false );
+		t1->autoDelete( false );
+		t0->start();
+	   // glm::vec3 scale= cam.getScale();
+	   // cam.setScale(glm::vec3(scale.x - 0.01, scale.y - 0.01, scale.z - 0.010));
+		*/
+	} else if (key == 'y') {
+		ofLogNotice() << "move Y";
+		int anim_time = 2;
+		int delay = 0;
+		auto t0 = tweenManager.addTween(gridY, gridY, gridY+500, anim_time, delay, TWEEN::Ease::Sinusoidal::Out);
+	}
 }
 
 void ofApp::presentationUpdater()

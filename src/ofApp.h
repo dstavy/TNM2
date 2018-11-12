@@ -29,6 +29,7 @@ public:
     void update();
     void draw();
     void keyReleased(int key);
+	
     ofRectangle getBoundingBox(ofRectangle rec1, ofRectangle rec2);
     void drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, int w, int h);
     void presentationUpdater();
@@ -82,5 +83,9 @@ public:
 	
 	bool mugshotIsLeft;
 	
+	View::Features currentFeatureToFocus;
+	float gridY = 0.0;
+	
+	//
 	ofFbo outputFbo;
 };
