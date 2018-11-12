@@ -12,6 +12,7 @@
 #include "User.hpp"
 #include "ImageGrid.hpp"
 #include "Mugshot.hpp"
+#include "Tweener.h"
 
 
 class ofApp : public ofBaseApp{
@@ -21,7 +22,7 @@ public:
     const long VIDEO_GRID_REFRESH = 2000;
     static const long PRESENTATION_UPDATE_REFRESH = 30000;
     static const int MUGSHOT_REFRESH = 10000;
-    static const int CURRENT_USER_REFRESH = 120000;
+    static const int CURRENT_USER_REFRESH = 3000;/ 120000
     void setup();
     void exit();
     void update();
@@ -53,7 +54,7 @@ public:
     ofRectangle profileFace;
     int rotation;
     ImageGrid grids[NUM_IMAGE_GRIDS];
-    Mugshot mugshot;
+    Mugshot* currMugshot;
     
     ofPoint  getGridLocation();
     
@@ -72,4 +73,9 @@ public:
     long lastMugshotUpdate = 0;
     long lastUserUpdate = 0;
     ofEasyCam cam;
+    TWEEN::Manager tweenManager;
+    glm::vec3 camScale;
+    vector<Mugshot*> mugshots;
+    static const int ANIM_DELAY = 0.2;
+    void animateMagshots();
 };

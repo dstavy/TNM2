@@ -9,6 +9,219 @@
 		<string>46</string>
 		<key>objects</key>
 		<dict>
+			<key>8D27AEAD47D8B9BF1CDA2F39</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>Tweener.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxTweener/src/Tweener.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>501CE1F8DD8A5F1FB9FABFE4</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>TweenManager.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxTweener/src/TweenManager.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>ADE9C4BB9F4EEC1D6154C727</key>
+			<dict>
+				<key>fileRef</key>
+				<string>729FF0BA2F183304CF16A955</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>729FF0BA2F183304CF16A955</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>TweenManager.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxTweener/src/TweenManager.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>BBC39838B3A7B80ED041C4FB</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>TweenItem.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxTweener/src/TweenItem.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>AFA1FF0D2E26632995569165</key>
+			<dict>
+				<key>fileRef</key>
+				<string>ADCB0A32324C3AB0D87F1FE5</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>ADCB0A32324C3AB0D87F1FE5</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>TweenItem.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxTweener/src/TweenItem.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>3BEABCB666AA650336700224</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>TweenCallback.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxTweener/src/TweenCallback.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>F5F6AC4D282E63DAC59E6E4E</key>
+			<dict>
+				<key>fileRef</key>
+				<string>E8BAB6582073A3D814BECD34</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>E8BAB6582073A3D814BECD34</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>TweenCallback.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxTweener/src/TweenCallback.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>F9FBFC0B442D6C2C60749FBA</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>Tween.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxTweener/src/Tween.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>0ECC0F8C7195C5AE3638D7D4</key>
+			<dict>
+				<key>fileRef</key>
+				<string>B7BD30961F941122121CD68B</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>B7BD30961F941122121CD68B</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.cpp.cpp</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>Tween.cpp</string>
+				<key>path</key>
+				<string>../../../addons/ofxTweener/src/Tween.cpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>ABDAFDB1F629411443294761</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>0B8DA4ACF1506770D7F21FF6</string>
+					<string>B7BD30961F941122121CD68B</string>
+					<string>F9FBFC0B442D6C2C60749FBA</string>
+					<string>E8BAB6582073A3D814BECD34</string>
+					<string>3BEABCB666AA650336700224</string>
+					<string>ADCB0A32324C3AB0D87F1FE5</string>
+					<string>BBC39838B3A7B80ED041C4FB</string>
+					<string>729FF0BA2F183304CF16A955</string>
+					<string>501CE1F8DD8A5F1FB9FABFE4</string>
+					<string>8D27AEAD47D8B9BF1CDA2F39</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>src</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
+			<key>1FDD577CD8B9901D5774D6C7</key>
+			<dict>
+				<key>children</key>
+				<array>
+					<string>ABDAFDB1F629411443294761</string>
+				</array>
+				<key>isa</key>
+				<string>PBXGroup</string>
+				<key>name</key>
+				<string>ofxTweener</string>
+				<key>sourceTree</key>
+				<string>&lt;group&gt;</string>
+			</dict>
+			<key>0B8DA4ACF1506770D7F21FF6</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>sourcecode.c.h</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>Easings.h</string>
+				<key>path</key>
+				<string>../../../addons/ofxTweener/src/Easings.h</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>D42538C5CB93FE6A3314162B</key>
 			<dict>
 				<key>explicitFileType</key>
@@ -8883,6 +9096,28 @@
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
+			<key>75EA70CA1363CEE0C6667514</key>
+			<dict>
+				<key>fileRef</key>
+				<string>27EF51AC3853105F0264B852</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>27EF51AC3853105F0264B852</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>file</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ImageGrid.cpp.save</string>
+				<key>path</key>
+				<string>src/ImageGrid.cpp.save</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
 			<key>5DDB1E8EC621C69D3AEE710F</key>
 			<dict>
 				<key>explicitFileType</key>
@@ -9161,6 +9396,28 @@
 				<string>FontUtil.hpp</string>
 				<key>path</key>
 				<string>src/FontUtil.hpp</string>
+				<key>sourceTree</key>
+				<string>SOURCE_ROOT</string>
+			</dict>
+			<key>E7A561C7B1B60E4F01CB71DD</key>
+			<dict>
+				<key>fileRef</key>
+				<string>991BB70480AFED7C25363B7D</string>
+				<key>isa</key>
+				<string>PBXBuildFile</string>
+			</dict>
+			<key>991BB70480AFED7C25363B7D</key>
+			<dict>
+				<key>explicitFileType</key>
+				<string>file</string>
+				<key>fileEncoding</key>
+				<string>4</string>
+				<key>isa</key>
+				<string>PBXFileReference</string>
+				<key>name</key>
+				<string>ImageGrid.hpp.save</string>
+				<key>path</key>
+				<string>src/ImageGrid.hpp.save</string>
 				<key>sourceTree</key>
 				<string>SOURCE_ROOT</string>
 			</dict>
@@ -9458,6 +9715,7 @@ fi
 						<string>../../../addons/ofxPoco/src</string>
 						<string>../../../addons/ofxPoco/libs/openssl/include</string>
 						<string>../../../addons/ofxSmartFont/src</string>
+						<string>../../../addons/ofxTweener/src</string>
 					</array>
 					<key>CONFIGURATION_BUILD_DIR</key>
 					<string>$(SRCROOT)/bin/</string>
@@ -9609,6 +9867,7 @@ fi
 						<string>../../../addons/ofxPoco/src</string>
 						<string>../../../addons/ofxPoco/libs/openssl/include</string>
 						<string>../../../addons/ofxSmartFont/src</string>
+						<string>../../../addons/ofxTweener/src</string>
 					</array>
 					<key>COMBINE_HIDPI_IMAGES</key>
 					<string>YES</string>
@@ -9657,6 +9916,7 @@ fi
 					<string>A0B90D3B0ADB9C1716816714</string>
 					<string>0117D94CE0C695E5E5482BEC</string>
 					<string>92CB46D48EC846004FCBE8EF</string>
+					<string>1FDD577CD8B9901D5774D6C7</string>
 				</array>
 				<key>isa</key>
 				<string>PBXGroup</string>
@@ -9901,6 +10161,7 @@ fi
 						<string>../../../addons/ofxPoco/src</string>
 						<string>../../../addons/ofxPoco/libs/openssl/include</string>
 						<string>../../../addons/ofxSmartFont/src</string>
+						<string>../../../addons/ofxTweener/src</string>
 					</array>
 					<key>CONFIGURATION_BUILD_DIR</key>
 					<string>$(SRCROOT)/bin/</string>
@@ -10050,6 +10311,7 @@ fi
 						<string>../../../addons/ofxPoco/src</string>
 						<string>../../../addons/ofxPoco/libs/openssl/include</string>
 						<string>../../../addons/ofxSmartFont/src</string>
+						<string>../../../addons/ofxTweener/src</string>
 					</array>
 					<key>CONFIGURATION_BUILD_DIR</key>
 					<string>$(SRCROOT)/bin/</string>
@@ -10110,6 +10372,7 @@ fi
 					<string>E4B69E210A3A1BDC003C02F2</string>
 					<string>8455EA5940411E781CB9BCC1</string>
 					<string>5FC3CD20BD90653292704826</string>
+					<string>E7A561C7B1B60E4F01CB71DD</string>
 					<string>CD72B58DE92B9558B5E86D5E</string>
 					<string>A9D8C7CC986604120578C96F</string>
 					<string>628B948AFBEF987B39FF1EEC</string>
@@ -10118,6 +10381,7 @@ fi
 					<string>A5C7D7C073773C0816ECA2C4</string>
 					<string>813485C425E6D66D9E509675</string>
 					<string>D55170E94C2E8B38D3DC6454</string>
+					<string>75EA70CA1363CEE0C6667514</string>
 					<string>B6840996567E78436F7ECFAB</string>
 					<string>F76B4A79BD8DE4854141CB47</string>
 					<string>EBCDE831EFAE08274E799C97</string>
@@ -10146,6 +10410,10 @@ fi
 					<string>D3301F6A0B43BB293ED97C1D</string>
 					<string>1C36947250DCB09A8A375C0C</string>
 					<string>F5744B4C6D95DCBF22C461DD</string>
+					<string>0ECC0F8C7195C5AE3638D7D4</string>
+					<string>F5F6AC4D282E63DAC59E6E4E</string>
+					<string>AFA1FF0D2E26632995569165</string>
+					<string>ADE9C4BB9F4EEC1D6154C727</string>
 				</array>
 				<key>isa</key>
 				<string>PBXSourcesBuildPhase</string>
@@ -10321,6 +10589,7 @@ fi
 						<string>../../../addons/ofxPoco/src</string>
 						<string>../../../addons/ofxPoco/libs/openssl/include</string>
 						<string>../../../addons/ofxSmartFont/src</string>
+						<string>../../../addons/ofxTweener/src</string>
 					</array>
 					<key>COMBINE_HIDPI_IMAGES</key>
 					<string>YES</string>
@@ -10455,6 +10724,7 @@ fi
 						<string>../../../addons/ofxPoco/src</string>
 						<string>../../../addons/ofxPoco/libs/openssl/include</string>
 						<string>../../../addons/ofxSmartFont/src</string>
+						<string>../../../addons/ofxTweener/src</string>
 					</array>
 					<key>COMBINE_HIDPI_IMAGES</key>
 					<string>YES</string>
@@ -10501,6 +10771,7 @@ fi
 					<string>6C3D9A601C2FCD54BCAA22D0</string>
 					<string>66B43F0DD0205DBFDF9F1CAA</string>
 					<string>BC602544C543FA7DD6213436</string>
+					<string>991BB70480AFED7C25363B7D</string>
 					<string>08A3E95D3B36D14B05F75280</string>
 					<string>E4D7685CC277380F77BB233B</string>
 					<string>B967E5DD0359F32FE857DFA5</string>
@@ -10516,6 +10787,7 @@ fi
 					<string>D9B8BFEF836241F6B54AEC1B</string>
 					<string>A99AC8B76823EAAA895DC194</string>
 					<string>5DDB1E8EC621C69D3AEE710F</string>
+					<string>27EF51AC3853105F0264B852</string>
 					<string>E42AC12B695160CF1F48F02A</string>
 				</array>
 				<key>isa</key>

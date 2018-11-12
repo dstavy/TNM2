@@ -9,7 +9,7 @@
 #include "ImageGrid.hpp"
 #include "FontUtil.hpp"
 
-void Mugshot::setup(ofShader* shader) {
+Mugshot::Mugshot(ofShader* shader, User* user) {
     fbo.allocate(MG_WIDTH, MG_HEIGHT/*,GL_RGB*/);
     // Clear the FBO's
     // otherwise it will bring some junk with it from the memory
@@ -17,11 +17,15 @@ void Mugshot::setup(ofShader* shader) {
     ofClear(0,0,0,255);
     fbo.end();
     this->shader = shader;
+    this->user = user;
+    firstTime = true;
+    x = START_X;
+    y = ofGetHeight();
+   // pos = glm::vec3(x, y, rotation);
 }
 
-void Mugshot::update(User* user, View::Features feature) {
+void Mugshot::update(View::Features feature) {
 //     ofPushMatrix();
-     int x = 0;
      float aspectRatio = (float)(MG_WIDTH - MG_SPACE)/2. / MG_HEIGHT;
      shared_ptr<ofxSmartFont> font = ofxSmartFont::get("CrimsonText700Mugshot");
      bool profile = false;
@@ -171,6 +175,36 @@ void Mugshot::drawDottedLine(ofVec2f start, ofVec2f end) {
     //ofPopMatrix();
 }
 
-void Mugshot::draw(int x, int y) {
-    fbo.draw(x, y);
+bool Mugshot::draw() {
+    if (x >= ofGetWindowWidth()) {
+        return false;
+    }
+    else {
+        ofPushMatrix();
+        ofRotate(rotation);
+        fbo.draw(x, y);
+        ofPopMatrix();
+    }
+    return true;
+}
+        
+void Mugshot::animate(float delay) {
+    if (firstTime) {
+        firstTime = false;
+        int yTo = START_Y;
+        auto t0 = tweenManager.addTween(y, y,yTo,ANIMATION_TIME, 0 , TWEEN::Ease::Linear);
+        t0->start();
+    }
+    else {
+        int xTo = x + ofRandom(MG_X_MOVE -10, MG_X_MOVE + 10);
+        int yTo = y - ofRandom( -10,  + 10);
+        float rotTo = ofRandom(-4., 4.);
+        auto t0 = tweenManager.addTween(x, x,xTo, ANIMATION_TIME, delay , TWEEN::Ease::Linear);
+        auto t1 = tweenManager.addTween(y, y,yTo, ANIMATION_TIME, delay , TWEEN::Ease::Linear);
+        auto t2 = tweenManager.addTween(rotation, rotation,rotTo, ANIMATION_TIME, delay , TWEEN::Ease::Linear);
+
+        t0->start();
+        t1->start();
+        t2->start();
+    }
 }

@@ -77,6 +77,9 @@ void ofApp::setup(){
                    204, 112, // width and height of element
                    1, // user per level
                    1); // scale
+   // grids[0].Y_SPACING = 0;
+    //grids[0].SCORE_AREA_HEIGHT = 5;
+    
     //
     //    g = groupManager.groupFactory(
     //                                  View::NOSE,
@@ -114,17 +117,20 @@ void ofApp::setup(){
                                   6);
     grids[4].setup(&sepiaShader, g, 196, 87, 3, 1);
     
-    
-    mugshot.setup(&sepiaShader);
     currentUser = NULL;
     //update
     presentationUpdate.setup(&users, &frontPlayer, &profilePlayer, &frontTracker, &profileTracker, &groupManager);
     currentUser = presentationUpdate.update();
-    bool randSelect = false;
+    //bool randSelect = false;
     if (currentUser == NULL) {
         currentUser = getRandomUser();
-        randSelect = true;
+        //randSelect = true;
     }
+    currMugshot = new Mugshot(&sepiaShader, currentUser);
+    mugshots.insert(mugshots.begin(), currMugshot);
+    //for (int i = 0; i< NUM_MUGSHOT; i++) {
+    //    mugshots.pushback(new Mugshot(&sepiaShader, currentUser);
+    //}
     
     if (currentUser != NULL) {
         currentUser->isCurrent = true;
@@ -136,7 +142,8 @@ void ofApp::setup(){
         //grids[5].update();
         //grids[6].update();
         
-        mugshot.update(currentUser, View::HEAD);
+        currMugshot->animate(0);
+        currMugshot->update(View::HEAD);
     }
     //if (randSelect) {
     //    currentUser = NULL; // return to null after rendering random user
@@ -160,6 +167,10 @@ void ofApp::setup(){
     cam.setNearClip(-1000000);
     cam.setFarClip(1000000);
     cam.setVFlip(true);
+    //cam.lookAt(glm::vec3(2880, 540,0));
+   // cam.setPosition(2880, 540, cam.getZ());
+    //cam.move(2880, 540, cam.getZ());
+    camScale = cam.getScale();
 
 }
 
@@ -168,54 +179,58 @@ void ofApp::exit(){
     frontPlayer.close();
     profilePlayer.close();
     
+    for (auto & mugshot : mugshots) {
+        delete(mugshot);;
+    }
+    mugshots.clear();
+    
     // delete users
     for(std::map<std::string, User*>::iterator itr = users.begin(); itr != users.end(); itr++)
     {
         delete (itr->second);
     }
+    users.clear();
     
     groupManager.exit();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    User* user = NULL;
+    bool newUser = false;
+    cam.setScale(camScale);
     if ((ofGetElapsedTimeMillis() -  lastPresentationUpdate) > PRESENTATION_UPDATE_REFRESH) {
         lastPresentationUpdate = ofGetElapsedTimeMillis();
-        User* user = presentationUpdate.update();
-        if(user != NULL) {
-            currentUser->isCurrent = false;
-            currentUser = user;
-            currentUser->isCurrent = true;
-            grids[0].update();
-            grids[1].update();
-            grids[2].update();
-            grids[3].update();
-            grids[4].update();
-            mugshot.update(currentUser, curFeature);
-            lastUserUpdate = ofGetElapsedTimeMillis();
-        }
+        user = presentationUpdate.update();
+    } else if ((ofGetElapsedTimeMillis() -  lastUserUpdate) > CURRENT_USER_REFRESH) {
+        user = getRandomUser();
+    }
+    if(user != NULL) {
+        currentUser->isCurrent = false;
+        currentUser = user;
+        currentUser->isCurrent = true;
+        grids[0].update();
+        grids[1].update();
+        grids[2].update();
+        grids[3].update();
+        grids[4].update();
+        
+        currMugshot = new Mugshot(&sepiaShader, currentUser);
+        mugshots.insert(mugshots.begin(), currMugshot);
+        currMugshot->update(View::HEAD); // change to none
+        animateMagshots();
+        lastUserUpdate = ofGetElapsedTimeMillis();
     }
     
     if (currentUser != NULL) {
         if ((ofGetElapsedTimeMillis() -  lastMugshotUpdate) > MUGSHOT_REFRESH) {
             lastMugshotUpdate = ofGetElapsedTimeMillis();
             curFeature = selectNextFeature(curFeature);
-            mugshot.update(currentUser, curFeature);
+            currMugshot->update(curFeature);
             
         }
     }
     
-    if ((ofGetElapsedTimeMillis() -  lastUserUpdate) > CURRENT_USER_REFRESH) {
-        User* user = getRandomUser();
-        if (user != NULL) {
-            currentUser->isCurrent = false;
-            currentUser = user;
-            currentUser->isCurrent = true;
-        }
-        else {
-            ofLogError("should not get here");
-        }
-    }
     /*  frontPlayer.update();
      profilePlayer.update();
      
@@ -243,9 +258,18 @@ void ofApp::update(){
      */
 }
 
+void ofApp::animateMagshots() {
+    float delay = 0;
+    for (auto it = mugshots.begin(); it != mugshots.end(); ++it)
+    {
+        (*it)->animate(delay);
+        delay += ANIM_DELAY;
+    }
+}
+
 //--------------------------------------------------------------
 void ofApp::draw(){
-    cam.begin();
+
     drawBg();
     if (currentUser != NULL) {
         /*      //if (frontTracker.size()) {
@@ -257,6 +281,7 @@ void ofApp::draw(){
          }
          */
         drawMugshotPage();
+        cam.begin();
         drawGridPage();
         /*
          ofPushMatrix();
@@ -271,8 +296,12 @@ void ofApp::draw(){
          grids[6].draw(1200, 50);
          ofPopMatrix();
          */
+          cam.end();
     }
-    cam.end();
+    ofDrawBitmapString(ofToString(cam.getX()) + "  " + ofToString(cam.getY()) + "  " + ofToString(cam.getZ()), 50, 50);
+    ofDrawBitmapString(ofToString(cam.getFov()) + "  " + ofToString(cam.getDistance()) + "  " + ofToString(cam.getScale()),50, 70);
+   // ofDrawBitmapString(ofToString(cam.sets) + "  " + ofToString(cam.getY()) + "  " + //ofToString(cam.getZ()), 50, 90);
+    
 }
 
 void ofApp::drawBg() {
@@ -286,8 +315,20 @@ void ofApp::drawBg() {
 }
 
 void ofApp::drawMugshotPage() {
+    vector<Mugshot*>::iterator i = mugshots.end();
+    while (i != mugshots.begin())
+    {
+        --i;
+        if (!((*i)->draw())) {
+            delete(*i);
+            mugshots.erase(i);
+        }
+    }
+  
     //mugshotPage.draw(500, 0);
-    mugshot.draw(900,337);
+  //  for (int i =  mugshots.size() -1; i >= 0; i--) {
+    //    mugshots[i]->draw();
+    //}
 }
 
 void ofApp::drawGridPage() {
@@ -421,12 +462,26 @@ void ofApp::keyReleased(int key){
     if (key == 'f') {
         ofToggleFullscreen();
     }
-    else if (key == 'd') {
+    else if (key == 'a') {
         grids[0].resetLoading(); // FOREHEAD
         grids[1].resetLoading(); // HEAD
         grids[2].resetLoading(); // NOSE
         grids[3].resetLoading(); // MOUTH
         grids[4].resetLoading(); // EYES
+    } else if (key == 'd') {
+        /*
+        glm::vec3 scaleOut(1., 1., 1.);
+        glm::vec3 scaleIn(.5, .5 , .5);
+        tweenManager.clear();
+        auto t0 = tweenManager.addTween(camScale, scaleOut,scaleIn, 5, 0 , TWEEN::Ease::Sinusoidal::Out);
+        auto t1 = tweenManager.addTween(camScale, scaleIn ,scaleOut, 5, 0 ,TWEEN::Ease::Sinusoidal::In);
+        t0->addChain(t1);
+        t0->autoDelete( false );
+        t1->autoDelete( false );
+        t0->start();
+       // glm::vec3 scale= cam.getScale();
+       // cam.setScale(glm::vec3(scale.x - 0.01, scale.y - 0.01, scale.z - 0.010));
+         */
     }
 }
 
