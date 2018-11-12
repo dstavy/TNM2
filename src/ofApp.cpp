@@ -3,6 +3,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+	
     ofBackground(0,0,0,255);
     //ofSetBackgroundAuto(false);
     ofSetVerticalSync(true);
@@ -171,7 +172,9 @@ void ofApp::setup(){
    // cam.setPosition(2880, 540, cam.getZ());
     //cam.move(2880, 540, cam.getZ());
     camScale = cam.getScale();
-
+	mugshotIsLeft = false;
+	
+	outputFbo.allocate(SCREEN_WIDTH*2, 1080, GL_RGB);
 }
 
 //--------------------------------------------------------------
@@ -199,12 +202,14 @@ void ofApp::update(){
     User* user = NULL;
     bool newUser = false;
     cam.setScale(camScale);
+	
     if ((ofGetElapsedTimeMillis() -  lastPresentationUpdate) > PRESENTATION_UPDATE_REFRESH) {
         lastPresentationUpdate = ofGetElapsedTimeMillis();
         user = presentationUpdate.update();
     } else if ((ofGetElapsedTimeMillis() -  lastUserUpdate) > CURRENT_USER_REFRESH) {
         user = getRandomUser();
     }
+	
     if(user != NULL) {
         currentUser->isCurrent = false;
         currentUser = user;
@@ -270,8 +275,14 @@ void ofApp::animateMagshots() {
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-    drawBg();
+	outputFbo.begin();
+	ofClear(ofColor::aquamarine);
+	
+	
+//    drawBg();
+	
     if (currentUser != NULL) {
+
         /*      //if (frontTracker.size()) {
          drawVideo(frontPlayer, frontFace, 100, 100, 600, 600);
          //}
@@ -280,41 +291,81 @@ void ofApp::draw(){
          //}
          }
          */
-        drawMugshotPage();
-        cam.begin();
-        drawGridPage();
-        /*
-         ofPushMatrix();
-         //ofScale(0.5, 0.5);;
-         //ofTranslate(1920, 0);
-         grids[0].draw(50, 50);
-         grids[1].draw(450, 50);
-         grids[2].draw(850, 50);
-         grids[3].draw(50, 410);
-         grids[4].draw(450, 500);
-         grids[5].draw(850, 600);
-         grids[6].draw(1200, 50);
-         ofPopMatrix();
-         */
-          cam.end();
+
+		drawMugshotPage();
+		
+//		cam.begin();
+		
+		drawGridPage();
+		/*
+		 ofPushMatrix();
+		 //ofScale(0.5, 0.5);;
+		 //ofTranslate(1920, 0);
+		 grids[0].draw(50, 50);
+		 grids[1].draw(450, 50);
+		 grids[2].draw(850, 50);
+		 grids[3].draw(50, 410);
+		 grids[4].draw(450, 500);
+		 grids[5].draw(850, 600);
+		 grids[6].draw(1200, 50);
+		 ofPopMatrix();
+		 */
+		
+//		cam.end();
     }
+	
+	
     ofDrawBitmapString(ofToString(cam.getX()) + "  " + ofToString(cam.getY()) + "  " + ofToString(cam.getZ()), 50, 50);
     ofDrawBitmapString(ofToString(cam.getFov()) + "  " + ofToString(cam.getDistance()) + "  " + ofToString(cam.getScale()),50, 70);
    // ofDrawBitmapString(ofToString(cam.sets) + "  " + ofToString(cam.getY()) + "  " + //ofToString(cam.getZ()), 50, 90);
-    
+	
+	outputFbo.end();
+	
+	
+	
+	ofPushStyle();
+	ofPushMatrix();
+	ofScale(0.4);
+
+	int x = 100;
+	int y = 100;
+	ofSetColor(ofColor::white);
+	outputFbo.draw(x, y);
+	
+	ofSetColor(ofColor::red);
+	ofSetLineWidth(5);
+	ofNoFill();
+	ofDrawRectangle(x, y, SCREEN_WIDTH, outputFbo.getHeight());
+	ofDrawRectangle(x+SCREEN_WIDTH, y, SCREEN_WIDTH, outputFbo.getHeight());
+	
+	ofPopMatrix();
+	ofPopStyle();
 }
 
 void ofApp::drawBg() {
-    mugshotPage.draw(800, 100);
-    ofPushMatrix();
-    ofTranslate(1950, 30);
-    // ofTranslate(30, -1304);
-    ofScale(0.66);
-    table_bg.draw(0, 0);
-    ofPopMatrix();
+	
+//	mugshotPage.draw(800, 100);
+
+	ofPushMatrix();
+	
+	if (mugshotIsLeft) {
+		ofTranslate(1950, 30);
+	}
+	
+	// ofTranslate(30, -1304);
+	ofScale(0.66);
+	table_bg.draw(0, 0);
+	ofPopMatrix();
 }
 
 void ofApp::drawMugshotPage() {
+	
+	ofPushMatrix();
+	
+	if (!mugshotIsLeft) {
+		ofTranslate(SCREEN_WIDTH, 0);
+	}
+	
     vector<Mugshot*>::iterator i = mugshots.end();
     while (i != mugshots.begin())
     {
@@ -329,11 +380,18 @@ void ofApp::drawMugshotPage() {
   //  for (int i =  mugshots.size() -1; i >= 0; i--) {
     //    mugshots[i]->draw();
     //}
+	
+	ofPopMatrix();
 }
 
 void ofApp::drawGridPage() {
+	
     ofPushMatrix();
-    ofTranslate(1950, 30);
+	
+	if (mugshotIsLeft) {
+		ofTranslate(1950, 30);
+	}
+	
     // ofTranslate(30, -1304);
     ofScale(0.66);
     
@@ -517,6 +575,7 @@ void ofApp::setupFonts()
 }
 
 View::Features ofApp::selectNextFeature(View::Features feature) {
+	// TODO: we need to avoid a feature is animated twice!
     int f = feature;
     while (f == feature) {
         f = (int)(floor(ofRandom(5)));

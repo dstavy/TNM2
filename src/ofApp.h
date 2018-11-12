@@ -14,6 +14,7 @@
 #include "Mugshot.hpp"
 #include "Tweener.h"
 
+#define SCREEN_WIDTH 1920
 
 class ofApp : public ofBaseApp{
 public:
@@ -22,7 +23,7 @@ public:
     const long VIDEO_GRID_REFRESH = 2000;
     static const long PRESENTATION_UPDATE_REFRESH = 30000;
     static const int MUGSHOT_REFRESH = 10000;
-    static const int CURRENT_USER_REFRESH = 3000;/ 120000
+    static const int CURRENT_USER_REFRESH = 6000;// 120000
     void setup();
     void exit();
     void update();
@@ -78,4 +79,8 @@ public:
     vector<Mugshot*> mugshots;
     static const int ANIM_DELAY = 0.2;
     void animateMagshots();
+	
+	bool mugshotIsLeft;
+	
+	ofFbo outputFbo;
 };
