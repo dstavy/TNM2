@@ -17,9 +17,9 @@ public:
     void update();
     void draw(int x, int y);
     int PADDING_ROW = 4;
-    static const int SCORE_AREA_HEIGHT = 2; // 33;
+    int SCORE_AREA_HEIGHT = 18;
     int ELEMENT_SIDE_PADDING = 1;
-    static const int HEADER_HEIGHT = 60;
+     int HEADER_HEIGHT = 60;
     int Y_SPACING = 4;
     ofPoint getSize();
     void setScale(float scale) {
@@ -50,9 +50,9 @@ public:
     void drawHeader();
     void drawRow(int y, vector<User*>::iterator it);
     void drawLeftPanel();
-    void drawElement(User* user, int x, int y);
+    void drawElement(User* user, int x, int y,int num);
     void drawScoreArea(float score, bool isCurrent, int x, int y);
-    ofPoint lineSize;
+    ofPoint rawSize;
     ofPoint elementSize;
     ofPoint wholeSize;
     bool loading = false;
@@ -65,6 +65,8 @@ public:
     };
     //vector<User*> users;
     static const int DRAW_SEGMENT = 10;
+    static const long ELEMENT_DELAY = 200;
+    int currElement = 0;
 };
 #endif /* ImageGrid_hpp */
 

@@ -47,15 +47,21 @@ void ImageGrid::update() {
     vector<User*> users(0);
     group->getGridUsers(userPerLevel, users);
     ofPushStyle();
+    ofClear(ofColor::black);
     ofSetColor(bg);
     ofFill();
     fbo.begin();
     //    drawHeader();
     //    y += HEADER_HEIGHT;
-   // vector<User*>::iterator it;
-    for(int i = group->numLevels -1; i >=0; i--) {
-        drawRow(y, users.begin() + (i * userPerLevel));
-        y += lineSize.y + Y_SPACING;
+    y += currElement * (rawSize.y + Y_SPACING);
+    int rawMax = (group->numLevels * userPerLevel) % currElement;
+    for(int i = 0; i < rawMax; i++) {
+        drawRow(y, users.begin() + (i * userPerLevel), userPerLevel);
+        y -= rawSize.y + Y_SPACING;
+    }
+    int remain = currElement - (rawMax * userPerLevel);
+    if (remain > 0) {
+         drawRow(y, users.begin() + (i * userPerLevel), remain);
     }
     fbo.end();
     ofPopStyle();
@@ -64,10 +70,10 @@ void ImageGrid::update() {
 void ImageGrid::calculateSizes() {
     elementSize.x = w + ELEMENT_SIDE_PADDING * 2;
     elementSize.y = h + SCORE_AREA_HEIGHT;
-    lineSize.x = PADDING_ROW * 2 + userPerLevel * elementSize.x;
-    lineSize.y = PADDING_ROW *2 + elementSize.y + 10;
-    wholeSize.x = lineSize.x;
-    wholeSize.y = lineSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
+    rawSize.x = PADDING_ROW * 2 + userPerLevel * elementSize.x;
+    rawSize.y = PADDING_ROW *2 + elementSize.y;
+    wholeSize.x = rawSize.x;
+    wholeSize.y = rawSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
     //    wholeSize.y = HEADER_HEIGHT + lineSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
 }
 
@@ -104,12 +110,12 @@ void ImageGrid::drawHeader() {
     ofSetColor(bg);
 }
 
-void ImageGrid::drawRow(int y, vector<User*>::iterator it) {
+void ImageGrid::drawRow(int y, vector<User*>::iterator it, int num) {
     int x = 0;
-    ofDrawRectangle(x, y, lineSize.x, lineSize.y);
+    ofDrawRectangle(x, y, rawSize.x, rawSize.y);
     y += PADDING_ROW;
     x += PADDING_ROW;
-    for (int j = 0; j < userPerLevel; j++) {
+    for (int j = 0; j < num; j++) {
         drawElement(*it, x, y);
         it++;
         x += elementSize.x;
@@ -134,7 +140,7 @@ void ImageGrid::drawElement(User* user, int x, int y) {
                 face.drawSubsection(x + ELEMENT_SIDE_PADDING, y, w, h, box.x, box.y, box.width, box.height);
                 shader->end();
                 face.unbind();
-                drawScoreArea(user->getFactrorScore(), user->isCurrent, x , y + h -10);
+                drawScoreArea(user->getFactrorScore(), user->isCurrent, x , y + h);
             }
         }
     }
@@ -149,15 +155,14 @@ void ImageGrid::drawScoreArea(float score, bool isCurrent, int x, int y) {
     } else {
         font = ofxSmartFont::get("AmericanTypewriter");
     }
-    
-    ofColor::fromHex(0xf1efe3);
-    //ofSetColor(0x242124);
+        //ofColor::fromHex(0xf1efe3);
+    ofSetColor(ofColor::black); //TODO: change
     std::stringstream buffer;
     buffer << FIXED_FLOAT(score);
     string sScore = buffer.str();
     int hs = font->height(sScore);
     int ws = font->width(sScore);
-    font->draw(sScore, x + w - ws, y + SCORE_AREA_HEIGHT/2 + hs/2);
+    font->draw(sScore, x + (w - ws)/2, y + SCORE_AREA_HEIGHT/2 + hs/2);
     ofSetColor(bg);
 }
 
