@@ -14,10 +14,18 @@
 #include "View.hpp"
 
 class GroupManager {
+	
 private:
     vector<Group*>groups;
     vector<User*> users;
+	
 public:
+	GroupManager() {}
+	~GroupManager() {
+		// TODO:
+		// cleanup groups we created!		
+	}
+	
     void update(vector<User*> users);
     void exit();
     Group* groupFactory(View::Features feature, Group::GroupBy by, bool profile, int levels);

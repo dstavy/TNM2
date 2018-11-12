@@ -13,9 +13,14 @@
 
 class GenericGroup : public Group {
 public:
-    GenericGroup(View::Features feature, GroupBy grouBy, bool profile, int levels) : Group(feature, grouBy, profile, levels ) {};
+    GenericGroup(View::Features feature,
+				 GroupBy grouBy,
+				 bool profile,
+				 int levels) : Group(feature, grouBy, profile, levels )
+	{};
+	~GenericGroup() {};
+	
     void update(vector<User*>& newUsers) override;
-    ~GenericGroup() {};
 };
 
 #endif /* GenericGroup_hpp */
