@@ -10,6 +10,7 @@
 #include "FontUtil.hpp"
 
 #include "Utils.hpp"
+#include "ofApp.h"
 
 const static int dropshadow_w = 20;
 const static int dropshadow_h = 18;
@@ -37,11 +38,12 @@ Mugshot::Mugshot(ofShader* shader, User* user) {
 	
 	// load background image (card)
 	bgImage.load("Assets/sample_sheet.png");
+	
 	bgFbo.allocate(bgImage.getWidth(), bgImage.getHeight(), GL_RGBA);
 	drawBackground(user);
 	
 	facecutFbo.allocate(MG_WIDTH, MG_HEIGHT, GL_RGB);
-	facecutFbo.getTextureReference().getTextureData().bFlipTexture = true;
+	facecutFbo.getTexture().getTextureData().bFlipTexture = true;
 	
 	fbo.allocate(bgImage.getWidth(), bgImage.getHeight(), GL_RGBA);
 	
@@ -84,7 +86,6 @@ void Mugshot::drawBackground(User* user) {
 		font->draw(meterToCMDashMM(1.234567), age_pos.x, age_pos.y);
 		font->draw(meterToCMDashMM(1.234567), apparent_age_pos.x, apparent_age_pos.y);
 		
-		ofLogNotice() << ofGetTimestampString("%H:%M:%S");
 		font->draw(ofGetTimestampString("%H:%M:%S"), examined_1_pos.x, examined_1_pos.y);
 		font->draw(ofGetTimestampString("%F"), examined_2_pos.x, examined_2_pos.y);
 	}
@@ -278,15 +279,19 @@ void Mugshot::drawDottedLine(ofVec2f start, ofVec2f end) {
 }
 
 bool Mugshot::draw() {
-    if (x >= ofGetWindowWidth()) {
+	
+	if (x >= SCREEN_WIDTH) {
         return false;
     }
     else {
         ofPushMatrix();
-        ofRotate(rotation);
-        fbo.draw(x, y);
+		ofTranslate(x, y);
+		ofScale(scale);
+		ofRotateDeg(rotation);
+        fbo.draw(0, 0);
         ofPopMatrix();
     }
+	
     return true;
 }
         
@@ -302,16 +307,22 @@ void Mugshot::animate(float delay) {
     }
 	
     else {
-		int x_dist = MG_X_MOVE - (50 * animateCounter);
-		int xTo = x + ofRandom(x_dist -10, x_dist + 10);
-        int yTo = y - ofRandom( -10,  + 10);
+		int x_dist = 1.7 * MG_X_MOVE / animateCounter;
+		int xTo = x + ofRandom(x_dist - 10, x_dist + 10);
+		ofLogNotice() << "mugshot: " << animateCounter << ": " << xTo;
+		
+        int yTo = y - ofRandom( -10., 10.);
         float rotTo = ofRandom(-4., 4.);
+		float scaleTo = scale - (0.01 * animateCounter);
+		
         auto t0 = tweenManager.addTween(x, x, xTo, ANIMATION_TIME, delay , TWEEN::Ease::Quadratic::Out);
         auto t1 = tweenManager.addTween(y, y, yTo, ANIMATION_TIME, delay , TWEEN::Ease::Quadratic::Out);
         auto t2 = tweenManager.addTween(rotation, rotation, rotTo, ANIMATION_TIME, delay , TWEEN::Ease::Quadratic::Out);
-
+		auto t3 = tweenManager.addTween(scale, scale, scaleTo, ANIMATION_TIME, delay , TWEEN::Ease::Quadratic::Out);
+		
         t0->start();
         t1->start();
         t2->start();
+		t3->start();
     }
 }

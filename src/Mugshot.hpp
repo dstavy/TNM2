@@ -19,7 +19,7 @@ public:
     static const int MG_WIDTH = 306; // width of one mugshot
     static const int MG_HEIGHT = 342;
     static const int MG_SPACE = 2;
-    static const int MG_X_MOVE = 600;
+    static const int MG_X_MOVE = 500;
     static const int START_X =  65;
     static const int START_Y =  92;
 	static const int MG_CARD_INSET_X = 82;
@@ -61,6 +61,7 @@ public:
 	int y = 0;
 	int animateCounter = 0;
 	float rotation = 0;
+	float scale = 1;
 	glm::vec3 pos;
 	//static const float MG_ASPECT_RATIO = 0.953271; //(float)(MG_WIDTH - MG_SPACE)/2. / MG_HEIGHT;
     
