@@ -48,7 +48,7 @@ Mugshot::Mugshot(ofShader* shader, User* user) {
     // Clear the FBO's
     // otherwise it will bring some junk with it from the memory
     fbo.begin();
-    ofClear(0,0,0,255);
+    ofClear(0,0,0,0);
     fbo.end();
     this->shader = shader;
     this->user = user;
@@ -62,8 +62,7 @@ void Mugshot::drawBackground(User* user) {
 	
 	bgFbo.begin();
 	{
-		ofClear(0,0,0,255);
-		ofClearAlpha();
+		ofClear(0,0,0,0);
 		ofEnableAlphaBlending();
 		
 		bgImage.draw(0, 0);
