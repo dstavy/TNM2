@@ -37,6 +37,8 @@ public:
     User* getRandomUser();
     void drawGridPage();
 	void drawBg();
+	
+	void setFeatureToFocues(View::Features);
 
 
     ofxFaceTracker2 frontTracker;
@@ -85,6 +87,7 @@ public:
 	
 	View::Features currentFeatureToFocus;
 	float gridY = 0.0;
+	shared_ptr<TWEEN::Tween> gridTween;
 	
 	//
 	ofFbo outputFbo;

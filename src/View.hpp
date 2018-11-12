@@ -11,6 +11,8 @@
 #include "ofMain.h"
 #include "ofxFaceTracker2.h"
 
+static float gridlocation[] = {-450.0, -400.0, -450.0, -30.0, -1300.0, -300.0, 0.0};
+
 class View {
 public:
     enum Features {
@@ -55,8 +57,13 @@ public:
     static const int LANDMARKS_NUM = 5;
     static const int PARTS_NUM = 7;
     static const string FACES_DIR ;
-    //ofxFaceTracker2Landmarks landmarks2;
     static const glm::vec4 partPeddings[PARTS_NUM];
+	
+	static const float getLocationForFeature(Features f) {
+		return gridlocation[f];
+	}
+	
+	//ofxFaceTracker2Landmarks landmarks2;
     char letter[LANDMARKS_NUM];
     ofRectangle parts[PARTS_NUM];
     ofImage face;
@@ -67,8 +74,7 @@ public:
     vector<ofVec2f>& getLandmarks() {
         return landmarks;
     };
-#endif
-#ifdef TARGET_WIN32
+#elif defined TARGET_WIN32
     vector<glm::vec2> landmarks;
     
     vector<glm::vec2>& getLandmarks() {

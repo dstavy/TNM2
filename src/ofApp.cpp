@@ -339,10 +339,8 @@ void ofApp::draw(){
 	ofPopStyle();
 	
 	// draw debug strings
-	ofDrawBitmapString(ofToString(cam.getX()) + "  " + ofToString(cam.getY()) + "  " + ofToString(cam.getZ()), 50, 50);
-	ofDrawBitmapString(ofToString(cam.getFov()) + "  " + ofToString(cam.getDistance()) + "  " + ofToString(cam.getScale()), 50, 70);
-	
-	ofDrawBitmapString("gridY: " + ofToString(gridY), 50, 90);
+//	ofDrawBitmapString(ofToString(cam.getX()) + "  " + ofToString(cam.getY()) + "  " + ofToString(cam.getZ()), 50, 50);
+//	ofDrawBitmapString(ofToString(cam.getFov()) + "  " + ofToString(cam.getDistance()) + "  " + ofToString(cam.getScale()), 50, 70);
 	
 	// ofDrawBitmapString(ofToString(cam.sets) + "  " + ofToString(cam.getY()) + "  " + //ofToString(cam.getZ()), 50, 90);
 }
@@ -378,6 +376,7 @@ void ofApp::drawMugshotPage() {
     {
         --i;
         if (!((*i)->draw())) {
+			ofLogNotice() << "delete mugshot!";
             delete(*i);
             mugshots.erase(i);
         }
@@ -399,7 +398,7 @@ void ofApp::drawGridPage() {
 		ofTranslate(SCREEN_WIDTH, 0);
 	}
 	
-	ofTranslate(30, 30 + gridY);
+	ofTranslate(30, gridY);
 	
     // ofTranslate(30, -1304);
     ofScale(0.66);
@@ -551,12 +550,36 @@ void ofApp::keyReleased(int key){
 	   // glm::vec3 scale= cam.getScale();
 	   // cam.setScale(glm::vec3(scale.x - 0.01, scale.y - 0.01, scale.z - 0.010));
 		*/
-	} else if (key == 'y') {
-		ofLogNotice() << "move Y";
-		int anim_time = 2;
-		int delay = 0;
-		auto t0 = tweenManager.addTween(gridY, gridY, gridY+500, anim_time, delay, TWEEN::Ease::Sinusoidal::Out);
+	} else if (key == '1') {
+		setFeatureToFocues(View::Features::HEAD);
+	} else if (key == '2') {
+		setFeatureToFocues(View::Features::FORHEAD);
+	} else if (key == '3') {
+		setFeatureToFocues(View::Features::NOSE);
+	} else if (key == '4') {
+		setFeatureToFocues(View::Features::MOUTH);
+	} else if (key == '5') {
+		setFeatureToFocues(View::Features::EYES);
+	} else if (key == '6') {
+		setFeatureToFocues(View::Features::LEFT_EAR);
+	} else if (key == '7') {
+		setFeatureToFocues(View::Features::RIGHT_EAR);
 	}
+}
+
+void ofApp::setFeatureToFocues(View::Features feature) {
+	currentFeatureToFocus = feature;
+	float toY = View::getLocationForFeature(currentFeatureToFocus);
+	
+	int anim_time = 2;
+	int delay = 0;
+	
+	if (gridTween != nullptr) {
+		gridTween->clear();
+	}
+	
+	gridTween = tweenManager.addTween(gridY, gridY, toY, anim_time, delay, TWEEN::Ease::Sinusoidal::Out);
+	gridTween->start();
 }
 
 void ofApp::presentationUpdater()
