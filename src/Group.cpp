@@ -7,7 +7,7 @@
 
 #include "Group.hpp"
 
-void Group::getGridUsers(int usersPerLevel, vector<User*>& outUsers) {
+User* Group::getGridUsers(int usersPerLevel, vector<User*>& outUsers, int& outIndex) {
    /* bool currentFound = false;
     
     for (int i = 0; i < numLevels; i++) {
@@ -47,7 +47,8 @@ void Group::getGridUsers(int usersPerLevel, vector<User*>& outUsers) {
         }
     }
     */
-    // do a simple colection based on number of users
+	
+	// do a simple colection based on number of users
     int numberNeeded = numLevels * usersPerLevel;
     //float ratio = (float)allUsers.size() / (numberNeeded - 1);
     float increment = 1.0/(numberNeeded -1);
@@ -56,8 +57,10 @@ void Group::getGridUsers(int usersPerLevel, vector<User*>& outUsers) {
         //ofLerp(0, allUsers.size(), j*increment);
         outUsers.push_back(allUsers[round(ofLerp(0, allUsers.size() -1, j*increment))]);
     }
-    bool found = false;
+	
+	
     // Iterate over all elements in Vector
+	bool found = false;
     int i = 0;
     for(; i < allUsers.size(); i++)
     {
@@ -67,10 +70,16 @@ void Group::getGridUsers(int usersPerLevel, vector<User*>& outUsers) {
             break;
         }
     }
+	
     if(found) { // add current User
-       int index = round(ofMap(i, 0, allUsers.size() -1, 0, numberNeeded - 1));
-        outUsers[index] = allUsers[i];
+		int index = round(ofMap(i, 0, allUsers.size() -1, 0, numberNeeded - 1));
+		outUsers[index] = allUsers[i];
+		outIndex = index;
+		return allUsers[i];
     }
+	
+	outIndex = -1;
+	return nullptr;
 }
 
 float Group::getScore(User* user) {

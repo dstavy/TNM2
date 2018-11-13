@@ -62,40 +62,39 @@ void ofApp::setup(){
     //if you use same grid more then once but diffrent scales just change the scale before you draw;
     
     // Groups:
-    // EYES
-    // NOSE
-    // MOUTH
-    // FORHEAD
-    // HEAD
-    
+	// 	HEAD = 0,
+	//	FORHEAD,
+	//	NOSE,
+	//	MOUTH,
+	//	EYES,
+	
     Group* group = groupManager.groupFactory(
                                          View::FORHEAD, // fragment
                                          Group::GENERIC, // type of group
                                          false, // is profile?
                                          7); //number of levels
-    grids[0].setup(&sepiaShader, // shader
-                   group, // newly created group
-                   204, 112, // width and height of element
-                   1, // user per level
-                   1); // scale
 	
-   // grids[0].Y_SPACING = 0;
-    //grids[0].SCORE_AREA_HEIGHT = 5;
-    
-    //
-    //    g = groupManager.groupFactory(
-    //                                  View::NOSE,
-    //                                  Group::GENERIC,
-    //                                  false,
-    //                                  4);
-    //    grids[1].setup(&sepiaShader,g, 105, 145, 6, 1);
+    grids[View::FORHEAD].setup(&sepiaShader, // shader
+							   group, // newly created group
+							   204, 112, // width and height of element
+							   1, // user per level
+							   {1728 / gridScale, 149 / gridScale}, // start position for flying in image
+							   1); // scale
+	
+	// grids[0].Y_SPACING = 0;
+	//grids[0].SCORE_AREA_HEIGHT = 5;
     
     group = groupManager.groupFactory(
                                   View::HEAD,
                                   Group::GENERIC,
                                   false,
                                   4);
-    grids[1].setup(&sepiaShader, group, 110, 110, 5, 1);
+    grids[View::HEAD].setup(&sepiaShader,
+							group,
+							110, 110,
+							5,
+							{698 / gridScale, -40 / gridScale}, // start position for flying in image
+							1);
     
     
     group = groupManager.groupFactory(
@@ -103,49 +102,71 @@ void ofApp::setup(){
                                   Group::GENERIC,
                                   false,
                                   5);
-    grids[2].setup(&sepiaShader, group, 80, 80, 7, 1);
+    grids[View::NOSE].setup(&sepiaShader,
+							group,
+							80, 80,
+							7,
+							{1668 / gridScale, 97 / gridScale}, // start position for flying in image
+							1);
     
     group = groupManager.groupFactory(
                                   View::MOUTH,
                                   Group::GENERIC,
                                   false,
                                   3);
-    grids[3].setup(&sepiaShader, group, 110, 110, 5, 1);
+    grids[View::MOUTH].setup(&sepiaShader,
+							 group,
+							 110, 110,
+							 5,
+							 {1215 / gridScale, 47 / gridScale}, // start position for flying in image
+							 1);
     
     group = groupManager.groupFactory(
                                   View::EYES,
                                   Group::GENERIC,
                                   false,
                                   6);
-    grids[4].setup(&sepiaShader, group, 196, 87, 3, 1);
-    
+    grids[View::EYES].setup(&sepiaShader,
+							group,
+							196, 87,
+							3,
+							{2058 / gridScale, -73 / gridScale}, // start position for flying in image
+							1);
+	
+	
     currentUser = NULL;
     //update
     presentationUpdate.setup(&users, &frontPlayer, &profilePlayer, &frontTracker, &profileTracker, &groupManager);
-    currentUser = presentationUpdate.update();
+	
+//	selectNextUser(true);
+	currentUser = presentationUpdate.update();
     //bool randSelect = false;
     if (currentUser == NULL) {
         currentUser = getRandomUser();
         //randSelect = true;
     }
-    currMugshot = new Mugshot(&sepiaShader, currentUser);
+    currMugshot = new Mugshot(&sepiaShader, currentUser, this);
     mugshots.insert(mugshots.begin(), currMugshot);
     //for (int i = 0; i< NUM_MUGSHOT; i++) {
     //    mugshots.pushback(new Mugshot(&sepiaShader, currentUser);
     //}
-    
+
     if (currentUser != NULL) {
         currentUser->isCurrent = true;
-        grids[0].update();
-        grids[1].update();
-        grids[2].update();
-        grids[3].update();
-        grids[4].update();
+
+//        grids[0].update();
+//        grids[1].update();
+//        grids[2].update();
+//        grids[3].update();
+//        grids[4].update();
         //grids[5].update();
         //grids[6].update();
-        
-        currMugshot->animate(0);
-        currMugshot->update(View::HEAD);
+
+
+//        currMugshot->update(View::HEAD);
+		currMugshot->animate(0);
+
+		// if animation is done (Mugshot::ANIMATION_TIME = 1)
     }
     //if (randSelect) {
     //    currentUser = NULL; // return to null after rendering random user
@@ -201,41 +222,25 @@ void ofApp::exit(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    User* user = NULL;
+	
     bool newUser = false;
     cam.setScale(camScale);
 	
-    if ((ofGetElapsedTimeMillis() -  lastPresentationUpdate) > PRESENTATION_UPDATE_REFRESH) {
-        lastPresentationUpdate = ofGetElapsedTimeMillis();
-        user = presentationUpdate.update();
-    } else if ((ofGetElapsedTimeMillis() -  lastUserUpdate) > CURRENT_USER_REFRESH) {
-        user = getRandomUser();
-    }
-	
-    if(user != NULL) {
-        currentUser->isCurrent = false;
-        currentUser = user;
-        currentUser->isCurrent = true;
-        grids[0].update();
-        grids[1].update();
-        grids[2].update();
-        grids[3].update();
-        grids[4].update();
-        
-        currMugshot = new Mugshot(&sepiaShader, currentUser);
-        mugshots.insert(mugshots.begin(), currMugshot);
-        currMugshot->update(View::HEAD); // change to none
-        animateMagshots();
-        lastUserUpdate = ofGetElapsedTimeMillis();
-    }
+	if ((ofGetElapsedTimeMillis() -  lastPresentationUpdate) > PRESENTATION_UPDATE_REFRESH) {
+		lastPresentationUpdate = ofGetElapsedTimeMillis();
+		// selectNextUser()
+	} else if ((ofGetElapsedTimeMillis() -  lastUserUpdate) > CURRENT_USER_REFRESH) {
+		// new random user
+//		selectNextUser(true);
+	}
     
     if (currentUser != NULL) {
-        if ((ofGetElapsedTimeMillis() -  lastMugshotUpdate) > MUGSHOT_REFRESH) {
-            lastMugshotUpdate = ofGetElapsedTimeMillis();
-            curFeature = selectNextFeature(curFeature);
-            currMugshot->update(curFeature);
-            
-        }
+		// only update automatically if introanimation is done
+		if (autoupdateFeatures && currMugshot->m_introAnimationDone) {
+			if ((ofGetElapsedTimeMillis() -  lastMugshotUpdate) > MUGSHOT_REFRESH) {
+				selectNewFeature();
+			}
+		}
     }
     
     /*  frontPlayer.update();
@@ -265,6 +270,77 @@ void ofApp::update(){
      */
 }
 
+void ofApp::selectNextUser(bool random) {
+	
+	User* user = NULL;
+	
+	if (random) {
+		user = getRandomUser();
+	} else {
+		user = presentationUpdate.update();
+	}
+	
+	if(user != NULL) {
+		//?
+		if (currentUser != nullptr) {
+			currentUser->isCurrent = false;
+		}
+		
+		currentUser = user;
+		currentUser->isCurrent = true;
+		
+//		grids[0].update();
+//		grids[1].update();
+//		grids[2].update();
+//		grids[3].update();
+//		grids[4].update();
+		
+		currMugshot = new Mugshot(&sepiaShader, currentUser, this);
+		mugshots.insert(mugshots.begin(), currMugshot);
+		currMugshot->update(View::Features::HEAD); // change to none
+		animateMagshots();
+		
+		lastUserUpdate = ofGetElapsedTimeMillis();
+	}
+}
+
+void ofApp::mugshotIntroAnimationDone() {
+	selectNewFeature();
+}
+
+void ofApp::selectNewFeature() {
+	selectFeature(currMugshot->selectNextFeature());
+}
+
+void ofApp::selectFeature(View::Features feature) {
+	
+	// ask mugshot for its next feature
+	curFeature = feature;
+	currMugshot->update(curFeature);
+	
+	if (curFeature != View::Features::INVALID) {
+		
+		setFeatureToFocus(curFeature);
+		
+		// we need to draw that part
+		View& view = currentUser->getView(false);
+		partImage = view.getImage();
+		featureRect = ofRectangle(view.parts[curFeature]);
+		if ((int)curFeature < 5) {
+			// need to cleanup grid
+			grids[curFeature].reset(); // this will call "update" when fade-out is done!
+			
+		} else {
+			ofLogError() << "grid index out of bounds!";
+		}
+	} else {
+		partImage = ofImage();
+	}
+	
+	lastMugshotUpdate = ofGetElapsedTimeMillis();
+}
+
+
 void ofApp::animateMagshots() {
     float delay = 0;
     for (auto it = mugshots.begin(); it != mugshots.end(); ++it)
@@ -278,10 +354,12 @@ void ofApp::animateMagshots() {
 void ofApp::draw(){
 
 	outputFbo.begin();
+	
 	ofClear(ofColor::aquamarine);
-	
-	
 //    drawBg();
+	
+	drawMugshotPage();
+	drawGridPage();
 	
     if (currentUser != NULL) {
 
@@ -294,11 +372,12 @@ void ofApp::draw(){
          }
          */
 
-		drawMugshotPage();
+//		drawMugshotPage();
+//
+////		cam.begin();
+//
+//		drawGridPage();
 		
-//		cam.begin();
-		
-		drawGridPage();
 		/*
 		 ofPushMatrix();
 		 //ofScale(0.5, 0.5);;
@@ -316,16 +395,28 @@ void ofApp::draw(){
 //		cam.end();
     }
 	
+	if (curFeature != View::Features::INVALID) {
+		if (partImage.isAllocated()) {
+			
+			//
+			partImage.getTexture().drawSubsection(0, 0,
+												  featureRect.getWidth(), featureRect.getHeight(),
+												  featureRect.getX(), featureRect.getY());			
+		}
+	}
 	
     outputFbo.end();
 	
 	// draw outputFbo
 	ofPushStyle();
 	ofPushMatrix();
-	ofScale(0.4);
-
-	int x = 100;
-	int y = 100;
+	
+	if (scaleOutput) {
+		ofScale(0.4);
+	}
+	
+	int x = 0;
+	int y = 0;
 	ofSetColor(ofColor::white);
 	outputFbo.draw(x, y);
 	
@@ -339,10 +430,13 @@ void ofApp::draw(){
 	ofPopStyle();
 	
 	// draw debug strings
-//	ofDrawBitmapString(ofToString(cam.getX()) + "  " + ofToString(cam.getY()) + "  " + ofToString(cam.getZ()), 50, 50);
-//	ofDrawBitmapString(ofToString(cam.getFov()) + "  " + ofToString(cam.getDistance()) + "  " + ofToString(cam.getScale()), 50, 70);
+	ofDrawBitmapString(ofToString(cam.getX()) + "  " + ofToString(cam.getY()) + "  " + ofToString(cam.getZ()), 50, 50);
+	ofDrawBitmapString(ofToString(cam.getFov()) + "  " + ofToString(cam.getDistance()) + "  " + ofToString(cam.getScale()), 50, 70);
 	
-	// ofDrawBitmapString(ofToString(cam.sets) + "  " + ofToString(cam.getY()) + "  " + //ofToString(cam.getZ()), 50, 90);
+//	 ofDrawBitmapString(ofToString(cam.sets) + "  " + ofToString(cam.getY()) + "  " + //ofToString(cam.getZ()), 50, 90);
+
+	ofDrawBitmapString("auto feature: " + ofToString(autoupdateFeatures), 50, 110);
+
 }
 
 void ofApp::drawBg() {
@@ -401,16 +495,16 @@ void ofApp::drawGridPage() {
 	ofTranslate(30, gridY);
 	
     // ofTranslate(30, -1304);
-    ofScale(0.66);
+    ofScale(gridScale);
 	
 	
     table_bg.draw(0, 0);
 	
-    grids[0].draw(494, 904); // FOREHEAD
-    grids[1].draw(2055, 1266); // HEAD
-    grids[2].draw(748, 1230); // NOSE
-    grids[3].draw(1403, 849); // MOUTH
-    grids[4].draw(90, 2770); // EYES
+	grids[View::FORHEAD].draw(494, 904); // FOREHEAD
+    grids[View::HEAD].draw(2055, 1266); // HEAD
+	grids[View::NOSE].draw(748, 1230); // NOSE
+    grids[View::MOUTH].draw(1403, 849); // MOUTH
+    grids[View::EYES].draw(90, 2770); // EYES
     
     
     //    tableHeader.draw(0, 0);
@@ -531,11 +625,11 @@ void ofApp::keyReleased(int key){
         ofToggleFullscreen();
     }
     else if (key == 'a') {
-        grids[0].resetLoading(); // FOREHEAD
-        grids[1].resetLoading(); // HEAD
-        grids[2].resetLoading(); // NOSE
-        grids[3].resetLoading(); // MOUTH
-        grids[4].resetLoading(); // EYES
+		grids[View::FORHEAD].resetLoading(); // FOREHEAD
+        grids[View::HEAD].resetLoading(); // HEAD
+        grids[View::NOSE].resetLoading(); // NOSE
+        grids[View::MOUTH].resetLoading(); // MOUTH
+        grids[View::EYES].resetLoading(); // EYES
     } else if (key == 'd') {
 		/*
 		glm::vec3 scaleOut(1., 1., 1.);
@@ -550,28 +644,37 @@ void ofApp::keyReleased(int key){
 	   // glm::vec3 scale= cam.getScale();
 	   // cam.setScale(glm::vec3(scale.x - 0.01, scale.y - 0.01, scale.z - 0.010));
 		*/
+	} else if (key == 'w') {
+		autoupdateFeatures = !autoupdateFeatures;
+	} else if (key == 's') {
+		scaleOutput = !scaleOutput;
 	} else if (key == '1') {
-		setFeatureToFocues(View::Features::HEAD);
+		selectFeature(View::Features::HEAD);
 	} else if (key == '2') {
-		setFeatureToFocues(View::Features::FORHEAD);
+		selectFeature(View::Features::FORHEAD);
 	} else if (key == '3') {
-		setFeatureToFocues(View::Features::NOSE);
+		selectFeature(View::Features::NOSE);
 	} else if (key == '4') {
-		setFeatureToFocues(View::Features::MOUTH);
+		selectFeature(View::Features::MOUTH);
 	} else if (key == '5') {
-		setFeatureToFocues(View::Features::EYES);
-	} else if (key == '6') {
-		setFeatureToFocues(View::Features::LEFT_EAR);
-	} else if (key == '7') {
-		setFeatureToFocues(View::Features::RIGHT_EAR);
+		selectFeature(View::Features::EYES);
+	} else if (key == 'u') {
+		// select new random iser
+		selectNextUser(true);
+	}
+	else if (key == 'r') {
+		// reset features
+		if (currMugshot != nullptr) {
+			currMugshot->resetFeatures();
+		}
 	}
 }
 
-void ofApp::setFeatureToFocues(View::Features feature) {
+void ofApp::setFeatureToFocus(View::Features feature) {
 	currentFeatureToFocus = feature;
 	float toY = View::getLocationForFeature(currentFeatureToFocus);
 	
-	int anim_time = 2;
+	int anim_time = 1;
 	int delay = 0;
 	
 	if (gridTween != nullptr) {
@@ -614,10 +717,10 @@ void ofApp::setupFonts()
 }
 
 View::Features ofApp::selectNextFeature(View::Features feature) {
-	// TODO: we need to avoid a feature is animated twice!
-    int f = feature;
-    while (f == feature) {
-        f = (int)(floor(ofRandom(5)));
-    }
-    return (View::Features)f;
+//	// TODO: we need to avoid a feature is animated twice!
+//    int f = feature;
+//    while (f == feature) {
+//        f = (int)(floor(ofRandom(5)));
+//    }
+//    return (View::Features)f;
 }

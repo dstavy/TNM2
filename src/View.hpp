@@ -68,6 +68,7 @@ public:
     ofRectangle parts[PARTS_NUM];
     ofImage face;
     bool profile;
+	
 #ifdef TARGET_OSX
     vector<ofVec2f> landmarks;
     

@@ -14,6 +14,8 @@
 #include "ofxSmartFont.h"
 #include "Tweener.h"
 
+class ofApp;
+
 class Mugshot  {
 public:
     static const int MG_WIDTH = 306; // width of one mugshot
@@ -30,7 +32,7 @@ public:
 	static void drawDottedLine(ofVec2f start, ofVec2f end);
 	
 	//
-	Mugshot(ofShader* shader, User* user);
+	Mugshot(ofShader* shader, User* user, ofApp* app);
 	~Mugshot() {
 		fbo.clear();
 		facecutFbo.clear();
@@ -41,8 +43,9 @@ public:
     void update(View::Features feature);
     bool draw();
     void animate(float delay);
-	
-	
+	View::Features selectNextFeature();
+	void resetFeatures();
+	void introAnimationDone();
 	
 #ifdef TARGET_OSX
 	
@@ -69,11 +72,16 @@ public:
 	ofImage bgImage; // background image
 	ofFbo bgFbo;
 	ofFbo facecutFbo;
+	ofFbo faceoverlayFbo;
     User* user;
-    View::Features feature;
+    View::Features currentFeature;
     ofShader* shader;
     TWEEN::Manager tweenManager;
     bool firstTime = true;
+	
+	vector<int> partsToVisit;
+	ofApp* appcontroller;
+	bool m_introAnimationDone = false;
 };
 
 #endif /* Mugshotx_hpp */

@@ -33,8 +33,17 @@ const static ofPoint examined_1_pos = {120, 796, 0};
 const static ofPoint examined_2_pos = {236, 792, 0};
 
 
+static void myCompleteFunc(void* ptr) {
+	if (ptr) {
+		Mugshot* ms = (Mugshot*)ptr;
+		ms->introAnimationDone();
+	}
+}
 
-Mugshot::Mugshot(ofShader* shader, User* user) {
+
+Mugshot::Mugshot(ofShader* shader, User* user, ofApp* app) {
+	
+	appcontroller = app;
 	
 	// load background image (card)
 	bgImage.load("Assets/sample_sheet.png");
@@ -42,8 +51,30 @@ Mugshot::Mugshot(ofShader* shader, User* user) {
 	bgFbo.allocate(bgImage.getWidth(), bgImage.getHeight(), GL_RGBA);
 	drawBackground(user);
 	
+	// darkened face
 	facecutFbo.allocate(MG_WIDTH, MG_HEIGHT, GL_RGB);
 	facecutFbo.getTexture().getTextureData().bFlipTexture = true;
+	
+	// letter overlay
+	faceoverlayFbo.allocate(MG_WIDTH, MG_HEIGHT, GL_RGBA);
+	
+	// render overlay fbo
+	View& view = user->getView(false);
+	// get face
+	ofImage& face = view.getImage();
+	ofRectangle faceRec(view.parts[View::HEAD]);
+	ofRectangle box(ImageGrid::adjustAspectRatio(faceRec, ((float)MG_WIDTH/(float)MG_HEIGHT) ));
+	
+	faceoverlayFbo.begin();
+	{
+		ofClear(0, 0, 0);
+		
+		ofScale( (float)MG_WIDTH/box.width, (float)MG_HEIGHT/box.height);
+		ofTranslate(-box.x, -box.y);
+		drawLettersFront(view.parts, view.getLandmarks(), ofxSmartFont::get("CrimsonText700Mugshot"));
+	}
+	faceoverlayFbo.end();
+	
 	
 	fbo.allocate(bgImage.getWidth(), bgImage.getHeight(), GL_RGBA);
 	
@@ -52,12 +83,39 @@ Mugshot::Mugshot(ofShader* shader, User* user) {
     fbo.begin();
     ofClear(0,0,0,0);
     fbo.end();
+	
     this->shader = shader;
     this->user = user;
+	
     firstTime = true;
     x = START_X;
     y = ofGetHeight();
    // pos = glm::vec3(x, y, rotation);
+	
+	resetFeatures();
+}
+
+void Mugshot::resetFeatures() {
+	partsToVisit.clear();
+	for (int i=0; i<5; i++) {
+		partsToVisit.push_back(i);
+	}
+}
+
+View::Features Mugshot::selectNextFeature() {
+	
+	if (partsToVisit.size() == 0) {
+		return View::Features::INVALID;
+	}
+	int f = partsToVisit[0];
+	partsToVisit.erase (partsToVisit.begin());
+	return (View::Features)f;
+	
+//	int id = (int)(floor(ofRandom(partsToVisit.size())));
+//	int f = partsToVisit[id];
+//	partsToVisit.erase (partsToVisit.begin()+id);
+//
+//	return (View::Features)f;
 }
 
 void Mugshot::drawBackground(User* user) {
@@ -95,22 +153,24 @@ void Mugshot::drawBackground(User* user) {
 
 void Mugshot::update(View::Features feature) {
 	
+	currentFeature = feature;
+	
     float aspectRatio = (float)MG_WIDTH/(float)MG_HEIGHT;
     shared_ptr<ofxSmartFont> font = ofxSmartFont::get("CrimsonText700Mugshot");
-    bool profile = false;
 	
+    bool profile = false;
 	View& view = user->getView(profile);
+	
     if (view.isActive()) {
 		
 		// get face
 		ofImage& face = view.getImage();
-		
 		ofRectangle faceRec(view.parts[View::HEAD]);
 		
-        //faceRec.x += faceRec.x/4;
-        //faceRec.width -= faceRec.x/4;
-      //   faceRec.y -= faceRec.x/8;
-       // faceRec.width += faceRec.x/2;
+//      faceRec.x += faceRec.x/4;
+//      faceRec.width -= faceRec.x/4;
+//      faceRec.y -= faceRec.x/8;
+//      faceRec.width += faceRec.x/2;
 		ofRectangle box(ImageGrid::adjustAspectRatio(faceRec, aspectRatio));
 		
 		//
@@ -120,20 +180,24 @@ void Mugshot::update(View::Features feature) {
 		ofEnableAlphaBlending();
 		bgFbo.draw(0, 0);
 		
-		// draw face
+		//--------------------------------
+		// draw face (right side) - without markers
         face.bind();
         shader->begin();
         shader->setUniform1f("factor", 0.9); // SET A UNIFORM
-        face.drawSubsection(dropshadow_w + MG_CARD_INSET_X, 238+dropshadow_h,
+		shader->setUniform1f("alpha", 1.0); // SET A UNIFORM
+        face.drawSubsection(dropshadow_w + MG_CARD_INSET_X + MG_WIDTH + MG_SPACE, 238+dropshadow_h,
 							MG_WIDTH, MG_HEIGHT,
 							box.x , box.y, box.width, box.height);
         shader->end();
         face.unbind();
+		
         //ofPushMatrix();
         //ofScale( (float)mugSize/box.width, (float)MG_HEIGHT/box.height);
         //ofTranslate(-box.x, -box.y);
         //drawLettersProfile(view.parts, view.getLandmarks(), font);
         //ofPopMatrix();
+		
    //  }
     
     // profile = false;
@@ -143,50 +207,84 @@ void Mugshot::update(View::Features feature) {
 		//  ofImage& face = view.getImage();
 	   	//  ofRectangle& box = ImageGrid::adjustAspectRatio(view.parts[View::HEAD], aspectRatio);
 		
+		//--------------------------------
 		// draw darker version of image
 		facecutFbo.begin();
-		ofClear(0, 0, 0);
-		
-		ofSetColor(127);
-		face.bind();
-		shader->begin();
-		shader->setUniform1f("factor", 0.9); // SET A UNIFORM
-		face.drawSubsection(0, 0,
-							MG_WIDTH, MG_HEIGHT,
-							box.x, box.y, box.width, box.height);
-		shader->end();
-		face.unbind();
-		
-		ofSetColor(255);
-		
-        ofPushMatrix();
-		ofRectangle& part = view.parts[feature];
-		ofColor dark(0,0,0,125);
-		ofPath path;
-        //path.rectangle(box);
-        //path.rectangle(part);
-        ofTranslate(0, 0);
-        ofScale( (float)MG_WIDTH/box.width, (float)MG_HEIGHT/box.height);
-        ofTranslate(-box.x, -box.y);
-        path.setFillColor(dark);
-        path.setStrokeColor(ofColor::black);
-        path.setStrokeWidth(10);
-        path.rectangle(box);
-        path.rectangle(part);
-        ofEnableAlphaBlending();
-        path.draw();
-        ofDisableAlphaBlending();
-        //ofTranslate(mugSize + MG_SPACE, 0);
-        drawLettersFront(view.parts, view.getLandmarks(), font);
-        ofPopMatrix();
-		
+		{
+			ofClear(0, 0, 0);
+			ofSetColor(127);
+			
+			// draw face
+			face.bind();
+			shader->begin();
+			shader->setUniform1f("factor", 0.9); // SET A UNIFORM
+			shader->setUniform1f("alpha", 0.5); // SET A UNIFORM
+			face.drawSubsection(0, 0,
+								MG_WIDTH, MG_HEIGHT,
+								box.x, box.y, box.width, box.height);
+			shader->end();
+			face.unbind();
+			
+			ofSetColor(255);
+			
+			if (currentFeature != View::Features::INVALID) {
+				// overlay selected feature with dark frame
+				// undarkened part has to be drawn from outside this!
+				ofPushMatrix();
+				ofRectangle& part = view.parts[currentFeature];
+				ofColor dark(0,0,0,90);
+				ofPath path;
+				//			path.rectangle(box);
+				//			path.rectangle(part);
+				//			ofTranslate(0, 0);
+				ofScale( (float)MG_WIDTH/box.width, (float)MG_HEIGHT/box.height);
+				ofTranslate(-box.x, -box.y);
+				path.setFillColor(dark);
+				path.setStrokeColor(ofColor::black);
+				path.setStrokeWidth(20);
+				//			path.rectangle(box);
+				path.rectangle(part);
+				ofEnableAlphaBlending();
+				path.draw();
+				ofDisableAlphaBlending();
+				//ofTranslate(mugSize + MG_SPACE, 0);
+				//			drawLettersFront(view.parts, view.getLandmarks(), font);
+				ofPopMatrix();
+			}
+			
+			
+		}
 		facecutFbo.end();
 		
-		facecutFbo.draw(dropshadow_w + MG_CARD_INSET_X + MG_WIDTH + MG_SPACE, 298);
+		facecutFbo.draw(dropshadow_w + MG_CARD_INSET_X, 298);
 		
         fbo.end();
      }
 // ofPopMatrix();
+}
+
+bool Mugshot::draw() {
+	
+	if (x >= SCREEN_WIDTH) {
+		return false;
+	}
+	else {
+		ofPushMatrix();
+		ofTranslate(x, y);
+		ofScale(scale);
+		ofRotateDeg(rotation);
+		
+		// draw card
+		fbo.draw(0, 0);
+		
+		// -> need to draw facepart
+		
+		// draw overlay
+		faceoverlayFbo.draw(dropshadow_w + MG_CARD_INSET_X, 298);
+		ofPopMatrix();
+	}
+	
+	return true;
 }
 
 #ifdef TARGET_OSX
@@ -277,24 +375,12 @@ void Mugshot::drawDottedLine(ofVec2f start, ofVec2f end) {
     
     //ofPopMatrix();
 }
-
-bool Mugshot::draw() {
-	
-	if (x >= SCREEN_WIDTH) {
-        return false;
-    }
-    else {
-        ofPushMatrix();
-		ofTranslate(x, y);
-		ofScale(scale);
-		ofRotateDeg(rotation);
-        fbo.draw(0, 0);
-        ofPopMatrix();
-    }
-	
-    return true;
+		
+void Mugshot::introAnimationDone() {
+	appcontroller->mugshotIntroAnimationDone();
+	m_introAnimationDone = true;
 }
-        
+
 void Mugshot::animate(float delay) {
 	animateCounter++;
 	
@@ -303,13 +389,15 @@ void Mugshot::animate(float delay) {
         firstTime = false;
         int yTo = START_Y;
 		auto t0 = tweenManager.addTween(y, y, yTo, ANIMATION_TIME, 0 , TWEEN::Ease::Quadratic::Out);
+		
+		t0->onComplete(myCompleteFunc, this);
+		
         t0->start();
     }
 	
     else {
 		int x_dist = 1.7 * MG_X_MOVE / animateCounter;
 		int xTo = x + ofRandom(x_dist - 10, x_dist + 10);
-		ofLogNotice() << "mugshot: " << animateCounter << ": " << xTo;
 		
         int yTo = y - ofRandom( -10., 10.);
         float rotTo = ofRandom(-4., 4.);

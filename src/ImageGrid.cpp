@@ -10,7 +10,37 @@
 
 #define FIXED_FLOAT(x) std::fixed <<std::setprecision(2)<<(x)
 
-void ImageGrid::setup(ofShader* shader, Group* group, int wElement, int hElement, int userPerLevel, float scale, int delayLoading, string title, ofColor bg) {
+static void myCB_FadeoutDone(void* ptr) {
+	
+	ofLogNotice() << "fadeout done";
+	
+	if (ptr) {
+		ImageGrid* ms = (ImageGrid*)ptr;
+		ms->update();
+	}
+}
+
+static void myCB_FlyDone(void* ptr) {
+	
+	ofLogNotice() << "fly done";
+	
+	if (ptr) {
+		ImageGrid* ms = (ImageGrid*)ptr;
+		ms->resetLoading();
+	}
+}
+
+void ImageGrid::setup(ofShader* shader,
+					  Group* group,
+					  int wElement,
+					  int hElement,
+					  int userPerLevel,					  
+					  ofPoint flyInStartPos,
+					  float scale,
+					  int delayLoading,
+					  string title,
+					  ofColor bg)
+{
     this->shader = shader;
     this->group = group;
     this->w = wElement;
@@ -20,6 +50,8 @@ void ImageGrid::setup(ofShader* shader, Group* group, int wElement, int hElement
     this->scale = scale;
     this->bg = bg;
     this->delayLoading = delayLoading;
+	this->flyInStartPosition = flyInStartPos;
+	
     //this->leftPanel = leftPanel;
     aspectRatio = (float)w/h;
     
@@ -30,7 +62,7 @@ void ImageGrid::setup(ofShader* shader, Group* group, int wElement, int hElement
     // Clear the FBO's
     // otherwise it will bring some junk with it from the memory
     fbo.begin();
-    ofClear(0,0,0,255);
+    ofClear(0,0,0,0);
     fbo.end();
     getSize();
 }
@@ -41,30 +73,78 @@ ofPoint ImageGrid::getSize() {
     ofLogNotice("Grid:" + getTitle() + "size: " + ofToString(wholeSize.x/scale) + " " + ofToString(wholeSize.y/scale));
 }
 
+void ImageGrid::reset() {
+	
+	ofLogNotice() << "reset";
+	
+	float toA = 0.0;
+	auto tween = tweenManager.addTween(fboAlpha, fboAlpha, toA, 1.0, 0.0 , TWEEN::Ease::Quadratic::Out);
+	tween->onComplete(myCB_FadeoutDone, this);
+	tween->start();
+	
+	animStage = FADE_OUT;
+}
+
 void ImageGrid::update() {
-    int x = 0;
-    int y = 0;
+	
+	ofLogNotice() << "update";
+	
+	fboAlpha = 1.0;
+	
     vector<User*> users(0);
-    group->getGridUsers(userPerLevel, users);
-    ofPushStyle();
-    ofClear(ofColor::black);
-    ofSetColor(bg);
-    ofFill();
-    fbo.begin();
-    //    drawHeader();
-    //    y += HEADER_HEIGHT;
-    y += currElement * (rawSize.y + Y_SPACING);
-    int rawMax = (group->numLevels * userPerLevel) % currElement;
-    for(int i = 0; i < rawMax; i++) {
-        drawRow(y, users.begin() + (i * userPerLevel), userPerLevel);
-        y -= rawSize.y + Y_SPACING;
-    }
-    int remain = currElement - (rawMax * userPerLevel);
-    if (remain > 0) {
-         drawRow(y, users.begin() + (remain * userPerLevel), remain);
-    }
-    fbo.end();
+	int currentUserIndex;
+    currentUser = group->getGridUsers(userPerLevel, users, currentUserIndex);
+	
+//	// get position for current user based in the index
+//	ofLogNotice() << "currentUserIndex: " << currentUserIndex;
+//	if (currentUserIndex >= 0) {
+//
+//	}
+	
+	ofPushStyle();
+	{
+		ofClear(ofColor::black);
+		ofSetColor(bg);
+		ofFill();
+		
+		fbo.begin();
+		{
+			//    drawHeader();
+			//    y += HEADER_HEIGHT;
+			int y = (group->numLevels - 1) * (rawSize.y + Y_SPACING);
+			int rawMax = (group->numLevels * userPerLevel) % currElement;
+			for(int i = 0; i < group->numLevels; i++) {
+				drawRow(y, users.begin() + (i * userPerLevel), userPerLevel);
+				y -= rawSize.y + Y_SPACING;
+			}
+			int remain = currElement - (rawMax * userPerLevel);
+			if (remain > 0) {
+				drawRow(y, users.begin() + (remain * userPerLevel), remain);
+			}
+		}
+		fbo.end();
+	}
     ofPopStyle();
+	
+	// we know fly-in positions
+	// start fly-in
+	
+	View& view = currentUser->getView(false);
+	flyInImage = view.getImage();
+	featureRect = ofRectangle(view.parts[group->getFeature()]);
+	
+	// start tween
+	flyInImagePosition = ofPoint(flyInStartPosition);
+	auto tween = tweenManager.addTween(flyInImagePosition,
+									   flyInStartPosition,
+									   currentUserPosition,
+									   3.0,
+									   0.0,
+									   TWEEN::Ease::Quadratic::Out);
+	tween->onComplete(myCB_FlyDone, this);
+	tween->start();
+	
+	animStage = FLY_IN;
 }
 
 void ImageGrid::calculateSizes() {
@@ -78,19 +158,51 @@ void ImageGrid::calculateSizes() {
 }
 
 void ImageGrid::draw(int x, int y) {
+	
     ofPushMatrix();
     ofTranslate(x,y);
     ofScale(scale);
+	
     if (loading) {
         int section = floor((float)(ofGetElapsedTimeMillis() - loadingTime) / delayLoading) * DRAW_SEGMENT;
-        fbo.getTextureReference().drawSubsection(0, 0, wholeSize.x, section, 0, 0, wholeSize.x, section);
-        if ((wholeSize.y - section) <= DRAW_SEGMENT) {
+		
+		fbo.getTexture().drawSubsection(0, 0, wholeSize.x, section, 0, 0, wholeSize.x, section);
+		
+		if ((wholeSize.y - section) <= DRAW_SEGMENT) {
             loading = false;
         }
     }
     else {
-        fbo.draw(0,0);
+		
+		if (animStage == FADE_OUT ||
+			animStage == FADE_IN) {
+			
+			ofSetColor(255, 255, 255, fboAlpha*255);
+			fbo.draw(0,0);
+		} else if (animStage == FLY_IN) {
+			
+//			if (flyInImage.isAllocated()) {
+//
+//				flyInImage.getTexture().drawSubsection(flyInImagePosition.x, flyInImagePosition.y,
+//													  w, h,
+//													  featureRect.getX(), featureRect.getY(),
+//													   featureRect.getWidth(), featureRect.getHeight());
+//			} else {
+//				ofLogError() << "flyin image not alocated";
+//			}
+			
+		}
     }
+	
+	// draw image
+	if (flyInImage.isAllocated()) {
+		
+		flyInImage.getTexture().drawSubsection(flyInImagePosition.x, flyInImagePosition.y,
+											   w, h,
+											   featureRect.getX(), featureRect.getY(),
+											   featureRect.getWidth(), featureRect.getHeight());
+	}
+	
     ofPopMatrix();
 }
 
@@ -125,24 +237,39 @@ void ImageGrid::drawRow(int y, vector<User*>::iterator it, int num) {
 void ImageGrid::drawElement(User* user, int x, int y) {
     if (user != NULL) {
         View& view = user->getView(group->profile);
+		
+		if (user->isCurrent) {
+			ofLogNotice() << "current user position: " << x << " " << y;
+			currentUserPosition.set(x, y);
+		}
+		
         if (view.isActive()) {
             ofImage& face = view.getImage();
             ofRectangle box(view.getBounderyBox(group->feature));
             if (box.width > 0) {
                 box = adjustAspectRatio(box, aspectRatio);
+				
                 face.bind();
                 shader->begin();
                 if (user->isCurrent) {
-                     shader->setUniform1f("factor", 0.0);// color
+					shader->setUniform1f("factor", 1.0);// color
+					shader->setUniform1f("alpha", 1.0);// color
                 } else {
-                    shader->setUniform1f("factor", ofRandom(0.75, 1.0));
+                    shader->setUniform1f("factor", 1.0);
+					shader->setUniform1f("alpha", ofRandom(0.5, 0.7));
                 }
-                face.drawSubsection(x + ELEMENT_SIDE_PADDING, y, w, h, box.x, box.y, box.width, box.height);
+                face.drawSubsection(x + ELEMENT_SIDE_PADDING, y,
+									w, h,
+									box.x, box.y,
+									box.width, box.height);
                 shader->end();
                 face.unbind();
+				
                 drawScoreArea(user->getFactrorScore(), user->isCurrent, x , y + h);
             }
-        }
+		} else {
+			ofLogNotice() << "view not active!";
+		}
     }
 }
 

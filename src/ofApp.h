@@ -18,12 +18,12 @@
 
 class ofApp : public ofBaseApp{
 public:
-    static const int NUM_IMAGE_GRIDS = 8;
+    static const int NUM_IMAGE_GRIDS = 10;
     //static const int NUM_GROUPS = 8;
     const long VIDEO_GRID_REFRESH = 2000;
     static const long PRESENTATION_UPDATE_REFRESH = 30000;
     static const int MUGSHOT_REFRESH = 10000;
-    static const int CURRENT_USER_REFRESH = 6000;// 120000
+    static const int CURRENT_USER_REFRESH = 10000;// 120000
     void setup();
     void exit();
     void update();
@@ -38,7 +38,10 @@ public:
     void drawGridPage();
 	void drawBg();
 	
-	void setFeatureToFocues(View::Features);
+	void setFeatureToFocus(View::Features);
+	void selectNewFeature();
+	void selectFeature(View::Features);
+	void selectNextUser(bool random = false);
 
 
     ofxFaceTracker2 frontTracker;
@@ -61,6 +64,7 @@ public:
     Mugshot* currMugshot;
     
     ofPoint  getGridLocation();
+	void mugshotIntroAnimationDone();
     
     //ofFbo gridFbo;
     int gridSize = 600;
@@ -88,7 +92,11 @@ public:
 	View::Features currentFeatureToFocus;
 	float gridY = 0.0;
 	shared_ptr<TWEEN::Tween> gridTween;
-	
+	ofImage partImage;
+	ofRectangle featureRect;
+	bool autoupdateFeatures = false;
 	//
 	ofFbo outputFbo;
+	bool scaleOutput = true;
+	float gridScale = 0.66;
 };

@@ -50,7 +50,8 @@ public:
 		allUsers = newUsers;
 	};
 	
-	void getGridUsers(int usersPerLevel, vector<User*>& outUsers);
+	// returns current user
+	User* getGridUsers(int usersPerLevel, vector<User*>& outUsers, int& outIndex);
 	
 	void clear() {
 		for (int i = 0; i < numLevels; i++) {
@@ -58,6 +59,10 @@ public:
 			levelScores[i] = 0.;
 		}
 	};
+	
+	View::Features getFeature() {
+		return feature;
+	}
 	
     //static const int NUM_LEVELS = 5;
     View::Features feature;
