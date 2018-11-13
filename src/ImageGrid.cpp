@@ -15,8 +15,6 @@
 
 static void myCB_FadeoutDone(void* ptr) {
 	
-	ofLogNotice() << "fadeout done";
-	
 	if (ptr) {
 		ImageGrid* ms = (ImageGrid*)ptr;
 		ms->update();
@@ -24,9 +22,7 @@ static void myCB_FadeoutDone(void* ptr) {
 }
 
 static void myCB_FlyDone(void* ptr) {
-	
-	ofLogNotice() << "fly done";
-	
+
 	if (ptr) {
 		ImageGrid* ms = (ImageGrid*)ptr;
 		ms->resetLoading();
@@ -96,12 +92,6 @@ void ImageGrid::update() {
 	int currentUserIndex;
     currentUser = group->getGridUsers(userPerLevel, users, currentUserIndex);
 	
-//	// get position for current user based in the index
-//	ofLogNotice() << "currentUserIndex: " << currentUserIndex;
-//	if (currentUserIndex >= 0) {
-//
-//	}
-	
 	ofPushStyle();
 	{
 		ofClear(ofColor::black);
@@ -134,7 +124,6 @@ void ImageGrid::update() {
 	flyInImage = view.getImage();
 	featureRect = ofRectangle(view.parts[group->getFeature()]);
 	flyingImageImageOffset = ofPoint(featureRect.x, featureRect.y);
-	ofLogNotice() << "imagegrid featureRect: " << ofToString(featureRect);
 	
 	// get face
 	ofRectangle faceRec(view.parts[View::HEAD]);
@@ -186,8 +175,8 @@ void ImageGrid::update() {
 	
 	ofRectangle target_rect = ofRectangle(ImageGrid::adjustAspectRatio(fr_copy, (float)w/(float)h));
 	
-	float width_dist = (target_rect.width - featureRect.width) / 2.0;
-	float height_dist = (target_rect.height - featureRect.height) / 2.0;
+	float width_dist = (target_rect.width - featureRect.width);
+	float height_dist = (target_rect.height - featureRect.height);
 	
 	ofPoint target_rect_size(featureRect.width+width_dist, featureRect.height+height_dist);
 
@@ -199,14 +188,17 @@ void ImageGrid::update() {
 											 TWEEN::Ease::Quadratic::Out);
 	
 	ofPoint start_pos(featureRect.x, featureRect.y);
-	
-	ofPoint target_rect_pos(featureRect.x-width_dist, featureRect.y-height_dist);
+	ofPoint target_rect_pos(featureRect.x-(width_dist/2.0), featureRect.y-(height_dist/2.0));
 	auto tween_rect_pos = tweenManager.addTween(flyingImageRectPos,
 											start_pos,
 											target_rect_pos,
 											3.0,
 											0.0,
 											TWEEN::Ease::Quadratic::Out);
+	
+	ofLogNotice() << "imagegrid featureRect: " << ofToString(featureRect);
+	ofLogNotice() << "imagegrid target_Rect: " << ofToString(target_rect_pos) << " : " << ofToString(target_rect_size);
+	
 	
 	
 	tween->onComplete(myCB_FlyDone, this);
@@ -218,11 +210,7 @@ void ImageGrid::update() {
 	
 	//----------------------------------------
 	animStage = FLY_IN;
-	
-	// signal mugshot to hide image!
-	if (appcontroller) {
-		appcontroller->signalCurrentMugshotImageOff();
-	}
+	signalOnNextRender = 0;
 }
 
 void ImageGrid::calculateSizes() {
@@ -308,7 +296,7 @@ void ImageGrid::draw(int x, int y) {
 
 				flyInImage.drawSubsection(flyingImageImageOffset.x, flyingImageImageOffset.y,
 										  flyingImageSize.x, flyingImageSize.y,
-										  featureRect.x, featureRect.y,
+										  flyingImageRectPos.x, flyingImageRectPos.y,
 										  flyingImageRectSize.x, flyingImageRectSize.y);
 
 				shader->end();
@@ -320,6 +308,16 @@ void ImageGrid::draw(int x, int y) {
 			}
 			ofPopStyle();
 			ofPopMatrix();
+			
+			//---
+			if (signalOnNextRender > -1 && ++signalOnNextRender == 1) {
+				signalOnNextRender = -1;
+				
+				// signal mugshot to hide image!
+				if (appcontroller) {
+					appcontroller->signalCurrentMugshotImageOff();
+				}
+			}
 		}
 	}
     ofPopMatrix();
@@ -361,7 +359,7 @@ void ImageGrid::drawElement(User* user, int x, int y) {
         View& view = user->getView(group->profile);
 		
 		if (user->isCurrent) {
-			ofLogNotice() << "current user position: " << x << " " << y;
+//			ofLogNotice() << "current user position: " << x << " " << y;
 			currentUserPosition.set(x*GRID_SCALE, y*GRID_SCALE);
 		}
 		

@@ -122,6 +122,7 @@ public:
 	ofRectangle faceBox;
 	ofPoint partScale;
 	ofApp* appcontroller;
+	int signalOnNextRender = -1;
 };
 #endif /* ImageGrid_hpp */
 
