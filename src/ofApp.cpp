@@ -74,11 +74,12 @@ void ofApp::setup(){
                                          false, // is profile?
                                          7); //number of levels
 	
-    grids[View::FORHEAD].setup(&sepiaShader, // shader
+	grids[View::FORHEAD].setup(this,
+							   &sepiaShader, // shader
 							   group, // newly created group
-							   204, 112, // width and height of element
+							   196, 94, // width and height of element
 							   1, // user per level
-							   {1728 / gridScale, 149 / gridScale}, // start position for flying in image
+							   {1731, 152}, // start position for flying in image
 							   1); // scale
 	
 	// grids[0].Y_SPACING = 0;
@@ -89,11 +90,12 @@ void ofApp::setup(){
                                   Group::GENERIC,
                                   false,
                                   4);
-    grids[View::HEAD].setup(&sepiaShader,
+    grids[View::HEAD].setup(this,
+							&sepiaShader,
 							group,
-							110, 110,
+							110, 100,
 							5,
-							{698 / gridScale, -40 / gridScale}, // start position for flying in image
+							{700, -37}, // start position for flying in image
 							1);
     
     
@@ -102,11 +104,12 @@ void ofApp::setup(){
                                   Group::GENERIC,
                                   false,
                                   5);
-    grids[View::NOSE].setup(&sepiaShader,
+	grids[View::NOSE].setup(this,
+							&sepiaShader,
 							group,
 							80, 80,
 							7,
-							{1668 / gridScale, 97 / gridScale}, // start position for flying in image
+							{1563, -14}, //{1668 / 1.0, 97 / 1.0}, // start position for flying in image
 							1);
     
     group = groupManager.groupFactory(
@@ -114,11 +117,12 @@ void ofApp::setup(){
                                   Group::GENERIC,
                                   false,
                                   3);
-    grids[View::MOUTH].setup(&sepiaShader,
+	grids[View::MOUTH].setup(this,
+							 &sepiaShader,
 							 group,
 							 110, 110,
 							 5,
-							 {1215 / gridScale, 47 / gridScale}, // start position for flying in image
+							 {1131, -182}, //{1215 / 1.0, 47 / 1.0}, // start position for flying in image
 							 1);
     
     group = groupManager.groupFactory(
@@ -126,11 +130,12 @@ void ofApp::setup(){
                                   Group::GENERIC,
                                   false,
                                   6);
-    grids[View::EYES].setup(&sepiaShader,
+	grids[View::EYES].setup(this,
+							&sepiaShader,
 							group,
 							196, 87,
 							3,
-							{2058 / gridScale, -73 / gridScale}, // start position for flying in image
+							{1998, -180}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
 							1);
 	
 	
@@ -163,7 +168,7 @@ void ofApp::setup(){
         //grids[6].update();
 
 
-//        currMugshot->update(View::HEAD);
+        currMugshot->update(View::HEAD);
 		currMugshot->animate(0);
 
 		// if animation is done (Mugshot::ANIMATION_TIME = 1)
@@ -350,99 +355,55 @@ void ofApp::animateMagshots() {
     }
 }
 
+void ofApp::signalCurrentMugshotImageOff() {
+	if (currMugshot) {
+		currMugshot->resetFaceImage();
+	}
+}
+
 //--------------------------------------------------------------
 void ofApp::draw(){
 
 	outputFbo.begin();
-	
-	ofClear(ofColor::aquamarine);
-//    drawBg();
-	
+	ofClear(ofColor::black);
 	drawMugshotPage();
 	drawGridPage();
-	
-    if (currentUser != NULL) {
-
-        /*      //if (frontTracker.size()) {
-         drawVideo(frontPlayer, frontFace, 100, 100, 600, 600);
-         //}
-         //if (profileTracker.size()) {
-         drawVideo(profilePlayer, profileFace, 100, 1000, 600, 600);
-         //}
-         }
-         */
-
-//		drawMugshotPage();
-//
-////		cam.begin();
-//
-//		drawGridPage();
-		
-		/*
-		 ofPushMatrix();
-		 //ofScale(0.5, 0.5);;
-		 //ofTranslate(1920, 0);
-		 grids[0].draw(50, 50);
-		 grids[1].draw(450, 50);
-		 grids[2].draw(850, 50);
-		 grids[3].draw(50, 410);
-		 grids[4].draw(450, 500);
-		 grids[5].draw(850, 600);
-		 grids[6].draw(1200, 50);
-		 ofPopMatrix();
-		 */
-		
-//		cam.end();
-    }
-	
-	if (curFeature != View::Features::INVALID) {
-		if (partImage.isAllocated()) {
-			
-			//
-			partImage.getTexture().drawSubsection(0, 0,
-												  featureRect.getWidth(), featureRect.getHeight(),
-												  featureRect.getX(), featureRect.getY());			
-		}
-	}
 	
     outputFbo.end();
 	
 	// draw outputFbo
 	ofPushStyle();
 	ofPushMatrix();
-	
-	if (scaleOutput) {
-		ofScale(0.4);
+	{
+		if (scaleOutput) {
+			ofScale(0.4);
+		}
+		
+		int x = 0;
+		int y = 0;
+		ofSetColor(ofColor::white);
+		outputFbo.draw(x, y);
+		
+		ofSetColor(ofColor::red);
+		ofSetLineWidth(5);
+		ofNoFill();
+		ofDrawRectangle(x, y, SCREEN_WIDTH, outputFbo.getHeight());
+		ofDrawRectangle(x+SCREEN_WIDTH, y, SCREEN_WIDTH, outputFbo.getHeight());
 	}
-	
-	int x = 0;
-	int y = 0;
-	ofSetColor(ofColor::white);
-	outputFbo.draw(x, y);
-	
-	ofSetColor(ofColor::red);
-	ofSetLineWidth(5);
-	ofNoFill();
-	ofDrawRectangle(x, y, SCREEN_WIDTH, outputFbo.getHeight());
-	ofDrawRectangle(x+SCREEN_WIDTH, y, SCREEN_WIDTH, outputFbo.getHeight());
-	
 	ofPopMatrix();
 	ofPopStyle();
+	
 	
 	// draw debug strings
 	ofDrawBitmapString(ofToString(cam.getX()) + "  " + ofToString(cam.getY()) + "  " + ofToString(cam.getZ()), 50, 50);
 	ofDrawBitmapString(ofToString(cam.getFov()) + "  " + ofToString(cam.getDistance()) + "  " + ofToString(cam.getScale()), 50, 70);
-	
-//	 ofDrawBitmapString(ofToString(cam.sets) + "  " + ofToString(cam.getY()) + "  " + //ofToString(cam.getZ()), 50, 90);
 
 	ofDrawBitmapString("auto feature: " + ofToString(autoupdateFeatures), 50, 110);
-
 }
 
 void ofApp::drawBg() {
 	
 //	mugshotPage.draw(800, 100);
-
 	ofPushMatrix();
 	
 	if (mugshotIsLeft) {
@@ -460,77 +421,79 @@ void ofApp::drawBg() {
 void ofApp::drawMugshotPage() {
 	
 	ofPushMatrix();
-	
-	if (!mugshotIsLeft) {
-		ofTranslate(SCREEN_WIDTH, 0);
+	{
+		if (!mugshotIsLeft) {
+			ofTranslate(SCREEN_WIDTH, 0);
+		}
+		
+		vector<Mugshot*>::iterator i = mugshots.end();
+		while (i != mugshots.begin())
+		{
+			--i;
+			if (!((*i)->draw())) {
+				ofLogNotice() << "delete mugshot!";
+				delete(*i);
+				mugshots.erase(i);
+			}
+		}
 	}
-	
-    vector<Mugshot*>::iterator i = mugshots.end();
-    while (i != mugshots.begin())
-    {
-        --i;
-        if (!((*i)->draw())) {
-			ofLogNotice() << "delete mugshot!";
-            delete(*i);
-            mugshots.erase(i);
-        }
-    }
-  
-    //mugshotPage.draw(500, 0);
-  //  for (int i =  mugshots.size() -1; i >= 0; i--) {
-    //    mugshots[i]->draw();
-    //}
-	
 	ofPopMatrix();
 }
 
 void ofApp::drawGridPage() {
 	
     ofPushMatrix();
-	
-	if (mugshotIsLeft) {
-		ofTranslate(SCREEN_WIDTH, 0);
+	{
+		if (mugshotIsLeft) {
+			ofTranslate(SCREEN_WIDTH, 0);
+		}
+		
+		ofTranslate(30, gridY);
+		
+		// ofTranslate(30, -1304);
+		ofScale(GRID_SCALE);
+		
+		table_bg.draw(0, 0);
+		
+		// be aware of render order!
+		grids[View::HEAD].draw(2055, 1266); // HEAD
+		grids[View::MOUTH].draw(1403, 849); // MOUTH
+		grids[View::NOSE].draw(748, 1230); // NOSE
+		grids[View::FORHEAD].draw(494, 904); // FOREHEAD
+		grids[View::EYES].draw(90, 2770); // EYES
+
+		// unscaled version
+//		grids[View::HEAD].draw(1356, 835);//2055, 1266); // HEAD
+//		grids[View::MOUTH].draw(926, 560);//1403, 849); // MOUTH
+//		grids[View::NOSE].draw(493, 812);//748, 1230); // NOSE
+//		grids[View::FORHEAD].draw(326, 596);//494, 904); // FOREHEAD
+//		grids[View::EYES].draw(59, 1828);//90, 2770); // EYES
+		
+		
+		//    tableHeader.draw(0, 0);
+		//    grids[0].draw(0, tableHeader.getHeight());
+		//    grids[1].draw(grids[0].getSize()[0]+25, tableHeader.getHeight());
+		//    grids[2].draw(grids[0].getSize()[0] + grids[1].getSize()[0]+50, tableHeader.getHeight());
+		//    grids[3].draw(grids[0].getSize()[0] + grids[1].getSize()[0]+ grids[2].getSize()[0]+80, tableHeader.getHeight());
+		//    grids[3].draw(50, 780);
+		//    grids[4].draw(0, tableHeader.getHeight()+grids[0].getSize()[1]+5);
+		//    grids[5].draw(grids[0].getSize()[0]+25, tableHeader.getHeight()+grids[1].getSize()[1]+5);
+		//    grids[6].draw(grids[0].getSize()[0] + grids[1].getSize()[0]+50, tableHeader.getHeight()+grids[2].getSize()[1]+5);
+		//    grids[4].draw(845, 910);
+		//    grids[5].draw(1630, 1070);
+		//    grids[6].draw(2290, 53);
+		
+		//    ofTranslate(0, 0);
+		//    ofScale(0.66);
+		
+		//    grids[0].draw(50, 50);
+		//    grids[1].draw(840, 46);
+		//    grids[2].draw(1630, 50);
+		//    grids[3].draw(50, 780);
+		//    grids[4].draw(845, 910);
+		//    grids[5].draw(1630, 1070);
+		//    grids[6].draw(2290, 53);
 	}
-	
-	ofTranslate(30, gridY);
-	
-    // ofTranslate(30, -1304);
-    ofScale(gridScale);
-	
-	
-    table_bg.draw(0, 0);
-	
-	grids[View::FORHEAD].draw(494, 904); // FOREHEAD
-    grids[View::HEAD].draw(2055, 1266); // HEAD
-	grids[View::NOSE].draw(748, 1230); // NOSE
-    grids[View::MOUTH].draw(1403, 849); // MOUTH
-    grids[View::EYES].draw(90, 2770); // EYES
-    
-    
-    //    tableHeader.draw(0, 0);
-    //    grids[0].draw(0, tableHeader.getHeight());
-    //    grids[1].draw(grids[0].getSize()[0]+25, tableHeader.getHeight());
-    //    grids[2].draw(grids[0].getSize()[0] + grids[1].getSize()[0]+50, tableHeader.getHeight());
-    //    grids[3].draw(grids[0].getSize()[0] + grids[1].getSize()[0]+ grids[2].getSize()[0]+80, tableHeader.getHeight());
-    //    grids[3].draw(50, 780);
-    //    grids[4].draw(0, tableHeader.getHeight()+grids[0].getSize()[1]+5);
-    //    grids[5].draw(grids[0].getSize()[0]+25, tableHeader.getHeight()+grids[1].getSize()[1]+5);
-    //    grids[6].draw(grids[0].getSize()[0] + grids[1].getSize()[0]+50, tableHeader.getHeight()+grids[2].getSize()[1]+5);
-    //    grids[4].draw(845, 910);
-    //    grids[5].draw(1630, 1070);
-    //    grids[6].draw(2290, 53);
-    
-    //    ofTranslate(0, 0);
-    //    ofScale(0.66);
-    
-    //    grids[0].draw(50, 50);
-    //    grids[1].draw(840, 46);
-    //    grids[2].draw(1630, 50);
-    //    grids[3].draw(50, 780);
-    //    grids[4].draw(845, 910);
-    //    grids[5].draw(1630, 1070);
-    //    grids[6].draw(2290, 53);
-    
     ofPopMatrix();
 }
 

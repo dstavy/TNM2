@@ -13,8 +13,8 @@
 #include "ImageGrid.hpp"
 #include "Mugshot.hpp"
 #include "Tweener.h"
+#include "Globals.h"
 
-#define SCREEN_WIDTH 1920
 
 class ofApp : public ofBaseApp{
 public:
@@ -24,6 +24,7 @@ public:
     static const long PRESENTATION_UPDATE_REFRESH = 30000;
     static const int MUGSHOT_REFRESH = 10000;
     static const int CURRENT_USER_REFRESH = 10000;// 120000
+	
     void setup();
     void exit();
     void update();
@@ -65,6 +66,7 @@ public:
     
     ofPoint  getGridLocation();
 	void mugshotIntroAnimationDone();
+	void signalCurrentMugshotImageOff();
     
     //ofFbo gridFbo;
     int gridSize = 600;
@@ -98,5 +100,5 @@ public:
 	//
 	ofFbo outputFbo;
 	bool scaleOutput = true;
-	float gridScale = 0.66;
+	
 };

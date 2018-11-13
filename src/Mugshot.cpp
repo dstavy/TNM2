@@ -32,6 +32,7 @@ const static ofPoint apparent_age_pos = {720, 115, 0};
 const static ofPoint examined_1_pos = {120, 796, 0};
 const static ofPoint examined_2_pos = {236, 792, 0};
 
+static ofImage bgImage;
 
 static void myCompleteFunc(void* ptr) {
 	if (ptr) {
@@ -43,10 +44,18 @@ static void myCompleteFunc(void* ptr) {
 
 Mugshot::Mugshot(ofShader* shader, User* user, ofApp* app) {
 	
-	appcontroller = app;
+	this->shader = shader;
+	this->user = user;
+	this->appcontroller = app;
 	
-	// load background image (card)
-	bgImage.load("Assets/sample_sheet.png");
+	if (!bgImage.isAllocated()) {
+		bgImage.load("Assets/sample_sheet.png");
+	}
+	
+	firstTime = true;
+	x = START_X;
+	y = ofGetHeight();
+
 	
 	bgFbo.allocate(bgImage.getWidth(), bgImage.getHeight(), GL_RGBA);
 	drawBackground(user);
@@ -59,11 +68,11 @@ Mugshot::Mugshot(ofShader* shader, User* user, ofApp* app) {
 	faceoverlayFbo.allocate(MG_WIDTH, MG_HEIGHT, GL_RGBA);
 	
 	// render overlay fbo
-	View& view = user->getView(false);
+	View& view = this->user->getView(false);
 	// get face
 	ofImage& face = view.getImage();
 	ofRectangle faceRec(view.parts[View::HEAD]);
-	ofRectangle box(ImageGrid::adjustAspectRatio(faceRec, ((float)MG_WIDTH/(float)MG_HEIGHT) ));
+	ofRectangle box(ImageGrid::adjustAspectRatio(faceRec, MG_ASPECT_RATIO));
 	
 	faceoverlayFbo.begin();
 	{
@@ -84,20 +93,12 @@ Mugshot::Mugshot(ofShader* shader, User* user, ofApp* app) {
     ofClear(0,0,0,0);
     fbo.end();
 	
-    this->shader = shader;
-    this->user = user;
-	
-    firstTime = true;
-    x = START_X;
-    y = ofGetHeight();
-   // pos = glm::vec3(x, y, rotation);
-	
-	resetFeatures();
+    resetFeatures();
 }
 
 void Mugshot::resetFeatures() {
 	partsToVisit.clear();
-	for (int i=0; i<5; i++) {
+	for (int i=4; i>=0; i--) {
 		partsToVisit.push_back(i);
 	}
 }
@@ -107,9 +108,9 @@ View::Features Mugshot::selectNextFeature() {
 	if (partsToVisit.size() == 0) {
 		return View::Features::INVALID;
 	}
-	int f = partsToVisit[0];
+	View::Features new_feature = (View::Features)partsToVisit[0];
 	partsToVisit.erase (partsToVisit.begin());
-	return (View::Features)f;
+	return new_feature;
 	
 //	int id = (int)(floor(ofRandom(partsToVisit.size())));
 //	int f = partsToVisit[id];
@@ -154,110 +155,100 @@ void Mugshot::drawBackground(User* user) {
 void Mugshot::update(View::Features feature) {
 	
 	currentFeature = feature;
-	
-    float aspectRatio = (float)MG_WIDTH/(float)MG_HEIGHT;
     shared_ptr<ofxSmartFont> font = ofxSmartFont::get("CrimsonText700Mugshot");
-	
-    bool profile = false;
-	View& view = user->getView(profile);
+	View& view = user->getView(false);
 	
     if (view.isActive()) {
 		
 		// get face
-		ofImage& face = view.getImage();
+		face = view.getImage();
 		ofRectangle faceRec(view.parts[View::HEAD]);
-		
-//      faceRec.x += faceRec.x/4;
-//      faceRec.width -= faceRec.x/4;
-//      faceRec.y -= faceRec.x/8;
-//      faceRec.width += faceRec.x/2;
-		ofRectangle box(ImageGrid::adjustAspectRatio(faceRec, aspectRatio));
+		faceBox = ofRectangle(ImageGrid::adjustAspectRatio(faceRec, MG_ASPECT_RATIO));
+		partScale = ofPoint((float)MG_WIDTH/faceBox.width, (float)MG_HEIGHT/faceBox.height);
 		
 		//
 		fbo.begin();
-		
-		// draw background
-		ofEnableAlphaBlending();
-		bgFbo.draw(0, 0);
-		
-		//--------------------------------
-		// draw face (right side) - without markers
-        face.bind();
-        shader->begin();
-        shader->setUniform1f("factor", 0.9); // SET A UNIFORM
-		shader->setUniform1f("alpha", 1.0); // SET A UNIFORM
-        face.drawSubsection(dropshadow_w + MG_CARD_INSET_X + MG_WIDTH + MG_SPACE, 238+dropshadow_h,
-							MG_WIDTH, MG_HEIGHT,
-							box.x , box.y, box.width, box.height);
-        shader->end();
-        face.unbind();
-		
-        //ofPushMatrix();
-        //ofScale( (float)mugSize/box.width, (float)MG_HEIGHT/box.height);
-        //ofTranslate(-box.x, -box.y);
-        //drawLettersProfile(view.parts, view.getLandmarks(), font);
-        //ofPopMatrix();
-		
-   //  }
-    
-    // profile = false;
-    // view = user->getView(profile);
-    // if (view.isActive()) {
-		
-		//  ofImage& face = view.getImage();
-	   	//  ofRectangle& box = ImageGrid::adjustAspectRatio(view.parts[View::HEAD], aspectRatio);
-		
-		//--------------------------------
-		// draw darker version of image
-		facecutFbo.begin();
 		{
-			ofClear(0, 0, 0);
-			ofSetColor(127);
+			// draw background
+			ofEnableAlphaBlending();
+			bgFbo.draw(0, 0);
 			
-			// draw face
+			//--------------------------------
+			// draw face (right side) - without markers
 			face.bind();
 			shader->begin();
 			shader->setUniform1f("factor", 0.9); // SET A UNIFORM
-			shader->setUniform1f("alpha", 0.5); // SET A UNIFORM
-			face.drawSubsection(0, 0,
+			shader->setUniform1f("alpha", 1.0); // SET A UNIFORM
+			face.drawSubsection(dropshadow_w + MG_CARD_INSET_X + MG_WIDTH + MG_SPACE, 238+dropshadow_h,
 								MG_WIDTH, MG_HEIGHT,
-								box.x, box.y, box.width, box.height);
+								faceBox.x , faceBox.y, faceBox.width, faceBox.height);
 			shader->end();
 			face.unbind();
 			
-			ofSetColor(255);
+			//ofPushMatrix();
+			//ofScale( (float)mugSize/box.width, (float)MG_HEIGHT/box.height);
+			//ofTranslate(-box.x, -box.y);
+			//drawLettersProfile(view.parts, view.getLandmarks(), font);
+			//ofPopMatrix();
 			
-			if (currentFeature != View::Features::INVALID) {
-				// overlay selected feature with dark frame
-				// undarkened part has to be drawn from outside this!
-				ofPushMatrix();
-				ofRectangle& part = view.parts[currentFeature];
-				ofColor dark(0,0,0,90);
-				ofPath path;
-				//			path.rectangle(box);
-				//			path.rectangle(part);
-				//			ofTranslate(0, 0);
-				ofScale( (float)MG_WIDTH/box.width, (float)MG_HEIGHT/box.height);
-				ofTranslate(-box.x, -box.y);
-				path.setFillColor(dark);
-				path.setStrokeColor(ofColor::black);
-				path.setStrokeWidth(20);
-				//			path.rectangle(box);
-				path.rectangle(part);
-				ofEnableAlphaBlending();
-				path.draw();
-				ofDisableAlphaBlending();
-				//ofTranslate(mugSize + MG_SPACE, 0);
-				//			drawLettersFront(view.parts, view.getLandmarks(), font);
-				ofPopMatrix();
+	   //  }
+		
+		// profile = false;
+		// view = user->getView(profile);
+		// if (view.isActive()) {
+			
+			//  ofImage& face = view.getImage();
+			//  ofRectangle& box = ImageGrid::adjustAspectRatio(view.parts[View::HEAD], aspectRatio);
+			
+			//--------------------------------
+			// draw darker version of image
+			facecutFbo.begin();
+			{
+				ofClear(0, 0, 0);
+				ofSetColor(127);
+				
+				// draw face
+				face.bind();
+				shader->begin();
+				shader->setUniform1f("factor", 0.9); // SET A UNIFORM
+				shader->setUniform1f("alpha", 0.5); // SET A UNIFORM
+				face.drawSubsection(0, 0,
+									MG_WIDTH, MG_HEIGHT,
+									faceBox.x, faceBox.y, faceBox.width, faceBox.height);
+				shader->end();
+				face.unbind();
+				
+				ofSetColor(255);
+				
+				if (currentFeature != View::Features::INVALID) {
+					
+					featureRect = ofRectangle(view.parts[currentFeature]);
+					
+					ofLogNotice() << "mugshot featureRect: " << ofToString(featureRect);
+					
+					// overlay selected feature with dark frame
+					// undarkened part has to be drawn from outside this!
+					ofPushMatrix();
+					{
+						ofEnableAlphaBlending();
+						
+						ofScale(partScale);
+						ofTranslate(-faceBox.x, -faceBox.y);
+						
+						ofPath path;
+						path.setFillColor(ofColor(0,0,0,90));
+						path.setStrokeColor(ofColor::black);
+						path.setStrokeWidth(20);
+						path.rectangle(featureRect);
+						path.draw();
+					}
+					ofPopMatrix();
+				}
 			}
+			facecutFbo.end();
 			
-			
+			facecutFbo.draw(dropshadow_w + MG_CARD_INSET_X, 298);
 		}
-		facecutFbo.end();
-		
-		facecutFbo.draw(dropshadow_w + MG_CARD_INSET_X, 298);
-		
         fbo.end();
      }
 // ofPopMatrix();
@@ -270,21 +261,63 @@ bool Mugshot::draw() {
 	}
 	else {
 		ofPushMatrix();
+		{
+			ofTranslate(x, y);
+			ofScale(scale);
+			ofRotateDeg(rotation);
+			
+			// draw card
+			fbo.draw(0, 0);
+			
+			// -> need to draw facepart
+			
+			ofPushMatrix();
+			{
+				// move to facecutFbo
+				ofTranslate(dropshadow_w + MG_CARD_INSET_X, 256);
+				
+				ofScale(partScale);
+				ofTranslate(-faceBox.x, -faceBox.y);
+				
+				// draw face overlay
+				if (face.isAllocated()) {
+					
+					face.bind();
+					shader->begin();
+					shader->setUniform1f("factor", 0.9); // SET A UNIFORM
+					shader->setUniform1f("alpha", 1.0); // SET A UNIFORM
+					
+					face.drawSubsection(featureRect.x, featureRect.y,
+										(int)featureRect.width, (int)featureRect.height,
+										featureRect.x, featureRect.y,
+										(int)featureRect.width, (int)featureRect.height);
+					
+					shader->end();
+					face.unbind();
+				}
+			}
+			ofPopMatrix();
+		}
+		ofPopMatrix();
+		
+		// draw overlay
+		drawOverlay();
+	}
+	
+	return true;
+}
+
+void Mugshot::drawOverlay() {
+	ofPushMatrix();
+	{
 		ofTranslate(x, y);
 		ofScale(scale);
 		ofRotateDeg(rotation);
 		
-		// draw card
-		fbo.draw(0, 0);
-		
-		// -> need to draw facepart
-		
 		// draw overlay
 		faceoverlayFbo.draw(dropshadow_w + MG_CARD_INSET_X, 298);
-		ofPopMatrix();
 	}
-	
-	return true;
+	ofPopMatrix();
 }
 
 #ifdef TARGET_OSX

@@ -8,8 +8,13 @@
 #ifndef View_hpp
 #define View_hpp
 
-#include "ofMain.h"
+#include <string>
+
+#include "ofImage.h"
+#include "ofRectangle.h"
 #include "ofxFaceTracker2.h"
+
+using namespace std;
 
 static float gridlocation[] = {-450.0, -400.0, -450.0, -30.0, -1300.0, -300.0, 0.0};
 
@@ -39,7 +44,7 @@ public:
             case MOUTH:     return "Mouth";// return "Bouche";
             case LEFT_EAR:
             case RIGHT_EAR:
-                return "Ear";
+				return "Ear";
             default:        return "";
         }
     };

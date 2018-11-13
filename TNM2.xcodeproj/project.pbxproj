@@ -578,6 +578,7 @@
 		F50A86EB81FEFCD97EF9E14E /* color.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = color.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/cuda/color.hpp; sourceTree = SOURCE_ROOT; };
 		F56B0EF62199A89B00E1B248 /* Utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Utils.cpp; sourceTree = "<group>"; };
 		F56B0EF72199A89B00E1B248 /* Utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Utils.hpp; sourceTree = "<group>"; };
+		F5944E56219B54E8009A05D1 /* Globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
 		F59EB6ED6E1911AEDF5D637E /* reduce_key_val.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = reduce_key_val.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/cuda/detail/reduce_key_val.hpp; sourceTree = SOURCE_ROOT; };
 		F5D15BBB907129000AE70363 /* datamov_utils.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = datamov_utils.hpp; path = ../../../addons/ofxOpenCv/libs/opencv/include/opencv2/core/cuda/datamov_utils.hpp; sourceTree = SOURCE_ROOT; };
 		F7269F96AC34A2B44A680D03 /* ofxCvFloatImage.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxCvFloatImage.h; path = ../../../addons/ofxOpenCv/src/ofxCvFloatImage.h; sourceTree = SOURCE_ROOT; };
@@ -1762,6 +1763,7 @@
 				BF8686BA2ED50CC543414929 /* Analyzer.cpp */,
 				B967E5DD0359F32FE857DFA5 /* ImageGrid.hpp */,
 				04C1FA983B64966CB756736E /* ImageGrid.cpp */,
+				F5944E56219B54E8009A05D1 /* Globals.h */,
 				D26FC12D6D0DBA1F985D30FE /* View.hpp */,
 				8FA6C28307B32753DFA04F7C /* View.cpp */,
 				8A73ACD4A7512BA21ADCC36B /* User.hpp */,

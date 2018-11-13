@@ -12,6 +12,8 @@
 #include "Group.hpp"
 #include "Tweener.h"
 
+class ofApp;
+
 class ImageGrid  {
 public:
 	
@@ -21,20 +23,21 @@ public:
 		FADE_IN,
 	};
 	
-	ImageGrid() {}
+	ImageGrid() {	}
 
 	~ImageGrid() {
 		fbo.clear();
 	};
 	
-    void setup(ofShader* shader,
+    void setup(ofApp* app,
+			   ofShader* shader,
 			   Group* group,
 			   int wElement,
 			   int hElement,
 			   int userPerLevel,
 			   ofPoint flyInStartPos,
 			   float scale = 1.0,
-			   int delayLoading = 100,
+			   int delayLoading = 40,
 			   string title = "",
 			   ofColor bg = ofColor::fromHex(0xe6e0d3));
 	
@@ -51,6 +54,7 @@ public:
 	};
 	
 	void reset();
+	void drawFlyingImage();
 	
 	
     int PADDING_ROW = 4;
@@ -102,13 +106,22 @@ public:
     int currElement = 1;
 	TWEEN::Manager tweenManager;
 	
-	ofPoint currentUserPosition;
+	ofPoint currentUserPosition; // target position for flying image
 	User* currentUser;
 	AnimationStage animStage;
 	ofImage flyInImage;
-	ofPoint flyInImagePosition;
-	ofRectangle featureRect;
 	ofPoint flyInStartPosition; // start-position depends on the feature
+	ofPoint flyInImagePosition; // current position
+	ofPoint flyingImageSize; // current size
+	ofPoint flyingImageRectSize;
+	ofPoint flyingImageRectPos;
+	ofPoint flyingImageImageOffset;
+	
+	ofRectangle featureRect;
+	
+	ofRectangle faceBox;
+	ofPoint partScale;
+	ofApp* appcontroller;
 };
 #endif /* ImageGrid_hpp */
 

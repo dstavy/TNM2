@@ -20,6 +20,7 @@ class Mugshot  {
 public:
     static const int MG_WIDTH = 306; // width of one mugshot
     static const int MG_HEIGHT = 342;
+	static constexpr float MG_ASPECT_RATIO = (float)MG_WIDTH/(float)MG_HEIGHT;
     static const int MG_SPACE = 2;
     static const int MG_X_MOVE = 500;
     static const int START_X =  65;
@@ -46,6 +47,10 @@ public:
 	View::Features selectNextFeature();
 	void resetFeatures();
 	void introAnimationDone();
+	void resetFaceImage() {
+		face = ofImage();
+	}
+	void drawOverlay();
 	
 #ifdef TARGET_OSX
 	
@@ -69,7 +74,6 @@ public:
 	//static const float MG_ASPECT_RATIO = 0.953271; //(float)(MG_WIDTH - MG_SPACE)/2. / MG_HEIGHT;
     
     ofFbo fbo; // overall composition
-	ofImage bgImage; // background image
 	ofFbo bgFbo;
 	ofFbo facecutFbo;
 	ofFbo faceoverlayFbo;
@@ -82,6 +86,10 @@ public:
 	vector<int> partsToVisit;
 	ofApp* appcontroller;
 	bool m_introAnimationDone = false;
+	ofImage face;
+	ofRectangle faceBox;
+	ofRectangle featureRect;
+	ofPoint partScale;
 };
 
 #endif /* Mugshotx_hpp */
