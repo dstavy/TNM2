@@ -1,5 +1,9 @@
 [
     {
+       "headHeight" : 285.6376953125,
+       "shouldersWidth" : 361.09619140625,
+       "torsoLength" : 527.01953125,
+       "totalHeight" : 1805.102416992188,
        "id" : "dan_1",
        "others" : [
           {
@@ -23,6 +27,10 @@
        "xScore" : 99
     },
     {
+      "headHeight" : 285.6376953125,
+      "shouldersWidth" : 361.09619140625,
+      "torsoLength" : 527.01953125,
+      "totalHeight" : 1805.102416992188,
        "id" : "dan_2",
        "others" : [
           {
@@ -46,6 +54,10 @@
        "xScore" : 89
     },
     {
+      "headHeight" : 285.6376953125,
+      "shouldersWidth" : 361.09619140625,
+      "torsoLength" : 527.01953125,
+      "totalHeight" : 1805.102416992188,
        "id" : "dan_3",
        "others" : [
           {
@@ -69,6 +81,10 @@
        "xScore" : 69
     },
     {
+      "headHeight" : 285.6376953125,
+      "shouldersWidth" : 361.09619140625,
+      "torsoLength" : 527.01953125,
+      "totalHeight" : 1805.102416992188,
        "id" : "bertillon_1",
        "others" : [
           {
@@ -92,6 +108,10 @@
        "xScore" : 58
     },
     {
+      "headHeight" : 285.6376953125,
+      "shouldersWidth" : 361.09619140625,
+      "torsoLength" : 527.01953125,
+      "totalHeight" : 1805.102416992188,
        "id" : "bertillon_2",
        "others" : [
           {
@@ -115,6 +135,10 @@
        "xScore" : 65
     },
     {
+      "headHeight" : 285.6376953125,
+      "shouldersWidth" : 361.09619140625,
+      "torsoLength" : 527.01953125,
+      "totalHeight" : 1805.102416992188,
        "id" : "mug_1",
        "others" : [
           {
@@ -138,6 +162,10 @@
        "xScore" : 20
     },
     {
+      "headHeight" : 285.6376953125,
+      "shouldersWidth" : 361.09619140625,
+      "torsoLength" : 527.01953125,
+      "totalHeight" : 1805.102416992188,
        "id" : "mug_2",
        "others" : [
           {
@@ -161,6 +189,10 @@
        "xScore" : 84
     },
     {
+      "headHeight" : 285.6376953125,
+      "shouldersWidth" : 361.09619140625,
+      "torsoLength" : 527.01953125,
+      "totalHeight" : 1805.102416992188,
        "id" : "mug_3",
        "others" : [
           {
@@ -184,6 +216,10 @@
        "xScore" : 97
     },
     {
+      "headHeight" : 285.6376953125,
+      "shouldersWidth" : 361.09619140625,
+      "torsoLength" : 527.01953125,
+      "totalHeight" : 1805.102416992188,
        "id" : "mug_4",
        "others" : [
           {
@@ -207,6 +243,10 @@
        "xScore" : 50
     },
     {
+      "headHeight" : 285.6376953125,
+      "shouldersWidth" : 361.09619140625,
+      "torsoLength" : 527.01953125,
+      "totalHeight" : 1805.102416992188,
        "id" : "mug_5",
        "others" : [
           {
@@ -230,6 +270,10 @@
        "xScore" : 32
     },
     {
+      "headHeight" : 285.6376953125,
+      "shouldersWidth" : 361.09619140625,
+      "torsoLength" : 527.01953125,
+      "totalHeight" : 1805.102416992188,
        "id" : "mug_6",
        "others" : [
           {
@@ -253,6 +297,10 @@
        "xScore" : 6
     },
     {
+      "headHeight" : 285.6376953125,
+      "shouldersWidth" : 361.09619140625,
+      "torsoLength" : 527.01953125,
+      "totalHeight" : 1805.102416992188,
        "id" : "mug_7",
        "others" : [
           {
@@ -276,6 +324,10 @@
        "xScore" : 52
     },
     {
+      "headHeight" : 285.6376953125,
+      "shouldersWidth" : 361.09619140625,
+      "torsoLength" : 527.01953125,
+      "totalHeight" : 1805.102416992188,
        "id" : "mug_8",
        "others" : [
           {
@@ -299,4 +351,3 @@
        "xScore" : 45
     }
  ]
- 
