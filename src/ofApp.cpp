@@ -54,6 +54,7 @@ void ofApp::setup(){
     profileTracker.setup("Model/shape_predictor_68_face_landmarks.dat");
     frontTracker.setThreaded(false);
     profileTracker.setThreaded(false);
+	//frontTracker.setFaceDetectorImageSize(2940000);
     
     //frontTracker.setFaceRotation(90);
     //fprofileTracker.setFaceRotation(90);
@@ -141,7 +142,7 @@ void ofApp::setup(){
 	
     currentUser = NULL;
     //update
-    presentationUpdate.setup(&users, &frontPlayer, &profilePlayer, &frontTracker, &profileTracker, &groupManager);
+    presentationUpdate.setup(&users, &frontPlayer, &profilePlayer, &frontTracker, &frontTracker, &groupManager);
 	
 //	selectNextUser(true);
 	currentUser = presentationUpdate.update();
