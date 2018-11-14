@@ -18,7 +18,7 @@ int main( ){
 	
     settings.setSize(3840, 1080);
 	settings.decorated = false;
-	settings.setPosition(glm::vec2(0, 0));
+	settings.setPosition(glm::vec2(1920, 0));
     
 #ifdef DEBUG
     // settings.multiMonitorFullScreen = false;
