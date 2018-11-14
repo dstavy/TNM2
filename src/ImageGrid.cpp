@@ -17,16 +17,16 @@
 static void myCB_FadeoutDone(void* ptr) {
 	
 	if (ptr) {
-		ImageGrid* ms = (ImageGrid*)ptr;
-		ms->update();
+		ImageGrid* grid = (ImageGrid*)ptr;
+		grid->update();
 	}
 }
 
 static void myCB_FlyDone(void* ptr) {
 
 	if (ptr) {
-		ImageGrid* ms = (ImageGrid*)ptr;
-		ms->resetLoading();
+		ImageGrid* grid = (ImageGrid*)ptr;
+		grid->resetLoading();
 	}
 }
 
@@ -71,8 +71,9 @@ void ImageGrid::setup(ofApp* app,
 
 // call this to calculate where to draw next
 ofPoint ImageGrid::getSize() {
-    return ofPoint(wholeSize.x/scale, wholeSize.y/scale);
     ofLogNotice("Grid:" + getTitle() + "size: " + ofToString(wholeSize.x/scale) + " " + ofToString(wholeSize.y/scale));
+	
+	return ofPoint(wholeSize.x/scale, wholeSize.y/scale);
 }
 
 void ImageGrid::reset() {
@@ -195,8 +196,8 @@ void ImageGrid::update() {
 											0.0,
 											TWEEN::Ease::Quadratic::Out);
 	
-	ofLogNotice() << "imagegrid featureRect: " << ofToString(featureRect);
-	ofLogNotice() << "imagegrid target_Rect: " << ofToString(target_rect_pos) << " : " << ofToString(target_rect_size);
+//	ofLogNotice() << "imagegrid featureRect: " << ofToString(featureRect);
+//	ofLogNotice() << "imagegrid target_Rect: " << ofToString(target_rect_pos) << " : " << ofToString(target_rect_size);
 	
 	
 	
@@ -237,32 +238,23 @@ void ImageGrid::draw(int x, int y) {
 		// draw grid
 		if (loading) {
 			int section = floor((float)(ofGetElapsedTimeMillis() - loadingTime) / delayLoading) * DRAW_SEGMENT;
-			
+
 			fbo.getTexture().drawSubsection(0, 0, wholeSize.x, section, 0, 0, wholeSize.x, section);
-			
+
 			if ((wholeSize.y - section) <= DRAW_SEGMENT) {
 				loading = false;
 			}
 		}
 		else {
-			
+
 			if (animStage == FADE_OUT ||
 				animStage == FADE_IN) {
-				
+
 				ofSetColor(255, 255, 255, fboAlpha*255);
 				fbo.draw(0,0);
+
 			} else if (animStage == FLY_IN) {
-				
-				//			if (flyInImage.isAllocated()) {
-				//
-				//				flyInImage.getTexture().drawSubsection(flyInImagePosition.x, flyInImagePosition.y,
-				//													  w, h,
-				//													  featureRect.getX(), featureRect.getY(),
-				//													   featureRect.getWidth(), featureRect.getHeight());
-				//			} else {
-				//				ofLogError() << "flyin image not alocated";
-				//			}
-				
+
 			}
 		}
 		

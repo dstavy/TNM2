@@ -32,8 +32,8 @@ void ofApp::setup(){
     }
     
     
-    if (!sepiaShader.load("Shaders/sepia")) {
-        ofLogNotice("cant load Shaders/sepia");
+    if (!sepiaShader.load("shaders/sepia")) {
+        ofLogNotice("cant load shaders/sepia");
     }
     
     //frontPlayer.load("me_front.mov");    // Setup tracker
@@ -517,37 +517,39 @@ void ofApp::drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, in
         int boxSize = 400;
         ofColor dark(0,0,0,125);
         ofPath path;
+		
         /*
-         player.bind();
-         sepiaShader.begin();
-         player.getTexture().drawSubsection(x, y, w, h, face.x - 0.5* (w - face.width), face.y -  0.25* (h - face.height), w, h);
-         if ((ofGetElapsedTimeMillis() -  lastGridUpdate) > VIDEO_GRID_REFRESH) {
-         lastGridUpdate = ofGetElapsedTimeMillis();
-         ofPoint p = getGridLocation();
-         //   ofTranslate(1000, 100);
-         gridFbo.begin();
-         // ofPath path;
-         //ofFill();
-         //path.setFillColor(dark);
-         //path.setStrokeColor(ofColor::black);
-         //path.setStrokeWidth(10);
-         //path.rectangle(0, 0, gridSize, gridSize);
-         //path.rectangle(gridSize/3, gridSize/3, gridSize/3, gridSize/3);
-         //ofEnableAlphaBlending();
-         //ofEnableAlphaBlending() ;
-         // glBlendFunc( GL_ONE, GL_ZERO ) ;
-         // path.draw();
-         // ofDisableAlphaBlending();
-         //float aspect = boundBoxes[6].height /boundBoxes[6].width;
-         
-         player.getTexture().drawSubsection(p.x, p.y, gridSize/3, gridSize/3, face.x - 0.5*(face.height- face.width), face.y , face.height, face.height);
-         gridFbo.end();
-         gridFbo.draw ( 800, 100);
-         }
-         */
-        sepiaShader.end();
-        player.unbind();
-        
+        player.bind();
+        sepiaShader.begin();
+        player.getTexture().drawSubsection(x, y, w, h, face.x - 0.5* (w - face.width), face.y -  0.25* (h - face.height), w, h);
+        if ((ofGetElapsedTimeMillis() -  lastGridUpdate) > VIDEO_GRID_REFRESH) {
+        lastGridUpdate = ofGetElapsedTimeMillis();
+        ofPoint p = getGridLocation();
+        //   ofTranslate(1000, 100);
+        gridFbo.begin();
+        // ofPath path;
+        //ofFill();
+        //path.setFillColor(dark);
+        //path.setStrokeColor(ofColor::black);
+        //path.setStrokeWidth(10);
+        //path.rectangle(0, 0, gridSize, gridSize);
+        //path.rectangle(gridSize/3, gridSize/3, gridSize/3, gridSize/3);
+        //ofEnableAlphaBlending();
+        //ofEnableAlphaBlending() ;
+        // glBlendFunc( GL_ONE, GL_ZERO ) ;
+        // path.draw();
+        // ofDisableAlphaBlending();
+        //float aspect = boundBoxes[6].height /boundBoxes[6].width;
+		 
+        player.getTexture().drawSubsection(p.x, p.y, gridSize/3, gridSize/3, face.x - 0.5*(face.height- face.width), face.y , face.height, face.height);
+        gridFbo.end();
+        gridFbo.draw ( 800, 100);
+        }
+		 
+		sepiaShader.end();
+		player.unbind();
+        */
+		
         //ofPath path;
         path.clear();
         path.setFillColor(dark);
