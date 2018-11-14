@@ -55,7 +55,7 @@ void ofApp::setup(){
     profileTracker.setup("Model/shape_predictor_68_face_landmarks.dat");
     frontTracker.setThreaded(false);
     profileTracker.setThreaded(false);
-	//frontTracker.setFaceDetectorImageSize(2940000);
+	frontTracker.setFaceDetectorImageSize(735000);
     
     //frontTracker.setFaceRotation(90);
     //fprofileTracker.setFaceRotation(90);
