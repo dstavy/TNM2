@@ -404,6 +404,7 @@ void ofApp::signalCurrentMugshotImageOff() {
 void ofApp::draw(){
 
 	outputFbo.begin();
+
 	ofClear(ofColor::black);
 	drawMugshotPage();
 	drawGridPage();
@@ -429,6 +430,14 @@ void ofApp::draw(){
 		ofDrawRectangle(x, y, SCREEN_WIDTH, outputFbo.getHeight());
 		ofDrawRectangle(x+SCREEN_WIDTH, y, SCREEN_WIDTH, outputFbo.getHeight());
 #endif
+
+
+		// draw black-bar at right
+		ofSetColor(0);
+		int width = 42;
+		ofTranslate(ofGetWidth() - width + 5.02002, ofGetHeight() / 2.0);
+		ofRotateDeg(0.86);
+		ofDrawRectangle(0, -ofGetHeight()/2.0, width, ofGetHeight());
 	}
 	ofPopMatrix();
 	ofPopStyle();
@@ -626,6 +635,28 @@ ofPoint ofApp::getGridLocation() {
 }
 
 void ofApp::keyReleased(int key){
+
+	if (key == OF_KEY_UP) {
+
+		blackBarRotation += 0.01;
+		ofLogNotice() << "rot: " << blackBarRotation;
+	}
+	else if (key == OF_KEY_DOWN) {
+
+		blackBarRotation -= 0.01;
+		ofLogNotice() << "rot: " << blackBarRotation;
+	}
+	else if (key == OF_KEY_LEFT) {
+
+		blackBarX -= 0.01;
+		ofLogNotice() << "blackBarX: " << blackBarX;
+	}
+	else if (key == OF_KEY_RIGHT) {
+
+		blackBarX += 0.01;
+		ofLogNotice() << "blackBarX: " << blackBarX;
+	}
+
     if (key == 'f') {
         ofToggleFullscreen();
     }

@@ -118,6 +118,8 @@ public:
 	bool scaleOutput = true;
 	
 	RejectedNextUser rejectedNextUser = NONE;	
+	float blackBarRotation = 0.0;
+	float blackBarX = 0.0;
 
 
 private:
