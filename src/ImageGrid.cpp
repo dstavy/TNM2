@@ -94,6 +94,9 @@ void ImageGrid::update() {
 	int currentUserIndex;
     currentUser = group->getGridUsers(userPerLevel, users, currentUserIndex);
 	
+	currentUserPosition.x = -1;
+	currentUserPosition.y = -1;
+	
 	ofPushStyle();
 	{
 		ofClear(ofColor::black);
@@ -105,15 +108,16 @@ void ImageGrid::update() {
 			//    drawHeader();
 			//    y += HEADER_HEIGHT;
 			int y = (group->numLevels - 1) * (rawSize.y + Y_SPACING);
-			int rawMax = (group->numLevels * userPerLevel) % currElement;
 			for(int i = 0; i < group->numLevels; i++) {
 				drawRow(y, users.begin() + (i * userPerLevel), userPerLevel);
 				y -= rawSize.y + Y_SPACING;
 			}
-			int remain = currElement - (rawMax * userPerLevel);
-			if (remain > 0) {
-				drawRow(y, users.begin() + (remain * userPerLevel), remain);
-			}
+			
+//			int rawMax = (group->numLevels * userPerLevel) % currElement;
+//			int remain = currElement - (rawMax * userPerLevel);
+//			if (remain > 0) {
+//				drawRow(y, users.begin() + (remain * userPerLevel), remain);
+//			}
 		}
 		fbo.end();
 	}
@@ -349,8 +353,8 @@ void ImageGrid::drawElement(User* user, int x, int y) {
     if (user != NULL) {
         View& view = user->getView(group->profile);
 		
-		if (user->isCurrent) {
-//			ofLogNotice() << "current user position: " << x << " " << y;
+		if (user->isCurrent && currentUserPosition.x < 0) {
+			ofLogNotice() << "current user position: " << x << " " << y;
 			currentUserPosition.set(x*GRID_SCALE, y*GRID_SCALE);
 		}
 		
