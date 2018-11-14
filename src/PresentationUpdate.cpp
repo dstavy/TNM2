@@ -238,6 +238,7 @@ void PresentationUpdate::setUser(User* user, int vScore, int xScore, float shoul
 	user->shouldersWidth = shouldersWidth;
 	user->torsoLength = torsoLength;
 	user->torsoLength = torsoLength;
+	user->headHeight = headHeight;
 	updateUser(user, vScore, xScore);
 }
 
