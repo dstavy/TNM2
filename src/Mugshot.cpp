@@ -279,7 +279,7 @@ void Mugshot::drawFacecutFbo() {
 		face.bind();
 		shader->begin();
 		shader->setUniform1f("factor", 0.9); // SET A UNIFORM
-		shader->setUniform1f("alpha", 0.5); // SET A UNIFORM
+		shader->setUniform1f("alpha", 0.65); // SET A UNIFORM
 		face.drawSubsection(0, 0,
 							MG_WIDTH, MG_HEIGHT,
 							faceBox.x, faceBox.y, faceBox.width, faceBox.height);
@@ -325,7 +325,7 @@ bool Mugshot::draw() {
 				if ((currentFeature != View::Features::INVALID) && featureFrameAlpha > 0.0) {
 					// draw black frame
 					ofPath path;
-					path.setFillColor(ofColor(0,0,0,90*featureFrameAlpha));
+					path.setFillColor(ofColor(0,0,0,120*featureFrameAlpha));
 					path.setStrokeColor(ofColor(0,0,0,255*featureFrameAlpha));
 					path.setStrokeWidth(20);
 					path.rectangle(featureRect);

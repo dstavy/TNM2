@@ -116,12 +116,22 @@ ofPoint ImageGrid::getSize() {
 
 void ImageGrid::reset() {
 
-	float toA = 0.0;
-	auto tween = tweenManager.addTween(fboAlpha, fboAlpha, toA, 1.0, 0.0 , TWEEN::Ease::Quadratic::Out);
-	tween->onComplete(myCB_FadeoutDone, this);
-	tween->start();
+//	float toA = 0.0;
+//	auto tween = tweenManager.addTween(fboAlpha, fboAlpha, toA, 1.0, 0.0 , TWEEN::Ease::Quadratic::Out);
+//	tween->onComplete(myCB_FadeoutDone, this);
+//	tween->start();
 	
+	loadingTime = ofGetElapsedTimeMillis();
 	animStage = FADE_OUT;
+}
+
+void ImageGrid::resetLoading() {
+	if (animStage == FLY_IN) {
+		loading = true;
+		loadingTime = ofGetElapsedTimeMillis();
+		fboAlpha = 1.0;
+		animStage = FADE_IN;
+	}
 }
 
 void ImageGrid::update() {
@@ -133,14 +143,14 @@ void ImageGrid::update() {
 	currentUserPosition.x = -1;
 	currentUserPosition.y = -1;
 	
-	ofPushStyle();
-	{
-		ofClear(ofColor::black);
-		ofSetColor(bg);
-		ofFill();
-		
+//	ofPushStyle();
+//	{
 		fbo.begin();
 		{
+			ofClear(ofColor::black);
+			ofSetColor(bg);
+			ofFill();
+			
 			//    drawHeader();
 			//    y += HEADER_HEIGHT;
 			int y = (group->numLevels - 1) * (rawSize.y + Y_SPACING);
@@ -156,15 +166,15 @@ void ImageGrid::update() {
 //			}
 		}
 		fbo.end();
-	}
-    ofPopStyle();
+//	}
+//    ofPopStyle();
 	
 	
 	// set alpha, but also FLY_IN so we dont see the fbo yet
 	fboAlpha = 1.0;
 	imageAlpha = 0.0;
 	flyInImage = ofImage();
-	animStage = DELAY;
+	
 	
 	
 	// add a delay before starting fly-ing animation
@@ -177,7 +187,7 @@ void ImageGrid::update() {
 	tween_dummy->onComplete(myCB_DummyDone, this);
 	tween_dummy->start();
 	
-	animStage = INIT;
+	animStage = DELAY;
 }
 
 void ImageGrid::setupAnimation() {
@@ -205,20 +215,22 @@ void ImageGrid::startScaleUpFlyingImage() {
 	float anim_time = TIME_FEATURE_SCALE;
 	
 	//----------------------------------------
-	ofPoint target_scale(flyingImageSize.x * FEATURE_SCALE, flyingImageSize.y * FEATURE_SCALE);
+//	ofPoint target_scale(flyingImageSize.x * FEATURE_SCALE, flyingImageSize.y * FEATURE_SCALE);
+//	float x_d = (target_scale.x - flyingImageSize.x) / 2.0;
+//	float y_d = (target_scale.y - flyingImageSize.y) / 2.0;
+//	ofPoint target_position(flyInImagePosition.x - x_d, flyInImagePosition.y - y_d);
+
+	float diff = 10 / partScale.x;
 	
-	float x_d = (target_scale.x - flyingImageSize.x) / 2.0;
-	float y_d = (target_scale.y - flyingImageSize.y) / 2.0;
+	ofPoint target_scale(flyingImageSize.x + diff, flyingImageSize.y + diff);
+	ofPoint target_position(flyInImagePosition.x - diff/2.0, flyInImagePosition.y - diff/2.0);
 	
-	ofPoint target_position(flyInImagePosition.x - x_d, flyInImagePosition.y - y_d);
 	auto pos_scale = tweenManager.addTween(flyInImagePosition,
 											 flyInImagePosition,
 											 target_position,
 											 anim_time,
 											 0.0,
 											 TWEEN::Ease::Quadratic::InOut);
-	
-	
 	
 	
 	auto tween_scale = tweenManager.addTween(flyingImageSize,
@@ -320,15 +332,6 @@ void ImageGrid::startFlyingAnimation() {
 }
 
 
-void ImageGrid::resetLoading() {
-	if (animStage == FLY_IN) {
-		loading = true;
-		loadingTime = ofGetElapsedTimeMillis();
-		fboAlpha = 1.0;
-		animStage = FADE_IN;
-	}
-};
-
 void ImageGrid::calculateSizes() {
     elementSize.x = w + ELEMENT_SIDE_PADDING * 2;
     elementSize.y = h + SCORE_AREA_HEIGHT;
@@ -363,7 +366,7 @@ void ImageGrid::draw(int x, int y) {
 //		ofScale(scale);
 		
 		// draw grid
-		if (loading) {
+		if (animStage == FADE_IN) {
 
 			int section = floor((float)(ofGetElapsedTimeMillis() - loadingTime) / delayLoading) * rawSize.y;
 
@@ -378,12 +381,32 @@ void ImageGrid::draw(int x, int y) {
 				currentMugshot->fadeOutDarkFrame();
 			}
 		}
-		else {
-
-			if (animStage > FLY_IN) {
-				ofSetColor(255, 255, 255, fboAlpha*255);
-				fbo.draw(0,0);
+		else if (animStage == FADE_OUT) {
+			
+			int section = floor((float)(ofGetElapsedTimeMillis() - loadingTime) / delayLoading) * rawSize.y;
+			
+			if (section < currentUserPosition.y) {
+				flyInImage = ofImage();
+				imageAlpha = 0.0;
 			}
+			
+			fbo.getTexture().drawSubsection(0, 0,
+											wholeSize.x, wholeSize.y - section,
+											0, 0,
+											wholeSize.x, wholeSize.y - section);
+			
+			if ((wholeSize.y - section) <= rawSize.y) {
+				// fadeout done
+				loading = false;
+				fboAlpha = 0.0;
+				update();
+			}
+			
+		}
+		else if (animStage > FLY_IN) {
+			
+			ofSetColor(255, 255, 255, fboAlpha*255);
+			fbo.draw(0,0);
 		}
 		
 //		maskShader.end();
@@ -520,17 +543,13 @@ void ImageGrid::drawElement(User* user, int x, int y) {
 }
 
 void ImageGrid::drawScoreArea(float score, bool isCurrent, int x, int y) {
-    shared_ptr<ofxSmartFont> font;
-    if (isCurrent) {
-        font = ofxSmartFont::get("AmericanTypewriter700"); // change to bold
-        ofSetColor(ofColor::lightGrey);
-        ofDrawRectangle(x, y, w, SCORE_AREA_HEIGHT);
-    } else {
-        font = ofxSmartFont::get("AmericanTypewriter");
-    }
-        //ofColor::fromHex(0xf1efe3);
-    ofSetColor(ofColor::black); //TODO: change
-    std::stringstream buffer;
+	
+	shared_ptr<ofxSmartFont> font = ofxSmartFont::get("CrimsonRegular");
+	ofSetColor(ofColor::lightGrey);
+	ofDrawRectangle(x, y, w, SCORE_AREA_HEIGHT);
+	
+    ofSetColor(ofColor::fromHex(0x15120f));
+	std::stringstream buffer;
     buffer << FIXED_FLOAT(score);
     string sScore = buffer.str();
     int hs = font->height(sScore);
