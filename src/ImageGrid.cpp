@@ -102,9 +102,9 @@ void ImageGrid::setup(ofApp* app,
     getSize();
 	
 	
-	if (!maskShader.load("shaders/mask")) {
-		ofLogNotice("cant load shaders/mask");
-	}
+//	if (!maskShader.load("shaders/mask")) {
+//		ofLogNotice("cant load shaders/mask");
+//	}
 }
 
 // call this to calculate where to draw next
