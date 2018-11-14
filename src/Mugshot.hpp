@@ -49,12 +49,17 @@ public:
 	void introAnimationDone();
 	void resetFaceImage() {
 //		face = ofImage();
-		showFaceOverlay = false;
+		featureImageAlpha = 0.0;
 	}
 	void calculateRectangles();
 	void drawOverlay();
-	void drawFacecutFbo(bool doRect);
-	void drawFbo(bool doRect);
+	void drawFacecutFbo();
+	void drawFbo();
+	
+	void showDarkFrame() {
+		featureFrameAlpha = 1.0;
+	}
+	void fadeOutDarkFrame();
 	
 #ifdef TARGET_OSX
 	
@@ -94,7 +99,9 @@ public:
 	ofRectangle faceBox;
 	ofRectangle featureRect;
 	ofPoint partScale;
-	bool showFaceOverlay = false;
+	
+	float featureImageAlpha = 0.0;
+	float featureFrameAlpha = 0.0;
 };
 
 #endif /* Mugshotx_hpp */

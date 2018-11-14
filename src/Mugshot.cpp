@@ -57,7 +57,7 @@ Mugshot::Mugshot(ofShader* shader, User* user, ofApp* app) {
 	y = ofGetHeight();
 
 	
-	bgFbo.allocate(bgImage.getWidth(), bgImage.getHeight(), GL_RGBA);
+	bgFbo.allocate(bgImage.getWidth(), bgImage.getHeight());
 	drawBackground(user);
 	
 	// darkened face
@@ -67,11 +67,11 @@ Mugshot::Mugshot(ofShader* shader, User* user, ofApp* app) {
 	//----------------------------------------
 	// render overlay fbo
 	// letter overlay
-	faceoverlayFbo.allocate(MG_WIDTH, MG_HEIGHT, GL_RGBA);
+	faceoverlayFbo.allocate(MG_WIDTH, MG_HEIGHT);
 	
 	//----------------------------------------
 	// setup fbo
-	fbo.allocate(bgImage.getWidth(), bgImage.getHeight(), GL_RGBA);
+	fbo.allocate(bgImage.getWidth(), bgImage.getHeight());
     // Clear the FBO's
     fbo.begin();
     ofClear(0,0,0,0);
@@ -90,7 +90,8 @@ void Mugshot::resetFeatures() {
 View::Features Mugshot::selectNextFeature() {
 	
 	if (partsToVisit.size() == 0) {
-		return View::Features::INVALID;
+		resetFeatures();
+//		return View::Features::INVALID;
 	}
 	
 	if (false) {
@@ -176,7 +177,6 @@ void Mugshot::update(View::Features feature) {
 		
 		// get face
 		face = view.getImage();
-		showFaceOverlay = true;
 		calculateRectangles();
 		
 		// draw letter overlay
@@ -191,8 +191,17 @@ void Mugshot::update(View::Features feature) {
 		}
 		faceoverlayFbo.end();
 		
-		drawFbo(true);
+		drawFbo();
 		
+		// start fade-in
+		featureImageAlpha = 0.0;
+		auto alpha_tween = tweenManager.addTween(featureImageAlpha,
+										featureImageAlpha,
+										(float)1.0,
+										1.0,
+										0.0,
+										TWEEN::Ease::Quadratic::Out);
+		alpha_tween->start();
 	}
 	
 	if (currentFeature == View::Features::INVALID) {
@@ -200,7 +209,18 @@ void Mugshot::update(View::Features feature) {
 	}
 }
 
-void Mugshot::drawFbo(bool doRect) {
+void Mugshot::fadeOutDarkFrame() {
+	
+	auto alpha_tween = tweenManager.addTween(featureFrameAlpha,
+											 featureFrameAlpha,
+											 (float)0.0,
+											 1.0,
+											 0.0,
+											 TWEEN::Ease::Quadratic::Out);
+	alpha_tween->start();
+}
+
+void Mugshot::drawFbo() {
 	
 	//
 	fbo.begin();
@@ -238,21 +258,22 @@ void Mugshot::drawFbo(bool doRect) {
 		
 		//--------------------------------
 		// draw darker version of image
-		drawFacecutFbo(doRect);
+		ofSetColor(127);
 		
-		facecutFbo.draw(dropshadow_w + MG_CARD_INSET_X, 298);
+		drawFacecutFbo();
 	}
 	fbo.end();
 }
 
-void Mugshot::drawFacecutFbo(bool doRect) {
+void Mugshot::drawFacecutFbo() {
 	
 	//--------------------------------
 	// draw darker version of image
 	facecutFbo.begin();
 	{
 		ofClear(0, 0, 0);
-		ofSetColor(127);
+		
+		ofSetColor(255);
 		
 		// draw face
 		face.bind();
@@ -264,33 +285,14 @@ void Mugshot::drawFacecutFbo(bool doRect) {
 							faceBox.x, faceBox.y, faceBox.width, faceBox.height);
 		shader->end();
 		face.unbind();
-		
-		ofSetColor(255);
-		
-		if (doRect && currentFeature != View::Features::INVALID) {
-			
-			ofLogNotice() << "mugshot featureRect: " << ofToString(featureRect);
-			
-			// overlay selected feature with dark frame
-			// undarkened part has to be drawn from outside this!
-			ofPushMatrix();
-			{
-				ofEnableAlphaBlending();
-				
-				ofScale(partScale);
-				ofTranslate(-faceBox.x, -faceBox.y);
-				
-				ofPath path;
-				path.setFillColor(ofColor(0,0,0,90));
-				path.setStrokeColor(ofColor::black);
-				path.setStrokeWidth(20);
-				path.rectangle(featureRect);
-				path.draw();
-			}
-			ofPopMatrix();
-		}
 	}
 	facecutFbo.end();
+	
+	facecutFbo.draw(dropshadow_w + MG_CARD_INSET_X, 298);
+}
+
+void fadeOutDarkFrame() {
+	
 }
 
 bool Mugshot::draw() {
@@ -310,6 +312,8 @@ bool Mugshot::draw() {
 			
 			// -> need to draw facepart
 			
+			// draw featre overlay
+			
 			ofPushMatrix();
 			{
 				// move to facecutFbo
@@ -318,24 +322,36 @@ bool Mugshot::draw() {
 				ofScale(partScale);
 				ofTranslate(-faceBox.x, -faceBox.y);
 				
+				if ((currentFeature != View::Features::INVALID) && featureFrameAlpha > 0.0) {
+					// draw black frame
+					ofPath path;
+					path.setFillColor(ofColor(0,0,0,90*featureFrameAlpha));
+					path.setStrokeColor(ofColor(0,0,0,255*featureFrameAlpha));
+					path.setStrokeWidth(20);
+					path.rectangle(featureRect);
+					path.draw();
+				}
+				
+				
 				// draw face overlay
-				if (showFaceOverlay && face.isAllocated()) {
-					
+				if (featureImageAlpha > 0.0 && face.isAllocated()) {
 					face.bind();
 					shader->begin();
 					shader->setUniform1f("factor", 0.9); // SET A UNIFORM
-					shader->setUniform1f("alpha", 1.0); // SET A UNIFORM
-					
+					shader->setUniform1f("alpha", featureImageAlpha); // SET A UNIFORM
+				
 					face.drawSubsection(featureRect.x, featureRect.y,
 										(int)featureRect.width, (int)featureRect.height,
 										featureRect.x, featureRect.y,
 										(int)featureRect.width, (int)featureRect.height);
-					
+				
 					shader->end();
 					face.unbind();
 				}
+				
 			}
 			ofPopMatrix();
+			
 		}
 		ofPopMatrix();
 		

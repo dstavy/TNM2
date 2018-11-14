@@ -242,7 +242,7 @@ void ofApp::update(){
 //		selectNextUser();
 	} else if ((ofGetElapsedTimeMillis() -  lastUserUpdate) > CURRENT_USER_REFRESH) {
 		// new random user
-		selectNextUser(true);
+//		selectNextUser(true);
 	}
     
     if (currentUser != NULL) {
@@ -300,7 +300,6 @@ void ofApp::selectNextUser(bool random) {
 		// check if an animation is running
 		if (grids[curFeature].animStage != ImageGrid::AnimationStage::DONE) {
 			// return, will try next turn...
-			
 			rejectedNextUser = random ? RANDOM : NORMAL;
 			return;
 		}
@@ -332,7 +331,7 @@ void ofApp::selectNextUser(bool random) {
 		
 		currMugshot = new Mugshot(&sepiaShader, currentUser, this);
 		mugshots.insert(mugshots.begin(), currMugshot);
-		currMugshot->update(View::Features::HEAD); // change to none
+		currMugshot->update(View::Features::INVALID); // change to none
 		animateMagshots();
 		
 		lastUserUpdate = ofGetElapsedTimeMillis();

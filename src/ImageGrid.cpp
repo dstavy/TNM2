@@ -247,6 +247,8 @@ void ImageGrid::startScaleUpFlyingImage() {
 
 void ImageGrid::startFlyingAnimation() {
 	
+	currentMugshot->showDarkFrame();
+	
 	//----------------------------------------
 	// tween position
 	auto tween = tweenManager.addTween(flyInImagePosition,
@@ -373,7 +375,7 @@ void ImageGrid::draw(int x, int y) {
 			if ((wholeSize.y - section) <= rawSize.y) {
 				loading = false;
 				animStage = DONE;
-				currentMugshot->drawFbo(false);
+				currentMugshot->fadeOutDarkFrame();
 			}
 		}
 		else {
@@ -500,13 +502,8 @@ void ImageGrid::drawElement(User* user, int x, int y) {
 				
                 face.bind();
                 shader->begin();
-                if (user->isCurrent) {
-					shader->setUniform1f("factor", 1.0);// color
-					shader->setUniform1f("alpha", 1.0);// color
-                } else {
-                    shader->setUniform1f("factor", 1.0);
-					shader->setUniform1f("alpha", ofRandom(0.5, 0.7));
-                }
+				shader->setUniform1f("factor", 1.0);// color
+				shader->setUniform1f("alpha", 1.0);// color
                 face.drawSubsection(x + ELEMENT_SIDE_PADDING, y,
 									w, h,
 									box.x, box.y,
