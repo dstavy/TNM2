@@ -147,7 +147,7 @@ bool Analyzer::faceInflate(ofxFaceTracker2& tracker, View& view, bool profile) {
         ofRectangle head(face);
 		head.y = MAX(0, head.y - 0.3 * face.height);// 0.3 * face.height; //MAX(0, face.height/2); TODO:: poptential bug if goe
         //head.y -= 0.3 * face.height; //MAX(0, face.height/2); TODO:: poptential bug if goes below 0. only effect imported pics
-        head.setHeight(1.3 * face.height);
+        head.setHeight(MIN(1.3 * face.height, view.getImage().getHeight() - head.y));
         view.parts[View::HEAD] = head;
         
         if (!profile) {
@@ -210,5 +210,5 @@ float Analyzer::getFaceScore(ofImage& image,ofxFaceTracker2& tracker, bool profi
             return rotation.asVec3().x;
         }
     }
-    return -1.;
+    return NO_FOUND;
 }

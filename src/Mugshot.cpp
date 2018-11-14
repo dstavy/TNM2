@@ -152,7 +152,7 @@ void Mugshot::calculateRectangles() {
 		faceRec.x = MAX(0,  faceRec.x - 0.1 * faceRec.width);
 		faceRec.y = MAX(0,  faceRec.y - 0.2 * faceRec.height);
 		faceRec.width = MIN (faceRec.width *1.2, face.getWidth() - faceRec.x);
-		faceRec.height = MIN (faceRec.height *1.4, face.getHeight() - faceRec.y);
+		faceRec.height = MIN (faceRec.height *1.6, face.getHeight() - faceRec.y);
 		
 		faceBox = ofRectangle(ImageGrid::adjustAspectRatio(faceRec, MG_ASPECT_RATIO));
 		partScale = ofPoint((float)MG_WIDTH/faceBox.width, (float)MG_HEIGHT/faceBox.height);

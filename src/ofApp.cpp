@@ -7,6 +7,7 @@ void ofApp::setup(){
     ofBackground(0,0,0,255);
     //ofSetBackgroundAuto(false);
     ofSetVerticalSync(true);
+	ofSeedRandom();
     //glDisable(GL_DEPTH_TEST);
     
     setupFonts();
