@@ -1,8 +1,9 @@
 ofxCv
-ofxDlib
-ofxFaceTracker21
+ofxFaceTracker2
 ofxJSON
 ofxOpenCv
+ofxOsc
 ofxPoco
 ofxSmartFont
 ofxTweener
+ofxXmlSettings
