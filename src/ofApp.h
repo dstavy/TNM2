@@ -18,12 +18,20 @@
 
 class ofApp : public ofBaseApp{
 public:
+	
+	enum RejectedNextUser {
+		NONE,
+		NORMAL,
+		RANDOM,
+	};
+	
     static const int NUM_IMAGE_GRIDS = 10;
     //static const int NUM_GROUPS = 8;
     const long VIDEO_GRID_REFRESH = 2000;
     static const long PRESENTATION_UPDATE_REFRESH = 30000;
-    static const int MUGSHOT_REFRESH = 10000;
+    static const int MUGSHOT_REFRESH = 15000;
     static const int CURRENT_USER_REFRESH = 10000;// 120000
+	static const int IDLE_REFRESH = 5000;
 	
     void setup();
     void exit();
@@ -39,7 +47,7 @@ public:
     void drawGridPage();
 	void drawBg();
 	
-	void setFeatureToFocus(View::Features);
+	void setFeatureToFocus(View::Features, float);
 	void selectNewFeature();
 	void selectFeature(View::Features);
 	void selectNextUser(bool random = false);
@@ -81,10 +89,12 @@ public:
     int frontVideoStartFrame;
     int proflleVideoStartFrame;
     static void setupFonts();
-    static View::Features selectNextFeature(View::Features feature);
+    static View::Features selectRandomFeature(View::Features feature);
     View::Features curFeature;
+	View::Features lastIdleFeature;
     long lastMugshotUpdate = 0;
     long lastUserUpdate = 0;
+	long lastIdleUpdate = 0;
     ofEasyCam cam;
     TWEEN::Manager tweenManager;
     glm::vec3 camScale;
@@ -99,9 +109,10 @@ public:
 	shared_ptr<TWEEN::Tween> gridTween;
 	ofImage partImage;
 	ofRectangle featureRect;
-	bool autoupdateFeatures = false;
+	bool autoupdateFeatures = true;
 	//
 	ofFbo outputFbo;
 	bool scaleOutput = true;
 	
+	RejectedNextUser rejectedNextUser = NONE;	
 };

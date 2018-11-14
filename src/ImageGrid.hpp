@@ -11,16 +11,22 @@
 #include "ofMain.h"
 #include "Group.hpp"
 #include "Tweener.h"
+#include "Globals.h"
 
 class ofApp;
+class Mugshot;
 
 class ImageGrid  {
 public:
 	
 	enum AnimationStage {
-		FADE_OUT = 0,
+		INIT,
+		DELAY,
+		SCALE,
 		FLY_IN,
 		FADE_IN,
+		FADE_OUT,
+		DONE,
 	};
 	
 	ImageGrid() {	}
@@ -37,7 +43,7 @@ public:
 			   int userPerLevel,
 			   ofPoint flyInStartPos,
 			   float scale = 1.0,
-			   int delayLoading = 40,
+			   int delayLoading = TIME_ROW_STEP*1000.0,
 			   string title = "",
 			   ofColor bg = ofColor::fromHex(0xe6e0d3));
 	
@@ -65,6 +71,8 @@ public:
 	
     
     ofFbo fbo;
+	ofFbo maskFbo;
+	ofFbo outputFbo;
 	float fboAlpha = 1.0;
     Group *group;
     int w;
@@ -93,12 +101,7 @@ public:
     int delayLoading = 0;
 	
     static ofRectangle& adjustAspectRatio(ofRectangle& box, float aspectRatio);
-    void resetLoading() {
-        loading = true;
-        loadingTime = ofGetElapsedTimeMillis();
-		fboAlpha = 1.0;
-		animStage = FADE_IN;
-    };
+	void resetLoading();
 	
     //vector<User*> users;
     static const int DRAW_SEGMENT = 10;
@@ -123,6 +126,14 @@ public:
 	ofPoint partScale;
 	ofApp* appcontroller;
 	int signalOnNextRender = -1;
+	
+	ofShader maskShader;
+	void setupAnimation();
+	void startScaleUpFlyingImage();
+	void startFlyingAnimation();
+	float dummy;
+	float imageAlpha = 1.0;
+	Mugshot* currentMugshot;
 };
 #endif /* ImageGrid_hpp */
 

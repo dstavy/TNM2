@@ -22,8 +22,24 @@ static void myCB_FadeoutDone(void* ptr) {
 	}
 }
 
-static void myCB_FlyDone(void* ptr) {
+static void myCB_DummyDone(void* ptr) {
+	
+	if (ptr) {
+		ImageGrid* grid = (ImageGrid*)ptr;
+		grid->startScaleUpFlyingImage();
+	}
+}
 
+static void myCB_ScalingDone(void* ptr) {
+	
+	if (ptr) {
+		ImageGrid* grid = (ImageGrid*)ptr;
+		grid->startFlyingAnimation();
+	}
+}
+
+static void myCB_FlyDone(void* ptr) {
+	
 	if (ptr) {
 		ImageGrid* grid = (ImageGrid*)ptr;
 		grid->resetLoading();
@@ -60,13 +76,35 @@ void ImageGrid::setup(ofApp* app,
     calculateSizes();
     int fboW = wholeSize.x;
     int fboH = wholeSize.y;
-    fbo.allocate(fboW, fboH/*,GL_RGB*/);
+	
+    fbo.allocate(fboW, fboH, GL_RGBA);
+	maskFbo.allocate(fboW, fboH, GL_RGB);
+	outputFbo.allocate(fboW, fboH, GL_RGBA);
+//	outputFbo.getTexture().getTextureData().bFlipTexture = true;
+	
     // Clear the FBO's
     // otherwise it will bring some junk with it from the memory
     fbo.begin();
     ofClear(0,0,0,0);
     fbo.end();
+	
+	maskFbo.begin();
+	ofClear(0,0,0,0);
+	ofSetColor(255);
+	ofDrawCircle(fboW/2, fboH/2, fboW/2);
+	maskFbo.end();
+	
+	outputFbo.begin();
+	ofClear(0,0,0,0);
+	outputFbo.end();
+	
+	// log and get size
     getSize();
+	
+	
+	if (!maskShader.load("shaders/mask")) {
+		ofLogNotice("cant load shaders/mask");
+	}
 }
 
 // call this to calculate where to draw next
@@ -88,9 +126,7 @@ void ImageGrid::reset() {
 
 void ImageGrid::update() {
 
-	fboAlpha = 1.0;
-	
-    vector<User*> users(0);
+	vector<User*> users(0);
 	int currentUserIndex;
     currentUser = group->getGridUsers(userPerLevel, users, currentUserIndex);
 	
@@ -123,8 +159,28 @@ void ImageGrid::update() {
 	}
     ofPopStyle();
 	
-	// we know fly-in positions
-	// start fly-in
+	
+	// set alpha, but also FLY_IN so we dont see the fbo yet
+	fboAlpha = 1.0;
+	imageAlpha = 0.0;
+	flyInImage = ofImage();
+	animStage = DELAY;
+	
+	
+	// add a delay before starting fly-ing animation
+	auto tween_dummy = tweenManager.addTween(dummy,
+									   (float)1.0,
+									   (float)0.0,
+									   TIME_WAIT_BEFORE_FLY,
+									   0.0,
+									   TWEEN::Ease::Linear);
+	tween_dummy->onComplete(myCB_DummyDone, this);
+	tween_dummy->start();
+	
+	animStage = INIT;
+}
+
+void ImageGrid::setupAnimation() {
 	
 	// get data from mugshot
 	Mugshot* mugshot = appcontroller->getCurrentMugshot();
@@ -132,79 +188,124 @@ void ImageGrid::update() {
 	featureRect = mugshot->featureRect;
 	faceBox = mugshot->faceBox;
 	partScale = mugshot->partScale;
+	currentMugshot = mugshot;
 	
+	// setup inital values
+	flyInImagePosition = ofPoint(flyInStartPosition.x, flyInStartPosition.y);
 	flyingImageImageOffset = ofPoint(featureRect.x, featureRect.y);
+	flyingImageSize = ofPoint(featureRect.width, featureRect.height);
+	flyingImageRectSize = ofPoint(featureRect.width, featureRect.height);
+	flyingImageRectPos = ofPoint(featureRect.x, featureRect.y);
+}
+
+void ImageGrid::startScaleUpFlyingImage() {
+	
+	setupAnimation();
+	
+	float anim_time = TIME_FEATURE_SCALE;
 	
 	//----------------------------------------
+	ofPoint target_scale(flyingImageSize.x * FEATURE_SCALE, flyingImageSize.y * FEATURE_SCALE);
+	
+	float x_d = (target_scale.x - flyingImageSize.x) / 2.0;
+	float y_d = (target_scale.y - flyingImageSize.y) / 2.0;
+	
+	ofPoint target_position(flyInImagePosition.x - x_d, flyInImagePosition.y - y_d);
+	auto pos_scale = tweenManager.addTween(flyInImagePosition,
+											 flyInImagePosition,
+											 target_position,
+											 anim_time,
+											 0.0,
+											 TWEEN::Ease::Quadratic::InOut);
+	
+	
+	
+	
+	auto tween_scale = tweenManager.addTween(flyingImageSize,
+											 flyingImageSize,
+											 target_scale,
+											 anim_time,
+											 0.0,
+											 TWEEN::Ease::Quadratic::InOut);
+	
+	
+	auto alpha_scale = tweenManager.addTween(imageAlpha,
+											 imageAlpha,
+											 (float)1.0,
+											 0.2,
+											 0.0,
+											 TWEEN::Ease::Quadratic::InOut);
+	
+	tween_scale->onComplete(myCB_ScalingDone, this);
+	tween_scale->start();
+	pos_scale->start();
+	alpha_scale->start();
+	
 	//----------------------------------------
-	// setup tweens
+	animStage = SCALE;
+}
+
+void ImageGrid::startFlyingAnimation() {
 	
 	//----------------------------------------
 	// tween position
-	flyInImagePosition = ofPoint(flyInStartPosition.x,
-								 flyInStartPosition.y);
 	auto tween = tweenManager.addTween(flyInImagePosition,
 									   flyInImagePosition,
 									   currentUserPosition,
-									   3.0,
-									   0.0,
-									   TWEEN::Ease::Quadratic::Out);
-	
-	ofPoint target_offset(faceBox.x, faceBox.y);
-	auto tween_image_offset = tweenManager.addTween(flyingImageImageOffset,
-									   flyingImageImageOffset,
-									   target_offset,
-									   3.0,
+									   TIME_FEATURE_FLY,
 									   0.0,
 									   TWEEN::Ease::Quadratic::Out);
 	
 	//----------------------------------------
-	// tween for scale
-	flyingImageSize = ofPoint(featureRect.width, featureRect.height);
-	ofPoint targetScale(w*GRID_SCALE/partScale.x, h*GRID_SCALE/partScale.y);
+	// image offset
+	ofPoint target_offset(faceBox.x, faceBox.y);
+	auto tween_image_offset = tweenManager.addTween(flyingImageImageOffset,
+													flyingImageImageOffset,
+													target_offset,
+													TIME_FEATURE_FLY,
+													0.0,
+													TWEEN::Ease::Quadratic::Out);
 	
+	//----------------------------------------
+	// tween for scale
+	ofPoint target_scale(w*GRID_SCALE/partScale.x, h*GRID_SCALE/partScale.y);
 	auto tween_scale = tweenManager.addTween(flyingImageSize,
-									   flyingImageSize,
-									   targetScale,
-									   3.0,
-									   0.0,
-									   TWEEN::Ease::Quadratic::Out);
+											 flyingImageSize,
+											 target_scale,
+											 TIME_FEATURE_FLY,
+											 0.0,
+											 TWEEN::Ease::Quadratic::Out);
 	
 	//----------------------------------------
 	// tween for featureRect
 	ofRectangle fr_copy(featureRect);
-	ofPoint start_rect_size(featureRect.width, featureRect.height);
-	
-	
-	
 	ofRectangle target_rect = ofRectangle(ImageGrid::adjustAspectRatio(fr_copy, (float)w/(float)h));
 	
 	float width_dist = (target_rect.width - featureRect.width);
 	float height_dist = (target_rect.height - featureRect.height);
 	
 	ofPoint target_rect_size(featureRect.width+width_dist, featureRect.height+height_dist);
-
-	auto tween_rect = tweenManager.addTween(flyingImageRectSize,
-											 start_rect_size,
-											 target_rect_size,
-											 3.0,
-											 0.0,
-											 TWEEN::Ease::Quadratic::Out);
 	
-	ofPoint start_pos(featureRect.x, featureRect.y);
-	ofPoint target_rect_pos(featureRect.x-(width_dist/2.0), featureRect.y-(height_dist/2.0));
-	auto tween_rect_pos = tweenManager.addTween(flyingImageRectPos,
-											start_pos,
-											target_rect_pos,
-											3.0,
+	auto tween_rect = tweenManager.addTween(flyingImageRectSize,
+											flyingImageRectSize,
+											target_rect_size,
+											TIME_FEATURE_FLY,
 											0.0,
 											TWEEN::Ease::Quadratic::Out);
 	
-//	ofLogNotice() << "imagegrid featureRect: " << ofToString(featureRect);
-//	ofLogNotice() << "imagegrid target_Rect: " << ofToString(target_rect_pos) << " : " << ofToString(target_rect_size);
+	ofPoint target_rect_pos(featureRect.x-(width_dist/2.0), featureRect.y-(height_dist/2.0));
+	auto tween_rect_pos = tweenManager.addTween(flyingImageRectPos,
+												flyingImageRectPos,
+												target_rect_pos,
+												TIME_FEATURE_FLY,
+												0.0,
+												TWEEN::Ease::Quadratic::Out);
+	
+	//	ofLogNotice() << "imagegrid featureRect: " << ofToString(featureRect);
+	//	ofLogNotice() << "imagegrid target_Rect: " << ofToString(target_rect_pos) << " : " << ofToString(target_rect_size);
 	
 	
-	
+	// start all the tweens
 	tween->onComplete(myCB_FlyDone, this);
 	tween->start();
 	tween_image_offset->start();
@@ -212,10 +313,19 @@ void ImageGrid::update() {
 	tween_rect->start();
 	tween_rect_pos->start();
 	
-	//----------------------------------------
-	animStage = FLY_IN;
 	signalOnNextRender = 0;
+	animStage = FLY_IN;
 }
+
+
+void ImageGrid::resetLoading() {
+	if (animStage == FLY_IN) {
+		loading = true;
+		loadingTime = ofGetElapsedTimeMillis();
+		fboAlpha = 1.0;
+		animStage = FADE_IN;
+	}
+};
 
 void ImageGrid::calculateSizes() {
     elementSize.x = w + ELEMENT_SIDE_PADDING * 2;
@@ -229,6 +339,12 @@ void ImageGrid::calculateSizes() {
 
 void ImageGrid::draw(int x, int y) {
 	
+//	outputFbo.begin();
+//	ofClear(0, 0, 0, 0);
+//	fbo.draw(0,0);
+//	outputFbo.end();
+
+	
     ofPushMatrix();
 	{
 		ofTranslate(x,y);
@@ -237,30 +353,40 @@ void ImageGrid::draw(int x, int y) {
 		ofDrawRectangle(0, 0, 20, 20);
 #endif
 		
+//		outputFbo.begin();
+//		ofClear(0, 0, 0, 0);
+//		maskShader.begin();
+//		maskShader.setUniformTexture("maskTex", maskFbo.getTexture(), 1 );
+		
 //		ofScale(scale);
 		
 		// draw grid
 		if (loading) {
-			int section = floor((float)(ofGetElapsedTimeMillis() - loadingTime) / delayLoading) * DRAW_SEGMENT;
 
-			fbo.getTexture().drawSubsection(0, 0, wholeSize.x, section, 0, 0, wholeSize.x, section);
+			int section = floor((float)(ofGetElapsedTimeMillis() - loadingTime) / delayLoading) * rawSize.y;
 
-			if ((wholeSize.y - section) <= DRAW_SEGMENT) {
+			fbo.getTexture().drawSubsection(0, wholeSize.y - section,
+											wholeSize.x, section,
+											0, wholeSize.y - section,
+											wholeSize.x, section);
+
+			if ((wholeSize.y - section) <= rawSize.y) {
 				loading = false;
+				animStage = DONE;
+				currentMugshot->drawFbo(false);
 			}
 		}
 		else {
 
-			if (animStage == FADE_OUT ||
-				animStage == FADE_IN) {
-
+			if (animStage > FLY_IN) {
 				ofSetColor(255, 255, 255, fboAlpha*255);
 				fbo.draw(0,0);
-
-			} else if (animStage == FLY_IN) {
-
 			}
 		}
+		
+//		maskShader.end();
+//		outputFbo.end();
+//		outputFbo.draw(0, 0);
 		
 		// draw flying image
 		if (flyInImage.isAllocated()) {
@@ -287,7 +413,7 @@ void ImageGrid::draw(int x, int y) {
 				flyInImage.bind();
 				shader->begin();
 				shader->setUniform1f("factor", 0.9); // SET A UNIFORM
-				shader->setUniform1f("alpha", fboAlpha); // SET A UNIFORM
+				shader->setUniform1f("alpha", fboAlpha * imageAlpha); // SET A UNIFORM
 
 				flyInImage.drawSubsection(flyingImageImageOffset.x, flyingImageImageOffset.y,
 										  flyingImageSize.x, flyingImageSize.y,
@@ -314,6 +440,11 @@ void ImageGrid::draw(int x, int y) {
 				}
 			}
 		}
+		
+#ifdef DRAW_DEBUG
+		ofSetColor(200, 0, 200, 100);
+		ofDrawRectangle(0, -20, dummy*500.0, 20);
+#endif
 	}
     ofPopMatrix();
 }
@@ -338,6 +469,9 @@ void ImageGrid::drawHeader() {
 }
 
 void ImageGrid::drawRow(int y, vector<User*>::iterator it, int num) {
+	
+	ofLogNotice() << "drawRow: " << y;
+	
     int x = 0;
     ofDrawRectangle(x, y, rawSize.x, rawSize.y);
     y += PADDING_ROW;

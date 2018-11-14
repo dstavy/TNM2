@@ -77,7 +77,7 @@ void ofApp::setup(){
 	grids[View::FORHEAD].setup(this,
 							   &sepiaShader, // shader
 							   group, // newly created group
-							   196, 94, // width and height of element
+							   196, 96, // width and height of element
 							   1, // user per level
 							   {1731, 152}, // start position for flying in image
 							   1); // scale
@@ -93,7 +93,7 @@ void ofApp::setup(){
     grids[View::HEAD].setup(this,
 							&sepiaShader,
 							group,
-							110, 100,
+							110, 102,
 							5,
 							{700, -37}, // start position for flying in image
 							1);
@@ -107,7 +107,7 @@ void ofApp::setup(){
 	grids[View::NOSE].setup(this,
 							&sepiaShader,
 							group,
-							80, 80,
+							80, 82,
 							7,
 							{1563, -14}, //{1668 / 1.0, 97 / 1.0}, // start position for flying in image
 							1);
@@ -231,6 +231,12 @@ void ofApp::update(){
     bool newUser = false;
     cam.setScale(camScale);
 	
+	if (rejectedNextUser == NORMAL) {
+		selectNextUser();
+	} else if (rejectedNextUser == RANDOM) {
+		selectNextUser(true);
+	}
+	
 	if ((ofGetElapsedTimeMillis() -  lastPresentationUpdate) > PRESENTATION_UPDATE_REFRESH) {
 		lastPresentationUpdate = ofGetElapsedTimeMillis();
 		// selectNextUser()
@@ -240,13 +246,25 @@ void ofApp::update(){
 	}
     
     if (currentUser != NULL) {
-		// only update automatically if introanimation is done
+		
+		// only update automatically if intro-animation is done
 		if (autoupdateFeatures && currMugshot->m_introAnimationDone) {
+			
 			if ((ofGetElapsedTimeMillis() -  lastMugshotUpdate) > MUGSHOT_REFRESH) {
 				selectNewFeature();
 			}
 		}
     }
+	
+	if (curFeature == View::Features::INVALID) {
+		// check for idle-update
+		if ((ofGetElapsedTimeMillis() - lastIdleUpdate) > IDLE_REFRESH) {
+			lastIdleFeature = selectRandomFeature(lastIdleFeature);
+			setFeatureToFocus(lastIdleFeature, TIME_GIRD_MOVE_IDLE);
+			lastIdleUpdate = ofGetElapsedTimeMillis();
+		}
+	}
+	
     
     /*  frontPlayer.update();
      profilePlayer.update();
@@ -277,6 +295,18 @@ void ofApp::update(){
 
 void ofApp::selectNextUser(bool random) {
 	
+	
+	if (curFeature != View::Features::INVALID) {
+		// check if an animation is running
+		if (grids[curFeature].animStage != ImageGrid::AnimationStage::DONE) {
+			// return, will try next turn...
+			
+			rejectedNextUser = random ? RANDOM : NORMAL;
+			return;
+		}
+	}
+	
+	rejectedNextUser = NONE;
 	User* user = NULL;
 	
 	if (random) {
@@ -306,6 +336,7 @@ void ofApp::selectNextUser(bool random) {
 		animateMagshots();
 		
 		lastUserUpdate = ofGetElapsedTimeMillis();
+		lastPresentationUpdate = ofGetElapsedTimeMillis();
 	}
 }
 
@@ -320,12 +351,13 @@ void ofApp::selectNewFeature() {
 void ofApp::selectFeature(View::Features feature) {
 	
 	// ask mugshot for its next feature
+	lastIdleFeature = curFeature;
 	curFeature = feature;
 	currMugshot->update(curFeature);
 	
 	if (curFeature != View::Features::INVALID) {
 		
-		setFeatureToFocus(curFeature);
+		setFeatureToFocus(curFeature, TIME_GIRD_MOVE_FEATURE);
 		
 		// we need to draw that part
 		View& view = currentUser->getView(false);
@@ -340,6 +372,7 @@ void ofApp::selectFeature(View::Features feature) {
 		}
 	} else {
 		partImage = ofImage();
+		lastIdleUpdate = ofGetElapsedTimeMillis();
 	}
 	
 	lastMugshotUpdate = ofGetElapsedTimeMillis();
@@ -383,12 +416,13 @@ void ofApp::draw(){
 		int y = 0;
 		ofSetColor(ofColor::white);
 		outputFbo.draw(x, y);
-		
+#ifdef DRAW_DEBUG
 		ofSetColor(ofColor::red);
 		ofSetLineWidth(5);
 		ofNoFill();
 		ofDrawRectangle(x, y, SCREEN_WIDTH, outputFbo.getHeight());
 		ofDrawRectangle(x+SCREEN_WIDTH, y, SCREEN_WIDTH, outputFbo.getHeight());
+#endif
 	}
 	ofPopMatrix();
 	ofPopStyle();
@@ -635,18 +669,20 @@ void ofApp::keyReleased(int key){
 	}
 }
 
-void ofApp::setFeatureToFocus(View::Features feature) {
+void ofApp::setFeatureToFocus(View::Features feature, float animTime) {
 	currentFeatureToFocus = feature;
 	float toY = View::getLocationForFeature(currentFeatureToFocus);
-	
-	int anim_time = 1;
-	int delay = 0;
 	
 	if (gridTween != nullptr) {
 		gridTween->clear();
 	}
 	
-	gridTween = tweenManager.addTween(gridY, gridY, toY, anim_time, delay, TWEEN::Ease::Sinusoidal::Out);
+	gridTween = tweenManager.addTween(gridY,
+									  gridY,
+									  toY,
+									  animTime,
+									  TIME_GIRD_MOVE_DELAY,
+									  TWEEN::Ease::Quadratic::Out);
 	gridTween->start();
 }
 
@@ -681,11 +717,11 @@ void ofApp::setupFonts()
     ofxSmartFont::add(FONT_DIR + "Crimson Text 700.ttf", 20, "CrimsonText700Mugshot");
 }
 
-View::Features ofApp::selectNextFeature(View::Features feature) {
-//	// TODO: we need to avoid a feature is animated twice!
-//    int f = feature;
-//    while (f == feature) {
-//        f = (int)(floor(ofRandom(5)));
-//    }
-//    return (View::Features)f;
+View::Features ofApp::selectRandomFeature(View::Features feature) {
+	// TODO: we need to avoid a feature is animated twice!
+    int f = feature;
+    while (f == feature) {
+        f = (int)(floor(ofRandom(5)));
+    }
+    return (View::Features)f;
 }

@@ -22,7 +22,10 @@ public:
         GENDER
     };
 	
-	Group(View::Features feature, GroupBy grouBy, bool profile, int levels)
+	Group(View::Features feature,
+		  GroupBy grouBy,
+		  bool profile,
+		  int levels)
 	{
 		this->feature = feature;
 		this->grouBy = grouBy;

@@ -48,9 +48,13 @@ public:
 	void resetFeatures();
 	void introAnimationDone();
 	void resetFaceImage() {
-		face = ofImage();
+//		face = ofImage();
+		showFaceOverlay = false;
 	}
+	void calculateRectangles();
 	void drawOverlay();
+	void drawFacecutFbo(bool doRect);
+	void drawFbo(bool doRect);
 	
 #ifdef TARGET_OSX
 	
@@ -78,7 +82,7 @@ public:
 	ofFbo facecutFbo;
 	ofFbo faceoverlayFbo;
     User* user;
-    View::Features currentFeature;
+    View::Features currentFeature = View::Features::INVALID;
     ofShader* shader;
     TWEEN::Manager tweenManager;
     bool firstTime = true;
@@ -90,6 +94,7 @@ public:
 	ofRectangle faceBox;
 	ofRectangle featureRect;
 	ofPoint partScale;
+	bool showFaceOverlay = false;
 };
 
 #endif /* Mugshotx_hpp */
