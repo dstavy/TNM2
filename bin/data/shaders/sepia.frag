@@ -72,7 +72,7 @@ void main(void)
     
 #endif
     
-    outputColor = ch0 * 1.02;// add some grit, overexposure
+    outputColor = ch0 * 1;// add some grit, overexposure
 //    outputColor = ch0 * 0.98;// add some grit, overexposure
 //    outputColor = ch0 * ch0 * 1.4;// add some grit, overexposure
     float lum = (outputColor.r + outputColor.g + outputColor.b) /3.0;
