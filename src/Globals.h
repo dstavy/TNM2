@@ -20,6 +20,8 @@
 #define DO_BLACK_FRAME
 //#define DO_BLACK_FRAME_ADJUST
 
+#define NO_RELEASE_BERLIN
+
 // settings
 #define SCREEN_WIDTH 1920	//
 #define GRID_SCALE 0.66		// scaling factor for grid-image
