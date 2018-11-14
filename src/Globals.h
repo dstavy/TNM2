@@ -8,10 +8,18 @@
 #ifndef Globals_h
 #define Globals_h
 
+
+// turn on watchdog - windows only
+//#define DO_WATCHDOG
+
+
+// draws some additional information
+//#define DRAW_DEBUG
+
+
+// settings
 #define SCREEN_WIDTH 1920	//
 #define GRID_SCALE 0.66		// scaling factor for grid-image
-
-//#define DRAW_DEBUG			// draws some additinoal information
 
 #define TIME_WAIT_BEFORE_FLY 2.0
 #define TIME_FEATURE_SCALE 1.0
