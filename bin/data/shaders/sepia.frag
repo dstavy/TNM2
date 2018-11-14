@@ -9,19 +9,19 @@ in vec2 texCoordVarying;
 
 out vec4 outputColor;
 
-vec4 Sepia( in vec4 color )
-{
-    vec3 c1 = vec3(0.393, 0.769, 0.189);
-    vec3 c2 = vec3(0.349, 0.686, 0.168);
-    vec3 c3 = vec3(0.272, 0.534, 0.131);
+vec4 Sepia( in vec4 color) {
 
-    return vec4(clamp(color.r * c1.x + color.g * c1.y + color.b * c1.z, 0.0, 1.0),
-                clamp(color.r * c2.x + color.g * c2.y + color.b * c2.z, 0.0, 1.0),
-                clamp(color.r * c3.x + color.g * c3.y + color.b * c3.z, 0.0, 1.0),
+    vec3 c1 = vec3(100.0, 196.0, 48.0);
+    vec3 c2 = vec3(89.0, 175.0, 43.0);
+    vec3 c3 = vec3(69.0, 136.0, 33.0);
+
+    return vec4(clamp(color.r * c1.x/255.0 + color.g * c1.y/255.0 + color.b * c1.z/255.0, 0.0, 1.0),
+                clamp(color.r * c2.x/255.0 + color.g * c2.y/255.0 + color.b * c2.z/255.0, 0.0, 1.0),
+                clamp(color.r * c3.x/255.0 + color.g * c3.y/255.0 + color.b * c3.z/255.0, 0.0, 1.0),
                 color.a * alpha);
 }
 
-void main (void){
+void main (void) {
     outputColor = texture(tex0, texCoordVarying);
     outputColor = mix(outputColor, Sepia(outputColor), clamp(factor,0.0,1.0) );
 }
