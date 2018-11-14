@@ -17,6 +17,8 @@ int main( ){
     settings.setGLVersion(3, 2); //we define the OpenGL version we want to use
 	
     settings.setSize(3840, 1080);
+	settings.decorated = false;
+	settings.setPosition(glm::vec2(0, 0));
     
 #ifdef DEBUG
     // settings.multiMonitorFullScreen = false;

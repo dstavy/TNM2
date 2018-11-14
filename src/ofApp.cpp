@@ -203,6 +203,12 @@ void ofApp::setup(){
 	
 	outputFbo.allocate(SCREEN_WIDTH*2, 1080, GL_RGB);
 	currentFeatureToFocus = View::Features::INVALID;
+
+#ifdef TARGET_WIN32
+#ifdef DO_WATCHDOG
+	wdr = make_unique<WatchDog_Responder>(true, 9000, "../../watchdog");
+#endif
+#endif
 }
 
 //--------------------------------------------------------------

@@ -15,6 +15,9 @@
 #include "Tweener.h"
 #include "Globals.h"
 
+#ifdef TARGET_WIN32
+#include "Watchdog_Responder.h"
+#endif
 
 class ofApp : public ofBaseApp{
 public:
@@ -115,4 +118,10 @@ public:
 	bool scaleOutput = true;
 	
 	RejectedNextUser rejectedNextUser = NONE;	
+
+
+private:
+#ifdef TARGET_WIN32
+	unique_ptr<WatchDog_Responder> wdr;
+#endif
 };
