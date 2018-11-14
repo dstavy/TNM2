@@ -436,7 +436,7 @@ void ofApp::draw(){
 #ifdef DO_BLACK_FRAME
 		// draw black-bar at right
 		ofSetColor(0);
-		int width = 42;
+		int width = 60;
 
 #ifdef DO_BLACK_FRAME_ADJUST
 		// adjust settings by setting define

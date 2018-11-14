@@ -32,6 +32,8 @@ const static ofPoint apparent_age_pos = {720, 115, 0};
 const static ofPoint examined_1_pos = {120, 796, 0};
 const static ofPoint examined_2_pos = {236, 792, 0};
 
+const static ofPoint examined_at_pos = {458, 794, 0};
+
 static ofImage bgImage;
 
 static void myCompleteFunc(void* ptr) {
@@ -110,6 +112,8 @@ View::Features Mugshot::selectNextFeature() {
 
 void Mugshot::drawBackground(User* user) {
 	
+	View& view = user->getView(false);
+	
 	bgFbo.begin();
 	{
 		ofClear(0,0,0,0);
@@ -121,17 +125,41 @@ void Mugshot::drawBackground(User* user) {
 		shared_ptr<ofxSmartFont> font = ofxSmartFont::get("AmericanTypewriter");
 		ofSetColor(107, 55, 143); // #6B378F
 		
-		font->draw(meterToCMDashMM(1.234567), height_pos.x, height_pos.y);
-		font->draw(meterToCMDashMM(1.234567), eng_height_pos.x, eng_height_pos.y);
-		font->draw(meterToCMDashMM(1.234567), out_a_pos.x, out_a_pos.y);
-		font->draw(meterToCMDashMM(1.234567), trunk_pos.x, trunk_pos.y);
 		
-		font->draw(meterToCMDashMM(1.234567), head_length_pos.x, head_length_pos.y);
-		font->draw(meterToCMDashMM(1.234567), head_width_pos.x, head_width_pos.y);
-		font->draw(meterToCMDashMM(1.234567), cheek_width_pos.x, cheek_width_pos.y);
-		font->draw(meterToCMDashMM(1.234567), r_ear_length_pos.x, r_ear_length_pos.y);
+		float headHeight = user->headHeight;
 		
-		font->draw(meterToCMDashMM(1.234567), age_pos.x, age_pos.y);
+		// calc head width
+		// head width: get from face bounding-box
+		//...
+		float headWidth = 0.0;
+		
+		// cubit: ellbow (from json) to wrist+20% (for hand)
+		float cubit = user->lowerArm; // + 20%
+		
+//		shouldersWidth;
+
+		
+		// forehead hight: tkae a portion of the headheight
+		float foreheadHeight = 0.0;
+		
+		// forehead width: take portion
+		float foreheadWidth = 0.0;
+		
+		// chin: calc from head height...
+		float chin = 0.0;
+		
+		
+		font->draw(meterToCMDashMM(user->totalHeight), height_pos.x, height_pos.y);
+		font->draw(meterToCMDashMM(0.0), eng_height_pos.x, eng_height_pos.y);
+		font->draw(meterToCMDashMM(0.0), out_a_pos.x, out_a_pos.y);
+		font->draw(meterToCMDashMM(user->torsoLength), trunk_pos.x, trunk_pos.y);
+		
+		font->draw(meterToCMDashMM(user->headHeight), head_length_pos.x, head_length_pos.y);
+		font->draw(meterToCMDashMM(headWidth), head_width_pos.x, head_width_pos.y);
+		font->draw(meterToCMDashMM(0.0), cheek_width_pos.x, cheek_width_pos.y);
+		font->draw(meterToCMDashMM(0.0), r_ear_length_pos.x, r_ear_length_pos.y);
+		
+//		font->draw(meterToCMDashMM(1.234567), age_pos.x, age_pos.y);
 		font->draw(meterToCMDashMM(1.234567), apparent_age_pos.x, apparent_age_pos.y);
 		
 		font->draw(ofGetTimestampString("%H:%M:%S"), examined_1_pos.x, examined_1_pos.y);
@@ -370,7 +398,7 @@ void Mugshot::drawOverlay() {
 		ofRotateDeg(rotation);
 		
 		// draw overlay
-		faceoverlayFbo.draw(dropshadow_w + MG_CARD_INSET_X, 298);
+		faceoverlayFbo.draw(dropshadow_w + MG_CARD_INSET_X, 256);
 	}
 	ofPopMatrix();
 }

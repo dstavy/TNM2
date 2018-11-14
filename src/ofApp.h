@@ -115,7 +115,7 @@ public:
 	bool autoupdateFeatures = true;
 	//
 	ofFbo outputFbo;
-	bool scaleOutput = true;
+	bool scaleOutput = false;
 	
 	RejectedNextUser rejectedNextUser = NONE;
 	

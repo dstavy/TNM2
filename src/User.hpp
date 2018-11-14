@@ -23,7 +23,9 @@ public:
     int xScore;
 	int shouldersWidth;
 	float torsoLength;
+	float lowerArm = 0.0;
 	float totalHeight;
+	float headHeight;
     View frontView;
     View profileView;
     //int measures[5];
