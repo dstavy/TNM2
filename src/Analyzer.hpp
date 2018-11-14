@@ -17,6 +17,7 @@
 class Analyzer {
 public:
     static const int EAR_ROTATION_FACTOR = 5;
+	static const int  NO_FOUND = std::numeric_limits<float>::min();
     static bool videoAnalyze(string fileName, ofVideoPlayer& player, ofxFaceTracker2& tracker, User& user, bool profile, string outImage);
     static bool faceAnalyze(string fileName, ofxFaceTracker2& tracker, User& user, bool profile);
     static float getFaceScore(ofImage& image,ofxFaceTracker2& tracker, bool profile);

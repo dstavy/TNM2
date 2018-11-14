@@ -10,11 +10,11 @@
 //#defne USE_MOVIE
 
 const string PresentationUpdate::JSON_FILE_LOCAL = "records/dataset.json";
-const string PresentationUpdate::JSON_FILE = "D:\\TNM\\of_v0.9.3_vs_release\\apps\\myApps\\The-Normalizing-Machine\\bin\\Data\\records\\dataset.json";
+const string PresentationUpdate::JSON_FILE = "../../../The-Normalizing-Machine/bin/Data/records/dataset.json";
 const string PresentationUpdate::FACE_DIR = "Faces/";
 const string PresentationUpdate::MOVIE_DIR = "Movies/";
-const string PresentationUpdate::SEQ_IMAGE_DIR = "D:\\TNM\\of_v0.9.3_vs_release\\apps\\myApps\\The-Normalizing-Machine\\bin\\Data\\SeqImg\\";
-const string PresentationUpdate::IMAGE_EXT = "jpg";
+const string PresentationUpdate::SEQ_IMAGE_DIR = "../../../The-Normalizing-Machine/bin/Data/SeqImg/";
+const string PresentationUpdate::IMAGE_EXT = "jpeg";
 const string PresentationUpdate::IMAGE_SUF = "." + IMAGE_EXT;
 
 /*
@@ -51,11 +51,11 @@ User* PresentationUpdate::update() {
     bool updated = false;
 
 		if (!firstUpdate) {
-			json = JSON_FILE_LOCAL;//JSON_FILE_LOCAL
+			json = JSON_FILE;//JSON_FILE_LOCAL
             firstUpdate = true;
 		}
 		else {
-			json = json = JSON_FILE;
+			json = JSON_FILE;
 		}
     if (file.doesFileExist(json)) {
         file.open(json);
@@ -173,10 +173,11 @@ User* PresentationUpdate::createUser(string id) {
         }
 #endif
         user = new User(id);
-        for (bool profileb : { false, true }) {
+       // for (bool profileb : { false, true }) {
+		bool profileb = false;
             bool resb;
             //some path, may be absolute or relative to bin/data
-            string path = SEQ_IMAGE_DIR + id  + "_" + std::to_string(profileb);
+			string path = SEQ_IMAGE_DIR + id;//  +"_" + std::to_string(profileb);
             ofDirectory dir(path);
             if (dir.exists()) {
                     //only show png files
@@ -192,14 +193,18 @@ User* PresentationUpdate::createUser(string id) {
                         ofLogNotice(dir.getPath(i));
                         if (image.load(dir.getPath(i))) {
                             image.update();
-                            float score = abs(Analyzer::getFaceScore(image, *frontTracker, profileb));
-                            if (!profile && score < highScore) {
-                                highScore = score;
-                                selected = i;
-                            }
-                            image.clear();
+                            float score = Analyzer::getFaceScore(image, *frontTracker, profileb);
+							if (score != Analyzer::NO_FOUND) {
+								score = abs(score);
+								if (!profile && score < highScore) {
+									highScore = score;
+									selected = i;
+								}
+								image.clear();
+							}
                         }
                     }
+					if (selected >= 0) {
                     resb = Analyzer::faceAnalyze(dir.getPath(selected), *profileTracker, *user, profileb);
                     if (resb) {
                         string outImage = FACE_DIR + id + "_" + std::to_string(profileb) + IMAGE_SUF;
@@ -210,9 +215,10 @@ User* PresentationUpdate::createUser(string id) {
                             res = resb;
                         }
                     }
-					dir.remove(true);
+					//dir.remove(true);
+					}
                 }
-        }
+       // }
     }
     
     if (res) {
