@@ -10,6 +10,7 @@
 #include "Mugshot.hpp"
 #include "Globals.h"
 #include "ofApp.h"
+#include "Mugshot.hpp"
 
 #define FIXED_FLOAT(x) std::fixed <<std::setprecision(2)<<(x)
 
@@ -120,16 +121,14 @@ void ImageGrid::update() {
 	// we know fly-in positions
 	// start fly-in
 	
-	View& view = currentUser->getView(false);
-	flyInImage = view.getImage();
-	featureRect = ofRectangle(view.parts[group->getFeature()]);
+	// get data from mugshot
+	Mugshot* mugshot = appcontroller->getCurrentMugshot();
+	flyInImage = mugshot->face;
+	featureRect = mugshot->featureRect;
+	faceBox = mugshot->faceBox;
+	partScale = mugshot->partScale;
+	
 	flyingImageImageOffset = ofPoint(featureRect.x, featureRect.y);
-	
-	// get face
-	ofRectangle faceRec(view.parts[View::HEAD]);
-	faceBox = ofRectangle(ImageGrid::adjustAspectRatio(faceRec, Mugshot::MG_ASPECT_RATIO));
-	partScale = ofPoint((float)Mugshot::MG_WIDTH/faceBox.width, (float)Mugshot::MG_HEIGHT/faceBox.height);
-	
 	
 	//----------------------------------------
 	//----------------------------------------

@@ -67,6 +67,9 @@ public:
     ofPoint  getGridLocation();
 	void mugshotIntroAnimationDone();
 	void signalCurrentMugshotImageOff();
+	Mugshot* getCurrentMugshot() {
+		return currMugshot;
+	}
     
     //ofFbo gridFbo;
     int gridSize = 600;
