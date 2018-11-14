@@ -239,10 +239,10 @@ void ofApp::update(){
 	
 	if ((ofGetElapsedTimeMillis() -  lastPresentationUpdate) > PRESENTATION_UPDATE_REFRESH) {
 		lastPresentationUpdate = ofGetElapsedTimeMillis();
-		// selectNextUser()
+//		selectNextUser();
 	} else if ((ofGetElapsedTimeMillis() -  lastUserUpdate) > CURRENT_USER_REFRESH) {
 		// new random user
-//		selectNextUser(true);
+		selectNextUser(true);
 	}
     
     if (currentUser != NULL) {
