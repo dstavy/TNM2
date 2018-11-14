@@ -432,13 +432,25 @@ void ofApp::draw(){
 		ofDrawRectangle(x+SCREEN_WIDTH, y, SCREEN_WIDTH, outputFbo.getHeight());
 #endif
 
-
+		
+#ifdef DO_BLACK_FRAME
 		// draw black-bar at right
 		ofSetColor(0);
 		int width = 42;
+
+#ifdef DO_BLACK_FRAME_ADJUST
+		// adjust settings by setting define
+		// use cursor-keys to adjust (very fine steps)
+		ofTranslate(ofGetWidth() - width + blackBarX, ofGetHeight() / 2.0);
+		ofRotateDeg(blackBarRotation);
+#else
+		// settings for berlin exhibition!
 		ofTranslate(ofGetWidth() - width + 5.02002, ofGetHeight() / 2.0);
 		ofRotateDeg(0.86);
+#endif
+		
 		ofDrawRectangle(0, -ofGetHeight()/2.0, width, ofGetHeight());
+#endif
 	}
 	ofPopMatrix();
 	ofPopStyle();
@@ -639,26 +651,25 @@ void ofApp::keyReleased(int key){
 
 	if (key == OF_KEY_UP) {
 
-		blackBarRotation += 0.01;
+		blackBarRotation += 0.05;
 		ofLogNotice() << "rot: " << blackBarRotation;
 	}
 	else if (key == OF_KEY_DOWN) {
 
-		blackBarRotation -= 0.01;
+		blackBarRotation -= 0.05;
 		ofLogNotice() << "rot: " << blackBarRotation;
 	}
 	else if (key == OF_KEY_LEFT) {
 
-		blackBarX -= 0.01;
+		blackBarX -= 0.1;
 		ofLogNotice() << "blackBarX: " << blackBarX;
 	}
 	else if (key == OF_KEY_RIGHT) {
 
-		blackBarX += 0.01;
+		blackBarX += 0.1;
 		ofLogNotice() << "blackBarX: " << blackBarX;
 	}
-
-    if (key == 'f') {
+	else if (key == 'f') {
         ofToggleFullscreen();
     }
     else if (key == 'a') {
@@ -751,7 +762,7 @@ void ofApp::setupFonts()
     ofxSmartFont::add(FONT_DIR + "Crimson Text 700.ttf", 18, "CrimsonText700");
     ofxSmartFont::add(FONT_DIR + "Crimson Text 700italic.ttf", 18, "CrimsonText700I");
     ofxSmartFont::add(FONT_DIR + "Crimson Text italic.ttf", 18, "CrimsonTextI");
-    ofxSmartFont::add(FONT_DIR + "Crimson Text regular.ttf", 18, "CrimsonRegular");
+    ofxSmartFont::add(FONT_DIR + "Crimson Text regular.ttf", 12, "CrimsonRegular");
     ofxSmartFont::add(FONT_DIR + "Crimson Text 700.ttf", 20, "CrimsonText700Mugshot");
 }
 

@@ -545,10 +545,10 @@ void ImageGrid::drawElement(User* user, int x, int y) {
 void ImageGrid::drawScoreArea(float score, bool isCurrent, int x, int y) {
 	
 	shared_ptr<ofxSmartFont> font = ofxSmartFont::get("CrimsonRegular");
-	ofSetColor(ofColor::lightGrey);
-	ofDrawRectangle(x, y, w, SCORE_AREA_HEIGHT);
+//    ofSetColor(ofColor::lightGrey);
+//    ofDrawRectangle(x, y, w, SCORE_AREA_HEIGHT);
 	
-    ofSetColor(ofColor::fromHex(0x15120f));
+    ofSetColor(ofColor::fromHex(0x463f37));
 	std::stringstream buffer;
     buffer << FIXED_FLOAT(score);
     string sScore = buffer.str();

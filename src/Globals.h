@@ -17,6 +17,9 @@
 //#define DRAW_DEBUG
 
 
+#define DO_BLACK_FRAME
+//#define DO_BLACK_FRAME_ADJUST
+
 // settings
 #define SCREEN_WIDTH 1920	//
 #define GRID_SCALE 0.66		// scaling factor for grid-image

@@ -117,7 +117,9 @@ public:
 	ofFbo outputFbo;
 	bool scaleOutput = true;
 	
-	RejectedNextUser rejectedNextUser = NONE;	
+	RejectedNextUser rejectedNextUser = NONE;
+	
+	// variable to adjust the black bar on the right...
 	float blackBarRotation = 0.0;
 	float blackBarX = 0.0;
 
