@@ -778,6 +778,7 @@ void ofApp::setupFonts()
 {
     static const string FONT_DIR = "Assets/fonts/";
     ofxSmartFont::add(FONT_DIR + "AmericanTypewriterStd-Med.otf", 14, "AmericanTypewriter");
+	ofxSmartFont::add(FONT_DIR + "AmericanTypewriterStd-Med.otf", 12, "AmericanTypewriter12");
     ofxSmartFont::add(FONT_DIR + "AmericanTypewriterStd-Bold.otf", 14, "AmericanTypewriter700");
     ofxSmartFont::add(FONT_DIR + "AmericanTypewriterStd-Light.otf", 14, "AmericanTypewriter300");
     ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 16, "BodonPoster");

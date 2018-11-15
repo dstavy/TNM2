@@ -385,10 +385,10 @@ void ImageGrid::draw(int x, int y) {
 											0, wholeSize.y - section,
 											wholeSize.x, section);
 
-			if ((wholeSize.y - section) <= rawSize.y) {
+			if ((wholeSize.y - section) < rawSize.y) {
 				loading = false;
 				animStage = DONE;
-				currentMugshot->fadeOutDarkFrame();
+				currentMugshot->fadeOutDarkFrame();				
 			}
 		}
 		else if (animStage == FADE_OUT) {

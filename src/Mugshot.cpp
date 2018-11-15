@@ -37,8 +37,8 @@ const static ofPoint forehead_width_pos = {123, 725, 0};
 const static ofPoint chin_pos = {438, 760, 0};
 
 
-const static ofPoint examined_1_pos = {586, 796, 0};
-const static ofPoint examined_2_pos = {685, 792, 0};
+const static ofPoint examined_1_pos = {580, 790, 0};
+const static ofPoint examined_2_pos = {700, 795, 0};
 
 const static ofPoint examined_at_pos = {139, 794, 0};
 
@@ -129,6 +129,7 @@ void Mugshot::drawBackground(User* user) {
 		// draw information text
 		
 		shared_ptr<ofxSmartFont> font = ofxSmartFont::get("AmericanTypewriter");
+		
 		ofSetColor(107, 55, 143); // #6B378F
 		
 		if (user != NULL) {
@@ -205,20 +206,21 @@ void Mugshot::drawBackground(User* user) {
 				font->draw(meterToCMDashMM(chin), chin_pos.x, chin_pos.y);
 			}
 			
+
+			shared_ptr<ofxSmartFont> font_smaller = ofxSmartFont::get("AmericanTypewriter12");
 			
 			// 2018_11_13_23_28_03_647_0
 			string date_string = ofGetTimestampString("%H:%M:%S");
 			if (user->id.length() >= 10) {
 				date_string = user->id.substr(0, 10);
 			}
-			font->draw(date_string, examined_1_pos.x, examined_1_pos.y);
+			font_smaller->draw(date_string, examined_1_pos.x, examined_1_pos.y);
 			
 			string time_String = ofGetTimestampString("%F");
 			if (user->id.length() >= 20) {
 				date_string = user->id.substr(11, 8);
-			}
-			
-			font->draw(date_string, examined_2_pos.x, examined_2_pos.y);
+			}	
+			font_smaller->draw(date_string, examined_2_pos.x, examined_2_pos.y);
 			
 			font->draw("Berlin-Mitte", examined_at_pos.x, examined_at_pos.y);
 		} else {
