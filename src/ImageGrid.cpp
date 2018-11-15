@@ -378,6 +378,7 @@ void ImageGrid::draw(int x, int y) {
 			if ((wholeSize.y - section) <= rawSize.y) {
 				loading = false;
 				animStage = DONE;
+				tweenManager.clear();
 				currentMugshot->fadeOutDarkFrame();
 			}
 		}

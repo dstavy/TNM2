@@ -112,16 +112,14 @@ User* PresentationUpdate::update() {
 								user = tmp;
 								updated = true;
 							} else {
-								ofLogError() << "coulr not create new user with id" << id;
+								ofLogError() << "could not create new user with id" << id;
 							}
 						}
 						else {
 							updateUser(it->second, vScore, xScore);
-							user = it->second;
-							updated = true;
 						}
 						
-						ofLogNotice() << "user with id: " << id;
+						//ofLogNotice() << "user with id: " << id;
 						
 					} else {
 						//
@@ -157,7 +155,7 @@ User* PresentationUpdate::update() {
 	
    // frontTracker->setThreaded(true);
    // profileTracker->setThreaded(true);
-	
+
     return user;
 }
 void PresentationUpdate::getUsersList(vector<User*>& usersOnly) {

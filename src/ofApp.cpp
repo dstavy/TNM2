@@ -241,18 +241,26 @@ void ofApp::update(){
     bool newUser = false;
     cam.setScale(camScale);
 	
+	
 	if (rejectedNextUser == NORMAL) {
 		selectNextUser();
+		lastPresentationUpdate = ofGetElapsedTimeMillis();		
 	} else if (rejectedNextUser == RANDOM) {
 		selectNextUser(true);
+		lastUserUpdate = ofGetElapsedTimeMillis();
 	}
 	
 	if ((ofGetElapsedTimeMillis() -  lastPresentationUpdate) > PRESENTATION_UPDATE_REFRESH) {
-		lastPresentationUpdate = ofGetElapsedTimeMillis();
+		
 		selectNextUser();
+
+		lastPresentationUpdate = ofGetElapsedTimeMillis();	
+			
 	} else if ((ofGetElapsedTimeMillis() -  lastUserUpdate) > CURRENT_USER_REFRESH) {
 		// new random user
-//		selectNextUser(true);
+		selectNextUser(true);
+
+		lastUserUpdate = ofGetElapsedTimeMillis();
 	}
     
     if (currentUser != NULL) {
@@ -309,12 +317,14 @@ void ofApp::selectNextUser(bool random) {
 	if (curFeature != View::Features::INVALID) {
 		// check if an animation is running
 		if (grids[curFeature].animStage != ImageGrid::AnimationStage::DONE) {
+
 			// return, will try next turn...
 			rejectedNextUser = random ? RANDOM : NORMAL;
 			return;
 		}
 	}
 	
+
 	ofLogNotice() << "next user: " << random;
 	
 	rejectedNextUser = NONE;
@@ -325,8 +335,11 @@ void ofApp::selectNextUser(bool random) {
 	} else {
 		user = presentationUpdate.update();
 	}
-	
+
 	if(user != NULL) {
+
+		ofLogNotice() << "got a user: " << user->id;
+
 		//?
 		if (currentUser != nullptr) {
 			currentUser->isCurrent = false;
@@ -345,9 +358,6 @@ void ofApp::selectNextUser(bool random) {
 		mugshots.insert(mugshots.begin(), currMugshot);
 		currMugshot->update(View::Features::INVALID); // change to none
 		animateMagshots();
-		
-		lastUserUpdate = ofGetElapsedTimeMillis();
-		lastPresentationUpdate = ofGetElapsedTimeMillis();
 	}
 }
 
@@ -711,8 +721,8 @@ void ofApp::keyReleased(int key){
 	} else if (key == '5') {
 		selectFeature(View::Features::EYES);
 	} else if (key == 'u') {
-		// select new random iser
-		selectNextUser(true);
+		// select new random user
+		selectNextUser();
 	}
 	else if (key == 'r') {
 		// reset features
