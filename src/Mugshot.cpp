@@ -37,10 +37,10 @@ const static ofPoint forehead_width_pos = {123, 725, 0};
 const static ofPoint chin_pos = {438, 760, 0};
 
 
-const static ofPoint examined_1_pos = {120, 796, 0};
-const static ofPoint examined_2_pos = {236, 792, 0};
+const static ofPoint examined_1_pos = {586, 796, 0};
+const static ofPoint examined_2_pos = {685, 792, 0};
 
-const static ofPoint examined_at_pos = {458, 794, 0};
+const static ofPoint examined_at_pos = {139, 794, 0};
 
 static ofImage bgImage;
 
@@ -205,7 +205,7 @@ void Mugshot::drawBackground(User* user) {
 				font->draw(meterToCMDashMM(chin), chin_pos.x, chin_pos.y);
 			}
 			
-						
+			
 			// 2018_11_13_23_28_03_647_0
 			string date_string = ofGetTimestampString("%H:%M:%S");
 			if (user->id.length() >= 10) {
