@@ -99,25 +99,46 @@ User* PresentationUpdate::update() {
 							User* tmp = createUser(id);
 							if (tmp!= NULL) {
 								
-								
-								setUser(tmp, vScore, xScore, shouldersWidth, torsoLength, totalHeight, headHeight);
-								
+								// set data
+								setUser(tmp,
+										vScore,
+										xScore,
+										shouldersWidth,
+										torsoLength,
+										totalHeight,
+										headHeight);
 								
 								users->insert(std::pair<string, User*>(id, tmp));
 								user = tmp;
 								updated = true;
+							} else {
+								ofLogError() << "coulr not create new user with id" << id;
 							}
 						}
 						else {
 							updateUser(it->second, vScore, xScore);
+							user = it->second;
+							updated = true;
 						}
-                    }
-                }
-            }
+						
+						ofLogNotice() << "user with id: " << id;
+						
+					} else {
+						//
+						ofLogError() << "json-entry without id!";
+					}
+                } // for (iterating json)
+			} else {
+				ofLogError() << "could not open json!";
+			}
+			
             if (updated) {
+				
+				ofLogNotice() << "sorting users";
+				
                 vector<User*> sortedUsers;
                 getUsersList(sortedUsers);
-                    // set factor score
+				// set factor score
                 if (!sortedUsers.empty()) {
                     User::setHighestScore(sortedUsers[sortedUsers.size() -1]->score
                                           + 0.001);//we dont want 1
@@ -126,12 +147,17 @@ User* PresentationUpdate::update() {
                 }
             }
         } else {
+			// file not udpated!
            file.close();
         }
         lastUpdate = ofGetSystemTimeMillis();
-    }
+	} else {
+		// file does not exist
+	}
+	
    // frontTracker->setThreaded(true);
    // profileTracker->setThreaded(true);
+	
     return user;
 }
 void PresentationUpdate::getUsersList(vector<User*>& usersOnly) {
