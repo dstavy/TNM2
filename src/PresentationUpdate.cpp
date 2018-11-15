@@ -7,6 +7,7 @@
 
 #include "PresentationUpdate.hpp"
 #include "Analyzer.hpp"
+#include "Globals.h"
 //#defne USE_MOVIE
 
 const string PresentationUpdate::JSON_FILE_LOCAL = "records/dataset.json";
@@ -14,7 +15,11 @@ const string PresentationUpdate::JSON_FILE = "../../../The-Normalizing-Machine/b
 const string PresentationUpdate::FACE_DIR = "Faces/";
 const string PresentationUpdate::MOVIE_DIR = "Movies/";
 const string PresentationUpdate::SEQ_IMAGE_DIR = "../../../The-Normalizing-Machine/bin/Data/SeqImg/";
+#ifdef NO_RELEASE_BERLIN
+const string PresentationUpdate::IMAGE_EXT = "jpg";
+#else
 const string PresentationUpdate::IMAGE_EXT = "jpeg";
+#endif
 const string PresentationUpdate::IMAGE_SUF = "." + IMAGE_EXT;
 
 /*
@@ -50,15 +55,26 @@ User* PresentationUpdate::update() {
 	string json;
     bool updated = false;
 
-		if (!firstUpdate) {
-			json = JSON_FILE;//JSON_FILE_LOCAL
-            firstUpdate = true;
-		}
-		else {
-			json = JSON_FILE;
-		}
+	if (!firstUpdate) {
+#ifdef NO_RELEASE_BERLIN
+		json = JSON_FILE_LOCAL;
+#else
+		json = JSON_FILE;
+#endif
+		firstUpdate = true;
+	}
+	else {
+#ifdef NO_RELEASE_BERLIN
+		json = JSON_FILE_LOCAL;
+#else
+		json = JSON_FILE;
+#endif
+	}
+	
     if (file.doesFileExist(json)) {
+		
         file.open(json);
+		
         if (std::filesystem::last_write_time(file) > lastUpdate) {
             long f = std::filesystem::last_write_time(file);
             file.close();
@@ -66,6 +82,7 @@ User* PresentationUpdate::update() {
                 //frontTracker->setThreaded(false);
                // profileTracker->setThreaded(false);
                 for (unsigned int i = 0; i < datasetJson.size(); ++i) {
+					
                     Json::Value v = datasetJson[i];
                     string id = v["id"].asString();
                     int vScore = v["vScore"].asInt();
@@ -74,20 +91,26 @@ User* PresentationUpdate::update() {
 					float torsoLength = v["torsoLength"].asFloat();
 					float totalHeight = v["totalHeight"].asFloat();
                     float headHeight = v["headHeight"].asFloat();
+					
                     if (id.size() > 0) {
-                    UserMap::iterator it = users->find(id);
-                    if (it == users->end()) {
-                        // not found
-                        User* tmp = createUser(id);
-                        if (tmp!= NULL) {
-                            setUser(tmp, vScore, xScore, shouldersWidth, torsoLength, totalHeight, headHeight);
-                            users->insert(std::pair<string, User*>(id, tmp));
-                            user = tmp;
-                            updated = true;
-                        }
-                    } else {
-                        updateUser(it->second, vScore, xScore);
-                    }
+						UserMap::iterator it = users->find(id);
+						if (it == users->end()) {
+							// not found
+							User* tmp = createUser(id);
+							if (tmp!= NULL) {
+								
+								
+								setUser(tmp, vScore, xScore, shouldersWidth, torsoLength, totalHeight, headHeight);
+								
+								
+								users->insert(std::pair<string, User*>(id, tmp));
+								user = tmp;
+								updated = true;
+							}
+						}
+						else {
+							updateUser(it->second, vScore, xScore);
+						}
                     }
                 }
             }

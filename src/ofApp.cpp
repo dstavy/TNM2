@@ -55,8 +55,10 @@ void ofApp::setup(){
     profileTracker.setup("Model/shape_predictor_68_face_landmarks.dat");
     frontTracker.setThreaded(false);
     profileTracker.setThreaded(false);
+#if not defined NO_RELEASE_BERLIN
 	frontTracker.setFaceDetectorImageSize(735000);
-    
+#endif
+	
     //frontTracker.setFaceRotation(90);
     //fprofileTracker.setFaceRotation(90);
     
@@ -250,7 +252,7 @@ void ofApp::update(){
 		selectNextUser();
 	} else if ((ofGetElapsedTimeMillis() -  lastUserUpdate) > CURRENT_USER_REFRESH) {
 		// new random user
-//		selectNextUser(true);
+		selectNextUser(true);
 	}
     
     if (currentUser != NULL) {

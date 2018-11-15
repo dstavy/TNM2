@@ -16,6 +16,11 @@ std::string meterToCMDashMM(float meter) {
 	}
 	
 	std::string hs = ofToString(height);
+	
+	if (hs == "0") {
+		return "";
+	}
+	
 	if (hs.length() > 4) {
 		return hs.substr(2, 2)+"-"+hs.substr(4, 1);
 	} else {
