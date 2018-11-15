@@ -241,6 +241,12 @@ void ofApp::update(){
     bool newUser = false;
     cam.setScale(camScale);
 	
+	grids[View::HEAD].update();
+	grids[View::MOUTH].update();
+	grids[View::NOSE].update();
+	grids[View::FORHEAD].update();
+	grids[View::EYES].update();
+
 	
 	if (rejectedNextUser == NORMAL) {
 		selectNextUser();
