@@ -143,8 +143,8 @@ void ImageGrid::update() {
 	currentUserPosition.x = -1;
 	currentUserPosition.y = -1;
 	
-//	ofPushStyle();
-//	{
+	ofPushStyle();
+	{
 		fbo.begin();
 		{
 			ofClear(ofColor::black);
@@ -166,9 +166,9 @@ void ImageGrid::update() {
 //			}
 		}
 		fbo.end();
-//	}
-//    ofPopStyle();
-	
+	}
+    ofPopStyle();
+
 	
 	// set alpha, but also FLY_IN so we dont see the fbo yet
 	fboAlpha = 1.0;
