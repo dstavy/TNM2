@@ -62,22 +62,22 @@ out vec4 outputColor;
 void main(void)
 {
     vec4 ch0 = texture(tex0, texCoordVarying);
-    
+
 #ifdef halfsies
-    
+
     if (uv.x < 0.5){
         outputColor = ch0;
         return;
     }
-    
+
 #endif
-    
+
     outputColor = ch0 * 1;// add some grit, overexposure
 //    outputColor = ch0 * 0.98;// add some grit, overexposure
 //    outputColor = ch0 * ch0 * 1.4;// add some grit, overexposure
     float lum = (outputColor.r + outputColor.g + outputColor.b) /3.0;
     outputColor.rgb = outputColor.rgb * (1.0 - desat) + sepia * vec3(lum,lum,lum) * desat;
-    
+    outputColor.a = alpha;
 //    // shadowbox it
 //    float r = distance(vec2(0.5,0.5),texCoordVarying)*2.0;
 //    // r is 0 to 1 for the radius from center

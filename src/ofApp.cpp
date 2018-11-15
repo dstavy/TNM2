@@ -469,12 +469,13 @@ void ofApp::draw(){
 	ofPopMatrix();
 	ofPopStyle();
 	
-	
-	// draw debug strings
-	ofDrawBitmapString(ofToString(cam.getX()) + "  " + ofToString(cam.getY()) + "  " + ofToString(cam.getZ()), 50, 50);
-	ofDrawBitmapString(ofToString(cam.getFov()) + "  " + ofToString(cam.getDistance()) + "  " + ofToString(cam.getScale()), 50, 70);
+	if (doShowDebug) {
+		// draw debug strings
+		ofDrawBitmapString(ofToString(cam.getX()) + "  " + ofToString(cam.getY()) + "  " + ofToString(cam.getZ()), 50, 50);
+		ofDrawBitmapString(ofToString(cam.getFov()) + "  " + ofToString(cam.getDistance()) + "  " + ofToString(cam.getScale()), 50, 70);
 
-	ofDrawBitmapString("auto feature: " + ofToString(autoupdateFeatures), 50, 110);
+		ofDrawBitmapString("auto feature: " + ofToString(autoupdateFeatures), 50, 110);
+	}
 }
 
 void ofApp::drawBg() {
@@ -729,6 +730,9 @@ void ofApp::keyReleased(int key){
 		if (currMugshot != nullptr) {
 			currMugshot->resetFeatures();
 		}
+	}
+	else if (key == 'g') {
+		doShowDebug = !doShowDebug;
 	}
 }
 
