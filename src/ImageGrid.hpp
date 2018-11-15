@@ -48,6 +48,7 @@ public:
 			   ofColor bg = ofColor::fromHex(0xe6e0d3));
 	
     void update();
+	void doUpdate();
     void draw(int x, int y);
 	
 	ofPoint getSize();
@@ -134,6 +135,7 @@ public:
 	float dummy;
 	float imageAlpha = 1.0;
 	Mugshot* currentMugshot;
+	bool doUpdateNextUpdate = false;
 };
 #endif /* ImageGrid_hpp */
 

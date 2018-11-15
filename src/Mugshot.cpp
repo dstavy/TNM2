@@ -205,11 +205,20 @@ void Mugshot::drawBackground(User* user) {
 				font->draw(meterToCMDashMM(chin), chin_pos.x, chin_pos.y);
 			}
 			
+						
+			// 2018_11_13_23_28_03_647_0
+			string date_string = ofGetTimestampString("%H:%M:%S");
+			if (user->id.length() >= 10) {
+				date_string = user->id.substr(0, 10);
+			}
+			font->draw(date_string, examined_1_pos.x, examined_1_pos.y);
 			
+			string time_String = ofGetTimestampString("%F");
+			if (user->id.length() >= 20) {
+				date_string = user->id.substr(11, 8);
+			}
 			
-			//
-			font->draw(ofGetTimestampString("%H:%M:%S"), examined_1_pos.x, examined_1_pos.y);
-			font->draw(ofGetTimestampString("%F"), examined_2_pos.x, examined_2_pos.y);
+			font->draw(date_string, examined_2_pos.x, examined_2_pos.y);
 			
 			font->draw("Berlin-Mitte", examined_at_pos.x, examined_at_pos.y);
 		} else {
