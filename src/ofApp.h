@@ -31,7 +31,7 @@ public:
     static const int NUM_IMAGE_GRIDS = 10;
     //static const int NUM_GROUPS = 8;
     const long VIDEO_GRID_REFRESH = 2000;
-    static const long PRESENTATION_UPDATE_REFRESH = 30000;
+    static const long PRESENTATION_UPDATE_REFRESH = 10000;
     static const int MUGSHOT_REFRESH = 15000;
     static const int CURRENT_USER_REFRESH = 10000;// 120000
 	static const int IDLE_REFRESH = 5000;

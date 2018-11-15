@@ -252,7 +252,7 @@ void ofApp::update(){
 		selectNextUser();
 	} else if ((ofGetElapsedTimeMillis() -  lastUserUpdate) > CURRENT_USER_REFRESH) {
 		// new random user
-		selectNextUser(true);
+//		selectNextUser(true);
 	}
     
     if (currentUser != NULL) {
@@ -314,6 +314,8 @@ void ofApp::selectNextUser(bool random) {
 			return;
 		}
 	}
+	
+	ofLogNotice() << "next user: " << random;
 	
 	rejectedNextUser = NONE;
 	User* user = NULL;
