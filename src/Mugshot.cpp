@@ -133,12 +133,18 @@ void Mugshot::drawBackground(User* user) {
 		
 		if (user != NULL) {
 			
+			View& view = user->getView(false);
+			ofRectangle faceRec(view.parts[View::HEAD]);
+			float face_aspect = faceRec.width / faceRec.height;
+			
+			// head height
 			float headHeight = user->headHeight;
 			
 			// calc head width
 			// head width: get from face bounding-box
 			//...
-			float headWidth = 0.0;
+			float headWidth = headHeight * face_aspect;
+			
 			
 			// cubit: ellbow (from json) to wrist+20% (for hand)
 			float cubit = user->lowerArm; // + 20%
@@ -147,18 +153,18 @@ void Mugshot::drawBackground(User* user) {
 
 			
 			// forehead hight: tkae a portion of the headheight
-			float foreheadHeight = 2.222;
+			float foreheadHeight = 0.0;
 			
 			// forehead width: take portion
-			float foreheadWidth = 3.3333;
+			float foreheadWidth = 0.0;
 			
 			// chin: calc from head height...
-			float chin = 4.444;
+			float chin = 0.0;
 			
 			
 			ofLogNotice() << "user->totalHeight: " << user->totalHeight;
 			ofLogNotice() << "user->torsoLength: " << user->torsoLength;
-			ofLogNotice() << "user->headHeight: " << user->headHeight;
+			ofLogNotice() << "user->headHeight: " << headHeight;
 			ofLogNotice() << "user->headWidth: " << headWidth;
 			ofLogNotice() << "cubit: " << cubit;
 			ofLogNotice() << "foreheadHeight: " << foreheadHeight;
@@ -166,25 +172,39 @@ void Mugshot::drawBackground(User* user) {
 			ofLogNotice() << "chin: " << chin;
 			
 			
-			font->draw(meterToCMDashMM(user->totalHeight), height_pos.x, height_pos.y);
+			if (user->totalHeight > 0.0)
+				font->draw(meterToCMDashMM(user->totalHeight), height_pos.x, height_pos.y);
 	//		font->draw(meterToCMDashMM(0.0), eng_height_pos.x, eng_height_pos.y);
 	//		font->draw(meterToCMDashMM(0.0), out_a_pos.x, out_a_pos.y);
-			font->draw(meterToCMDashMM(user->torsoLength), trunk_pos.x, trunk_pos.y);
 			
-			font->draw(meterToCMDashMM(user->headHeight), head_length_pos.x, head_length_pos.y);
-			font->draw(meterToCMDashMM(headWidth), head_width_pos.x, head_width_pos.y);
+			if (user->torsoLength > 0.0)
+				font->draw(meterToCMDashMM(user->torsoLength), trunk_pos.x, trunk_pos.y);
+			
+			if (headHeight > 0.0)
+				font->draw(meterToCMDashMM(user->headHeight), head_length_pos.x, head_length_pos.y);
+			
+			if (headWidth > 0.0)
+				font->draw(meterToCMDashMM(headWidth), head_width_pos.x, head_width_pos.y);
 	//		font->draw(meterToCMDashMM(0.0), cheek_width_pos.x, cheek_width_pos.y);
 	//		font->draw(meterToCMDashMM(0.0), r_ear_length_pos.x, r_ear_length_pos.y);
 			
-			font->draw(meterToCMDashMM(cubit), cubit_pos.x, cubit_pos.y);
+			if (cubit > 0.0)
+				font->draw(meterToCMDashMM(cubit), cubit_pos.x, cubit_pos.y);
 			
 	//		font->draw(meterToCMDashMM(1.234567), age_pos.x, age_pos.y);
 	//		font->draw(meterToCMDashMM(1.234567), apparent_age_pos.x, apparent_age_pos.y);
 			
-			font->draw(meterToCMDashMM(foreheadHeight), forehead_height_pos.x, forehead_height_pos.y);
-			font->draw(meterToCMDashMM(foreheadWidth), forehead_width_pos.x, forehead_width_pos.y);
+			if (foreheadHeight)
+				font->draw(meterToCMDashMM(foreheadHeight), forehead_height_pos.x, forehead_height_pos.y);
 			
-			font->draw(meterToCMDashMM(chin), chin_pos.x, chin_pos.y);
+			if (foreheadWidth > 0.0) {
+				font->draw(meterToCMDashMM(foreheadWidth), forehead_width_pos.x, forehead_width_pos.y);
+			}
+			
+			if (chin > 0.0) {
+				font->draw(meterToCMDashMM(chin), chin_pos.x, chin_pos.y);
+			}
+			
 			
 			
 			//
