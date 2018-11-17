@@ -788,7 +788,7 @@ void ofApp::setupFonts()
     ofxSmartFont::add(FONT_DIR + "Crimson Text 700italic.ttf", 18, "CrimsonText700I");
     ofxSmartFont::add(FONT_DIR + "Crimson Text italic.ttf", 18, "CrimsonTextI");
     ofxSmartFont::add(FONT_DIR + "Crimson Text regular.ttf", 12, "CrimsonRegular");
-    ofxSmartFont::add(FONT_DIR + "Crimson Text 700.ttf", 20, "CrimsonText700Mugshot");
+    ofxSmartFont::add(FONT_DIR + "Crimson Text 700.ttf", 36, "CrimsonText700Mugshot");
 }
 
 View::Features ofApp::selectRandomFeature(View::Features feature) {

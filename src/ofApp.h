@@ -15,6 +15,8 @@
 #include "Tweener.h"
 #include "Globals.h"
 
+#define DO_WATCHDOG
+
 #ifdef TARGET_WIN32
 #include "Watchdog_Responder.h"
 #endif
@@ -33,7 +35,7 @@ public:
     const long VIDEO_GRID_REFRESH = 2000;
     static const long PRESENTATION_UPDATE_REFRESH = 10000;
     static const int MUGSHOT_REFRESH = 15000;
-    static const int CURRENT_USER_REFRESH = 30000;// 120000
+    static const int CURRENT_USER_REFRESH = 45000;// 120000
 	static const int IDLE_REFRESH = 5000;
 	
     void setup();
