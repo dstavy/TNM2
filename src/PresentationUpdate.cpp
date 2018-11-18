@@ -21,6 +21,7 @@ const string PresentationUpdate::IMAGE_EXT = "jpg";
 const string PresentationUpdate::IMAGE_EXT = "jpeg";
 #endif
 const string PresentationUpdate::IMAGE_SUF = "." + IMAGE_EXT;
+#define MAX_USERS 300
 
 /*
 ofxJSONElement PresentationUpdate::loadLibrary(string url)
@@ -81,7 +82,11 @@ User* PresentationUpdate::update() {
             if (datasetJson.open(json)) {
                 //frontTracker->setThreaded(false);
                // profileTracker->setThreaded(false);
-                for (unsigned int i = 0; i < datasetJson.size(); ++i) {
+				int i = datasetJson.size() - MAX_USERS;
+				if (i < 0) {
+					i = 0;
+				}
+                for (; i < datasetJson.size(); ++i) {
 					
                     Json::Value v = datasetJson[i];
                     string id = v["id"].asString();
@@ -91,6 +96,7 @@ User* PresentationUpdate::update() {
 					float torsoLength = v["torsoLength"].asFloat();
 					float totalHeight = v["totalHeight"].asFloat();
                     float headHeight = v["headHeight"].asFloat();
+					float armLength = v["armLength"].asFloat();
 					
                     if (id.size() > 0) {
 						UserMap::iterator it = users->find(id);
@@ -99,25 +105,45 @@ User* PresentationUpdate::update() {
 							User* tmp = createUser(id);
 							if (tmp!= NULL) {
 								
-								
-								setUser(tmp, vScore, xScore, shouldersWidth, torsoLength, totalHeight, headHeight);
-								
+								// set data
+								setUser(tmp,
+										vScore,
+										xScore,
+										shouldersWidth,
+										torsoLength,
+										totalHeight,
+										headHeight,
+										armLength);
 								
 								users->insert(std::pair<string, User*>(id, tmp));
 								user = tmp;
 								updated = true;
+							} else {
+								ofLogError() << "could not create new user with id" << id;
 							}
 						}
 						else {
 							updateUser(it->second, vScore, xScore);
 						}
-                    }
-                }
-            }
+						
+						//ofLogNotice() << "user with id: " << id;
+						
+					} else {
+						//
+						ofLogError() << "json-entry without id!";
+					}
+                } // for (iterating json)
+			} else {
+				ofLogError() << "could not open json!";
+			}
+			
             if (updated) {
+				
+				ofLogNotice() << "sorting users";
+				
                 vector<User*> sortedUsers;
                 getUsersList(sortedUsers);
-                    // set factor score
+				// set factor score
                 if (!sortedUsers.empty()) {
                     User::setHighestScore(sortedUsers[sortedUsers.size() -1]->score
                                           + 0.001);//we dont want 1
@@ -126,12 +152,17 @@ User* PresentationUpdate::update() {
                 }
             }
         } else {
+			// file not udpated!
            file.close();
         }
         lastUpdate = ofGetSystemTimeMillis();
-    }
+	} else {
+		// file does not exist
+	}
+	
    // frontTracker->setThreaded(true);
    // profileTracker->setThreaded(true);
+
     return user;
 }
 void PresentationUpdate::getUsersList(vector<User*>& usersOnly) {
@@ -262,22 +293,25 @@ void PresentationUpdate::updateUser(User* user, int vScore, int xScore) {
     user->score = (float)vScore / (vScore + xScore + 1); // avoid getting 100%
 }
 
-void PresentationUpdate::setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight)
+void PresentationUpdate::setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight, float armLength)
 {
 	user->shouldersWidth = shouldersWidth;
 	user->torsoLength = torsoLength;
-	user->torsoLength = torsoLength;
+	user->totalHeight = totalHeight;
 	user->headHeight = headHeight;
+	user->lowerArm = armLength;
 	updateUser(user, vScore, xScore);
 }
 
 bool PresentationUpdate::saveUserImage(string fileName, View& view) {
     ofImage  image = view.getImage();
     ofRectangle& rec = view.getBounderyBox(View::HEAD);
-    int newW  = View::FACE_EXTENDED_PADDING * rec.width;
-    int newH  = View::FACE_EXTENDED_PADDING * rec.height;
-    int moveX = (newW - rec.width ) /2;
-    int moveY = (newH - rec.height ) /2;
-    image.crop(rec.x -moveX, rec.y - moveY, newW, newH);
+    int newW  = MIN(View::FACE_EXTENDED_PADDING * rec.width, image.getWidth());
+    int newH  = MIN(View::FACE_EXTENDED_PADDING * rec.height, image.getHeight());
+    int moveX = MAX(0, (newW - rec.width ) /2);
+    int moveY = MAX((newH - rec.height ) /2, 0);
+    image.crop(MAX(0, rec.x -moveX), MAX(0, rec.y - moveY), newW, newH);
     return image.save(fileName);
+
+	// todo:: BUG WHEN FACE IS TOO SMALL
 }

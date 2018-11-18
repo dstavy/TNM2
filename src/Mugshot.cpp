@@ -37,10 +37,10 @@ const static ofPoint forehead_width_pos = {123, 725, 0};
 const static ofPoint chin_pos = {438, 760, 0};
 
 
-const static ofPoint examined_1_pos = {120, 796, 0};
-const static ofPoint examined_2_pos = {236, 792, 0};
+const static ofPoint examined_1_pos = {580, 790, 0};
+const static ofPoint examined_2_pos = {700, 795, 0};
 
-const static ofPoint examined_at_pos = {458, 794, 0};
+const static ofPoint examined_at_pos = {139, 794, 0};
 
 static ofImage bgImage;
 
@@ -129,16 +129,23 @@ void Mugshot::drawBackground(User* user) {
 		// draw information text
 		
 		shared_ptr<ofxSmartFont> font = ofxSmartFont::get("AmericanTypewriter");
+		
 		ofSetColor(107, 55, 143); // #6B378F
 		
 		if (user != NULL) {
 			
+			View& view = user->getView(false);
+			ofRectangle faceRec(view.parts[View::HEAD]);
+			float face_aspect = faceRec.width / faceRec.height;
+			
+			// head height
 			float headHeight = user->headHeight;
 			
 			// calc head width
 			// head width: get from face bounding-box
 			//...
-			float headWidth = 0.0;
+			float headWidth = headHeight * face_aspect;
+			
 			
 			// cubit: ellbow (from json) to wrist+20% (for hand)
 			float cubit = user->lowerArm; // + 20%
@@ -147,18 +154,18 @@ void Mugshot::drawBackground(User* user) {
 
 			
 			// forehead hight: tkae a portion of the headheight
-			float foreheadHeight = 2.222;
+			float foreheadHeight = 0.0;
 			
 			// forehead width: take portion
-			float foreheadWidth = 3.3333;
+			float foreheadWidth = 0.0;
 			
 			// chin: calc from head height...
-			float chin = 4.444;
+			float chin = 0.0;
 			
 			
 			ofLogNotice() << "user->totalHeight: " << user->totalHeight;
 			ofLogNotice() << "user->torsoLength: " << user->torsoLength;
-			ofLogNotice() << "user->headHeight: " << user->headHeight;
+			ofLogNotice() << "user->headHeight: " << headHeight;
 			ofLogNotice() << "user->headWidth: " << headWidth;
 			ofLogNotice() << "cubit: " << cubit;
 			ofLogNotice() << "foreheadHeight: " << foreheadHeight;
@@ -166,30 +173,54 @@ void Mugshot::drawBackground(User* user) {
 			ofLogNotice() << "chin: " << chin;
 			
 			
-			font->draw(meterToCMDashMM(user->totalHeight), height_pos.x, height_pos.y);
+			if (user->totalHeight > 0.0)
+				font->draw(meterToCMDashMM(user->totalHeight), height_pos.x, height_pos.y);
 	//		font->draw(meterToCMDashMM(0.0), eng_height_pos.x, eng_height_pos.y);
 	//		font->draw(meterToCMDashMM(0.0), out_a_pos.x, out_a_pos.y);
-			font->draw(meterToCMDashMM(user->torsoLength), trunk_pos.x, trunk_pos.y);
 			
-			font->draw(meterToCMDashMM(user->headHeight), head_length_pos.x, head_length_pos.y);
-			font->draw(meterToCMDashMM(headWidth), head_width_pos.x, head_width_pos.y);
+			if (user->torsoLength > 0.0)
+				font->draw(meterToCMDashMM(user->torsoLength), trunk_pos.x, trunk_pos.y);
+			
+			if (headHeight > 0.0)
+				font->draw(meterToCMDashMM(user->headHeight), head_length_pos.x, head_length_pos.y);
+			
+			if (headWidth > 0.0)
+				font->draw(meterToCMDashMM(headWidth), head_width_pos.x, head_width_pos.y);
 	//		font->draw(meterToCMDashMM(0.0), cheek_width_pos.x, cheek_width_pos.y);
 	//		font->draw(meterToCMDashMM(0.0), r_ear_length_pos.x, r_ear_length_pos.y);
 			
-			font->draw(meterToCMDashMM(cubit), cubit_pos.x, cubit_pos.y);
+			if (cubit > 0.0)
+				font->draw(meterToCMDashMM(cubit), cubit_pos.x, cubit_pos.y);
 			
 	//		font->draw(meterToCMDashMM(1.234567), age_pos.x, age_pos.y);
 	//		font->draw(meterToCMDashMM(1.234567), apparent_age_pos.x, apparent_age_pos.y);
 			
-			font->draw(meterToCMDashMM(foreheadHeight), forehead_height_pos.x, forehead_height_pos.y);
-			font->draw(meterToCMDashMM(foreheadWidth), forehead_width_pos.x, forehead_width_pos.y);
+			if (foreheadHeight)
+				font->draw(meterToCMDashMM(foreheadHeight), forehead_height_pos.x, forehead_height_pos.y);
 			
-			font->draw(meterToCMDashMM(chin), chin_pos.x, chin_pos.y);
+			if (foreheadWidth > 0.0) {
+				font->draw(meterToCMDashMM(foreheadWidth), forehead_width_pos.x, forehead_width_pos.y);
+			}
 			
+			if (chin > 0.0) {
+				font->draw(meterToCMDashMM(chin), chin_pos.x, chin_pos.y);
+			}
 			
-			//
-			font->draw(ofGetTimestampString("%H:%M:%S"), examined_1_pos.x, examined_1_pos.y);
-			font->draw(ofGetTimestampString("%F"), examined_2_pos.x, examined_2_pos.y);
+
+			shared_ptr<ofxSmartFont> font_smaller = ofxSmartFont::get("AmericanTypewriter12");
+			
+			// 2018_11_13_23_28_03_647_0
+			string date_string = ofGetTimestampString("%H:%M:%S");
+			if (user->id.length() >= 10) {
+				date_string = user->id.substr(0, 10);
+			}
+			font_smaller->draw(date_string, examined_1_pos.x, examined_1_pos.y);
+			
+			string time_String = ofGetTimestampString("%F");
+			if (user->id.length() >= 20) {
+				date_string = user->id.substr(11, 8);
+			}	
+			font_smaller->draw(date_string, examined_2_pos.x, examined_2_pos.y);
 			
 			font->draw("Berlin-Mitte", examined_at_pos.x, examined_at_pos.y);
 		} else {

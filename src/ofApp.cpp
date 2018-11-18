@@ -241,18 +241,32 @@ void ofApp::update(){
     bool newUser = false;
     cam.setScale(camScale);
 	
+	grids[View::HEAD].update();
+	grids[View::MOUTH].update();
+	grids[View::NOSE].update();
+	grids[View::FORHEAD].update();
+	grids[View::EYES].update();
+
+	
 	if (rejectedNextUser == NORMAL) {
 		selectNextUser();
+		lastPresentationUpdate = ofGetElapsedTimeMillis();		
 	} else if (rejectedNextUser == RANDOM) {
 		selectNextUser(true);
+		lastUserUpdate = ofGetElapsedTimeMillis();
 	}
 	
 	if ((ofGetElapsedTimeMillis() -  lastPresentationUpdate) > PRESENTATION_UPDATE_REFRESH) {
-		lastPresentationUpdate = ofGetElapsedTimeMillis();
+		
 		selectNextUser();
+
+		lastPresentationUpdate = ofGetElapsedTimeMillis();	
+			
 	} else if ((ofGetElapsedTimeMillis() -  lastUserUpdate) > CURRENT_USER_REFRESH) {
 		// new random user
 		selectNextUser(true);
+
+		lastUserUpdate = ofGetElapsedTimeMillis();
 	}
     
     if (currentUser != NULL) {
@@ -309,11 +323,15 @@ void ofApp::selectNextUser(bool random) {
 	if (curFeature != View::Features::INVALID) {
 		// check if an animation is running
 		if (grids[curFeature].animStage != ImageGrid::AnimationStage::DONE) {
+
 			// return, will try next turn...
 			rejectedNextUser = random ? RANDOM : NORMAL;
 			return;
 		}
 	}
+	
+
+	ofLogNotice() << "next user: " << random;
 	
 	rejectedNextUser = NONE;
 	User* user = NULL;
@@ -323,8 +341,11 @@ void ofApp::selectNextUser(bool random) {
 	} else {
 		user = presentationUpdate.update();
 	}
-	
+
 	if(user != NULL) {
+
+		ofLogNotice() << "got a user: " << user->id;
+
 		//?
 		if (currentUser != nullptr) {
 			currentUser->isCurrent = false;
@@ -343,9 +364,6 @@ void ofApp::selectNextUser(bool random) {
 		mugshots.insert(mugshots.begin(), currMugshot);
 		currMugshot->update(View::Features::INVALID); // change to none
 		animateMagshots();
-		
-		lastUserUpdate = ofGetElapsedTimeMillis();
-		lastPresentationUpdate = ofGetElapsedTimeMillis();
 	}
 }
 
@@ -457,12 +475,13 @@ void ofApp::draw(){
 	ofPopMatrix();
 	ofPopStyle();
 	
-	
-	// draw debug strings
-	ofDrawBitmapString(ofToString(cam.getX()) + "  " + ofToString(cam.getY()) + "  " + ofToString(cam.getZ()), 50, 50);
-	ofDrawBitmapString(ofToString(cam.getFov()) + "  " + ofToString(cam.getDistance()) + "  " + ofToString(cam.getScale()), 50, 70);
+	if (doShowDebug) {
+		// draw debug strings
+		ofDrawBitmapString(ofToString(cam.getX()) + "  " + ofToString(cam.getY()) + "  " + ofToString(cam.getZ()), 50, 50);
+		ofDrawBitmapString(ofToString(cam.getFov()) + "  " + ofToString(cam.getDistance()) + "  " + ofToString(cam.getScale()), 50, 70);
 
-	ofDrawBitmapString("auto feature: " + ofToString(autoupdateFeatures), 50, 110);
+		ofDrawBitmapString("auto feature: " + ofToString(autoupdateFeatures), 50, 110);
+	}
 }
 
 void ofApp::drawBg() {
@@ -709,14 +728,17 @@ void ofApp::keyReleased(int key){
 	} else if (key == '5') {
 		selectFeature(View::Features::EYES);
 	} else if (key == 'u') {
-		// select new random iser
-		selectNextUser(true);
+		// select new random user
+		selectNextUser();
 	}
 	else if (key == 'r') {
 		// reset features
 		if (currMugshot != nullptr) {
 			currMugshot->resetFeatures();
 		}
+	}
+	else if (key == 'g') {
+		doShowDebug = !doShowDebug;
 	}
 }
 
@@ -756,6 +778,7 @@ void ofApp::setupFonts()
 {
     static const string FONT_DIR = "Assets/fonts/";
     ofxSmartFont::add(FONT_DIR + "AmericanTypewriterStd-Med.otf", 14, "AmericanTypewriter");
+	ofxSmartFont::add(FONT_DIR + "AmericanTypewriterStd-Med.otf", 12, "AmericanTypewriter12");
     ofxSmartFont::add(FONT_DIR + "AmericanTypewriterStd-Bold.otf", 14, "AmericanTypewriter700");
     ofxSmartFont::add(FONT_DIR + "AmericanTypewriterStd-Light.otf", 14, "AmericanTypewriter300");
     ofxSmartFont::add(FONT_DIR + "Bodoni Poster.otf", 16, "BodonPoster");
@@ -765,7 +788,7 @@ void ofApp::setupFonts()
     ofxSmartFont::add(FONT_DIR + "Crimson Text 700italic.ttf", 18, "CrimsonText700I");
     ofxSmartFont::add(FONT_DIR + "Crimson Text italic.ttf", 18, "CrimsonTextI");
     ofxSmartFont::add(FONT_DIR + "Crimson Text regular.ttf", 12, "CrimsonRegular");
-    ofxSmartFont::add(FONT_DIR + "Crimson Text 700.ttf", 20, "CrimsonText700Mugshot");
+    ofxSmartFont::add(FONT_DIR + "Crimson Text 700.ttf", 12, "CrimsonText700Mugshot");
 }
 
 View::Features ofApp::selectRandomFeature(View::Features feature) {

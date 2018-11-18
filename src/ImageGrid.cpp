@@ -135,6 +135,13 @@ void ImageGrid::resetLoading() {
 }
 
 void ImageGrid::update() {
+	if (doUpdateNextUpdate) {
+		doUpdateNextUpdate = false;
+		doUpdate();
+	}
+}
+
+void ImageGrid::doUpdate() {
 
 	vector<User*> users(0);
 	int currentUserIndex;
@@ -143,11 +150,14 @@ void ImageGrid::update() {
 	currentUserPosition.x = -1;
 	currentUserPosition.y = -1;
 	
-//	ofPushStyle();
-//	{
+	ofPushStyle();
+	{
 		fbo.begin();
 		{
-			ofClear(ofColor::black);
+			ofColor bgcolor;
+			bgcolor.fromHex(0x544e41);
+			ofClear(60, 50, 41, 255);
+			ofClearAlpha();
 			ofSetColor(bg);
 			ofFill();
 			
@@ -166,9 +176,9 @@ void ImageGrid::update() {
 //			}
 		}
 		fbo.end();
-//	}
-//    ofPopStyle();
-	
+	}
+    ofPopStyle();
+
 	
 	// set alpha, but also FLY_IN so we dont see the fbo yet
 	fboAlpha = 1.0;
@@ -336,7 +346,7 @@ void ImageGrid::calculateSizes() {
     elementSize.x = w + ELEMENT_SIDE_PADDING * 2;
     elementSize.y = h + SCORE_AREA_HEIGHT;
     rawSize.x = PADDING_ROW * 2 + userPerLevel * elementSize.x;
-    rawSize.y = PADDING_ROW *2 + elementSize.y;
+    rawSize.y = PADDING_ROW * 2 + elementSize.y;
     wholeSize.x = rawSize.x;
     wholeSize.y = rawSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
     //    wholeSize.y = HEADER_HEIGHT + lineSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
@@ -368,22 +378,22 @@ void ImageGrid::draw(int x, int y) {
 		// draw grid
 		if (animStage == FADE_IN) {
 
-			int section = floor((float)(ofGetElapsedTimeMillis() - loadingTime) / delayLoading) * rawSize.y;
+			int section = floor((float)(ofGetElapsedTimeMillis() - loadingTime) / delayLoading) * (rawSize.y+Y_SPACING);
 
 			fbo.getTexture().drawSubsection(0, wholeSize.y - section,
 											wholeSize.x, section,
 											0, wholeSize.y - section,
 											wholeSize.x, section);
 
-			if ((wholeSize.y - section) <= rawSize.y) {
+			if ((wholeSize.y - section) < rawSize.y) {
 				loading = false;
 				animStage = DONE;
-				currentMugshot->fadeOutDarkFrame();
+				currentMugshot->fadeOutDarkFrame();				
 			}
 		}
 		else if (animStage == FADE_OUT) {
 			
-			int section = floor((float)(ofGetElapsedTimeMillis() - loadingTime) / delayLoading) * rawSize.y;
+			int section = floor((float)(ofGetElapsedTimeMillis() - loadingTime) / delayLoading) * (rawSize.y+Y_SPACING) ;
 			
 			if (section < currentUserPosition.y) {
 				flyInImage = ofImage();
@@ -399,7 +409,9 @@ void ImageGrid::draw(int x, int y) {
 				// fadeout done
 				loading = false;
 				fboAlpha = 0.0;
-				update();
+				
+				doUpdateNextUpdate = true;
+//				update();
 			}
 			
 		}
