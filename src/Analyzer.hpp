@@ -13,7 +13,7 @@
 #include "View.hpp"
 #include "User.hpp"
 
-// his class check the videos. add a new user and update scores
+// this class check the videos. add a new user and update scores
 class Analyzer {
 public:
     static const int EAR_ROTATION_FACTOR = 5;
