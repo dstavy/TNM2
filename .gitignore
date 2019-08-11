@@ -396,5 +396,6 @@ ASALocalRun/
 .localhistory/
 
 watchdog/**
+*.xcuserstate
 TNM2.vcxproj.filters
 TNM2.vcxproj.saxe
