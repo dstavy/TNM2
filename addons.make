@@ -1,5 +1,6 @@
 ofxCv
-ofxFaceTracker2
+ofxDlib
+ofxFaceTracker21
 ofxGui
 ofxJSON
 ofxOpenCv

@@ -42,14 +42,17 @@ public:
 			   int hElement,
 			   int userPerLevel,
 			   ofPoint flyInStartPos,
+               float gridX,
+               float gridY,
 			   float scale = 1.0,
 			   int delayLoading = TIME_ROW_STEP*1000.0,
 			   string title = "",
-			   ofColor bg = ofColor::fromHex(0xe6e0d3));
+			   ofColor bg = ofColor::fromHex(0xe6e0d3)
+               );
 	
     void update();
 	void doUpdate();
-    void draw(int x, int y);
+    void draw();
 	
 	ofPoint getSize();
 	void setScale(float scale) {
@@ -72,7 +75,7 @@ public:
 	
     
     ofFbo fbo;
-	ofFbo maskFbo;
+	//ofFbo maskFbo;
 	ofFbo outputFbo;
 	float fboAlpha = 1.0;
     Group *group;
@@ -84,6 +87,7 @@ public:
     string title;
     float scale;
     ofColor bg;
+    ofPoint gridLocation = {0,0};
     //bool leftPanel;
 	
     void calculateSizes();

@@ -11,9 +11,8 @@
 
 #include "Utils.hpp"
 #include "ofApp.h"
+#include "Globals.h"
 
-const static int dropshadow_w = 20;
-const static int dropshadow_h = 18;
 
 const static ofPoint height_pos = {140, 85, 0};
 const static ofPoint eng_height_pos = {124, 115, 0};
@@ -64,7 +63,7 @@ Mugshot::Mugshot(ofShader* shader, User* user, ofApp* app) {
 	
 	firstTime = true;
 	x = START_X;
-	y = ofGetHeight();
+    y = -TOTAL_WIDTH;//ofGetHeight();
 
 	
 	bgFbo.allocate(bgImage.getWidth(), bgImage.getHeight());
@@ -274,8 +273,8 @@ void Mugshot::update(View::Features feature) {
 		{
 			ofClear(0, 0, 0);
 			
-			ofScale( partScale.x, partScale.y);
-			ofTranslate(-faceBox.x, -faceBox.y);
+			ofScale( partScale);
+            ofTranslate(-faceBox.x, -faceBox.y);
 			
 			drawLettersFront(view.parts, view.getLandmarks(), ofxSmartFont::get("CrimsonText700Mugshot"));
 		}
@@ -325,10 +324,16 @@ void Mugshot::drawFbo() {
 		shader->begin();
 		shader->setUniform1f("factor", 0.9); // SET A UNIFORM
 		shader->setUniform1f("alpha", 1.0); // SET A UNIFORM
-		face.drawSubsection(dropshadow_w + MG_CARD_INSET_X + MG_WIDTH + MG_SPACE, 238+dropshadow_h,
+#ifdef MUGSHOT_IS_LEFT
+		face.drawSubsection(DROP_SHADOW_W + MG_CARD_INSET_X , 238+DROP_SHADOW_H,
 							MG_WIDTH, MG_HEIGHT,
 							faceBox.x , faceBox.y, faceBox.width, faceBox.height);
-		shader->end();
+#else
+        face.drawSubsection(DROP_SHADOW_W + MG_CARD_INSET_X + MG_WIDTH + MG_SPACE, 238+ DROP_SHADOW_H,
+                            MG_WIDTH, MG_HEIGHT,
+                            faceBox.x , faceBox.y, faceBox.width, faceBox.height);
+#endif
+        shader->end();
 		face.unbind();
 		
 		//ofPushMatrix();
@@ -377,8 +382,11 @@ void Mugshot::drawFacecutFbo() {
 		face.unbind();
 	}
 	facecutFbo.end();
-	
-	facecutFbo.draw(dropshadow_w + MG_CARD_INSET_X, 298);
+#ifdef MUGSHOT_IS_LEFT
+    facecutFbo.draw(DROP_SHADOW_W + MG_CARD_INSET_X + MG_WIDTH + MG_SPACE , 298);
+#else
+	facecutFbo.draw(DROP_SHADOW_W + MG_CARD_INSET_X, 298);
+#endif
 }
 
 void fadeOutDarkFrame() {
@@ -387,7 +395,7 @@ void fadeOutDarkFrame() {
 
 bool Mugshot::draw() {
 	
-	if (x >= SCREEN_WIDTH) {
+	if (y >= SCREEN_HEIGHT) {
 		return false;
 	}
 	else {
@@ -407,7 +415,11 @@ bool Mugshot::draw() {
 			ofPushMatrix();
 			{
 				// move to facecutFbo
-				ofTranslate(dropshadow_w + MG_CARD_INSET_X, 256);
+#ifdef MUGSHOT_IS_LEFT
+				ofTranslate(DROP_SHADOW_W + MG_CARD_INSET_X + MG_WIDTH + MG_SPACE, 256);
+#else
+                ofTranslate(DROP_SHADOW_W + MG_CARD_INSET_X, 256);
+#endif
 				
 				ofScale(partScale);
 				ofTranslate(-faceBox.x, -faceBox.y);
@@ -460,7 +472,11 @@ void Mugshot::drawOverlay() {
 		ofRotateDeg(rotation);
 		
 		// draw overlay
-		faceoverlayFbo.draw(dropshadow_w + MG_CARD_INSET_X, 256);
+#ifdef MUGSHOT_IS_LEFT
+        faceoverlayFbo.draw(DROP_SHADOW_W + MG_CARD_INSET_X + MG_WIDTH + MG_SPACE, 256);
+#else
+		faceoverlayFbo.draw(DROP_SHADOW_W + MG_CARD_INSET_X, 256);
+#endif
 	}
 	ofPopMatrix();
 }
@@ -574,18 +590,17 @@ void Mugshot::animate(float delay) {
     }
 	
     else {
-		int x_dist = 1.7 * MG_X_MOVE / animateCounter;
-		int xTo = x + ofRandom(x_dist - 10, x_dist + 10);
+		int y_dist = MG_Y_MOVE / animateCounter;
+		int xTo = x - ofRandom( -80., 80);//+ ofRandom(y_dist - 10, y_dist + 10);
 		
-        int yTo = y - ofRandom( -10., 10.);
+        int yTo = y  + ofRandom(y_dist - 0.3*y_dist, y_dist);//- ofRandom( -10., 10.);
         float rotTo = ofRandom(-4., 4.);
 		float scaleTo = scale - (0.01 * animateCounter);
-		
         auto t0 = tweenManager.addTween(x, x, xTo, ANIMATION_TIME, delay , TWEEN::Ease::Quadratic::Out);
         auto t1 = tweenManager.addTween(y, y, yTo, ANIMATION_TIME, delay , TWEEN::Ease::Quadratic::Out);
         auto t2 = tweenManager.addTween(rotation, rotation, rotTo, ANIMATION_TIME, delay , TWEEN::Ease::Quadratic::Out);
 		auto t3 = tweenManager.addTween(scale, scale, scaleTo, ANIMATION_TIME, delay , TWEEN::Ease::Quadratic::Out);
-		
+        
         t0->start();
         t1->start();
         t2->start();

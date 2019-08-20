@@ -16,7 +16,7 @@ int main( ){
     ofGLFWWindowSettings settings;
     settings.setGLVersion(3, 2); //we define the OpenGL version we want to use
 	
-	settings.setSize(3840, 1080);
+	settings.setSize(2160, 1080);
 	
 #ifdef TARGET_WIN32
 	settings.decorated = false;
@@ -24,10 +24,10 @@ int main( ){
 #endif
     
 #ifdef DEBUG
-    // settings.multiMonitorFullScreen = false;
+     settings.multiMonitorFullScreen = false;
 #else
     // settings.multiMonitorFullScreen = true;
-    //  setMultiDisplayFullscreen (true);
+    // setMultiDisplayFullscreen (true);
 #endif
     
     ofCreateWindow(settings);

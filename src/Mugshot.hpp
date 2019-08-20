@@ -16,17 +16,21 @@
 
 class ofApp;
 
+static const int MG_WIDTH = 306; // width of one mugshot
+static const int MG_HEIGHT = 342;
+static constexpr float MG_ASPECT_RATIO = (float)MG_WIDTH/(float)MG_HEIGHT;
+static const int MG_SPACE = 2;
+static const int MG_X_MOVE = 500;
+static const int MG_Y_MOVE = 1000;
+static const int START_X =  132;
+static const int START_Y =  0;
+static const int MG_CARD_INSET_X = 82;
+static const int DROP_SHADOW_W = 20;
+static const int DROP_SHADOW_H = 18;
+static const int MG_Y_START = 238 + DROP_SHADOW_H;
+
 class Mugshot  {
 public:
-    static const int MG_WIDTH = 306; // width of one mugshot
-    static const int MG_HEIGHT = 342;
-	static constexpr float MG_ASPECT_RATIO = (float)MG_WIDTH/(float)MG_HEIGHT;
-    static const int MG_SPACE = 2;
-    static const int MG_X_MOVE = 500;
-    static const int START_X =  65;
-    static const int START_Y =  92;
-	static const int MG_CARD_INSET_X = 82;
-	
 	static const int ANIMATION_TIME = 1;
 	static const int TOTAL_WIDTH = 816;
 	

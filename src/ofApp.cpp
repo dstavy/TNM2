@@ -3,7 +3,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	
+    float screenOffset = SCREEN_WIDTH/2.;
     ofBackground(0,0,0,255);
     //ofSetBackgroundAuto(false);
     ofSetVerticalSync(true);
@@ -31,22 +31,26 @@ void ofApp::setup(){
     {
         ofLogNotice("cant load Assets/table_grid_bg.png"); //"Assets/table_page.png"
     }
-    
+    float gridScaleW = SCREEN_WIDTH / table_bg.getWidth();
+    float gridScaleH = SCREEN_HEIGHT / table_bg.getHeight();
+    gridScale = MIN(gridScaleW,gridScaleH);
+    //ofScale(GRID_SCALE_TABLE);
+    table_bg.resize(gridScale*table_bg.getWidth(), gridScale*table_bg.getHeight());
     
     if (!sepiaShader.load("shaders/sepia")) {
         ofLogNotice("cant load shaders/sepia");
     }
     
     //frontPlayer.load("me_front.mov");    // Setup tracker
-    frontPlayer.setLoopState(OF_LOOP_NORMAL);
-    frontPlayer.setFrame(30);
-    frontPlayer.setSpeed(1.0);
+    //frontPlayer.setLoopState(OF_LOOP_NORMAL);
+    //frontPlayer.setFrame(30);
+    //frontPlayer.setSpeed(1.0);
     //frontPlayer.play();
     
     //profilePlayer.load("me_side.mov");    // Setup tracker
-    profilePlayer.setLoopState(OF_LOOP_NORMAL);
-    profilePlayer.setSpeed(1.0);
-    frontPlayer.setFrame(30);
+    //profilePlayer.setLoopState(OF_LOOP_NORMAL);
+    //profilePlayer.setSpeed(1.0);
+    //frontPlayer.setFrame(30);
     //profilePlayer.play();
     
     frontTracker.setThreaded(false);
@@ -72,19 +76,25 @@ void ofApp::setup(){
 	//	MOUTH,
 	//	EYES,
 	
+#ifdef MUGSHOT_IS_LEFT
+    screenOffset -= SCREEN_WIDTH;
+#else
+    screenOffset += SCREEN_WIDTH - MG_WIDTH;
+#endif
+    
     Group* group = groupManager.groupFactory(
                                          View::FORHEAD, // fragment
                                          Group::GENERIC, // type of group
                                          false, // is profile?
                                          7); //number of levels
-	
+
 	grids[View::FORHEAD].setup(this,
 							   &sepiaShader, // shader
 							   group, // newly created group
-							   196, 96, // width and height of element
+							   160*gridScale, 50*gridScale, // width and height of element
 							   1, // user per level
-							   {1731, 152}, // start position for flying in image
-							   1); // scale
+							   {screenOffset , MG_Y_START}, // start position for flying in image
+                               470.0*gridScale, 870.0*gridScale); // scale
 	
 	// grids[0].Y_SPACING = 0;
 	//grids[0].SCORE_AREA_HEIGHT = 5;
@@ -99,8 +109,8 @@ void ofApp::setup(){
 							group,
 							110, 102,
 							5,
-							{700, -37}, // start position for flying in image
-							1);
+							{screenOffset , MG_Y_START}, // start position for flying in image
+                            926.0*gridScale, 560.0*gridScale);
     
     
     group = groupManager.groupFactory(
@@ -113,8 +123,8 @@ void ofApp::setup(){
 							group,
 							80, 82,
 							7,
-							{1563, -14}, //{1668 / 1.0, 97 / 1.0}, // start position for flying in image
-							1);
+							{screenOffset , MG_Y_START}, //{1668 / 1.0, 97 / 1.0}, // start position for flying in image
+                            493.0*gridScale, 812.0*gridScale);
     
     group = groupManager.groupFactory(
                                   View::MOUTH,
@@ -126,8 +136,8 @@ void ofApp::setup(){
 							 group,
 							 110, 110,
 							 5,
-							 {1131, -182}, //{1215 / 1.0, 47 / 1.0}, // start position for flying in image
-							 1);
+							 {screenOffset , MG_Y_START}, //{1215 / 1.0, 47 / 1.0}, // start position for flying in image
+                             470.0*gridScale, 870.0*gridScale);
     
     group = groupManager.groupFactory(
                                   View::EYES,
@@ -139,13 +149,13 @@ void ofApp::setup(){
 							group,
 							196, 87,
 							3,
-							{1998, -180}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
-							1);
+							{screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
+                            59.0*gridScale, 1828.0*gridScale);
 	
 	
     currentUser = NULL;
     //update
-    presentationUpdate.setup(&users, &frontPlayer, &profilePlayer, &frontTracker, &frontTracker, &groupManager);
+    presentationUpdate.setup(&users, NULL, NULL, &frontTracker, &frontTracker, &groupManager);
 	
 //	selectNextUser(true);
 	currentUser = presentationUpdate.update();
@@ -203,9 +213,9 @@ void ofApp::setup(){
    // cam.setPosition(2880, 540, cam.getZ());
     //cam.move(2880, 540, cam.getZ());
     camScale = cam.getScale();
-	mugshotIsLeft = false;
+	//mugshotIsLeft = false;
 	
-	outputFbo.allocate(SCREEN_WIDTH*2, 1080, GL_RGB);
+	outputFbo.allocate(SCREEN_WIDTH*2, SCREEN_HEIGHT, GL_RGB);
 	currentFeatureToFocus = View::Features::INVALID;
 
 #ifdef TARGET_WIN32
@@ -217,8 +227,8 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::exit(){
-    frontPlayer.close();
-    profilePlayer.close();
+   // frontPlayer.close();
+   // profilePlayer.close();
     
     for (auto & mugshot : mugshots) {
         delete(mugshot);;
@@ -483,15 +493,15 @@ void ofApp::draw(){
 		ofDrawBitmapString("auto feature: " + ofToString(autoupdateFeatures), 50, 110);
 	}
 }
-
+/*
 void ofApp::drawBg() {
 	
 //	mugshotPage.draw(800, 100);
 	ofPushMatrix();
 	
-	if (mugshotIsLeft) {
+#ifndef MUGSHOT_IS_LEFT
 		ofTranslate(SCREEN_WIDTH, 0);
-	}
+#endif
 	
 	ofTranslate(30, 30);
 	
@@ -500,14 +510,15 @@ void ofApp::drawBg() {
 	table_bg.draw(0, 0);
 	ofPopMatrix();
 }
+*/
 
 void ofApp::drawMugshotPage() {
 	
 	ofPushMatrix();
 	{
-		if (!mugshotIsLeft) {
-			ofTranslate(SCREEN_WIDTH, 0);
-		}
+#ifndef MUGSHOT_IS_LEFT
+        ofTranslate(SCREEN_WIDTH, 0);
+#endif
 		
 		vector<Mugshot*>::iterator i = mugshots.end();
 		while (i != mugshots.begin())
@@ -527,31 +538,37 @@ void ofApp::drawGridPage() {
 	
     ofPushMatrix();
 	{
-		if (mugshotIsLeft) {
-			ofTranslate(SCREEN_WIDTH, 0);
-		}
+#ifdef MUGSHOT_IS_LEFT
+        ofTranslate(SCREEN_WIDTH, 0);
+#endif
 		
-		ofTranslate(30, gridY);
+		///ofTranslate(30, gridY);
 		
-		// ofTranslate(30, -1304);
-		ofScale(GRID_SCALE);
-		
+        //ofPushMatrix();
+        //{
+        //ofScale(GRID_SCALE_TABLE);
+        
 		table_bg.draw(0, 0);
+        //}
+       // ofPopMatrix();
+       // ofScale(GRID_SCALE_TABLE);//
 		
 		// be aware of render order!
-		grids[View::HEAD].draw(2055, 1266); // HEAD
-		grids[View::MOUTH].draw(1403, 849); // MOUTH
-		grids[View::NOSE].draw(748, 1230); // NOSE
-		grids[View::FORHEAD].draw(494, 904); // FOREHEAD
-		grids[View::EYES].draw(90, 2770); // EYES
+		//grids[View::HEAD].draw(2055, 1266); // HEAD
+		//grids[View::MOUTH].draw(1403, 849); // MOUTH
+		//grids[View::NOSE].draw(748, 1230); // NOSE
+		//grids[View::FORHEAD].draw(494, 904); // FOREHEAD
+		//grids[View::EYES].draw(90, 2770); // EYES
 
+        ofLogNotice() << "GRID_SCALE_TABLE: " << gridScale;
+ofLogNotice() << "1356.0*GRID_SCALE_TABLE: " << 1356.0*(float)gridScale;
 		// unscaled version
-//		grids[View::HEAD].draw(1356, 835);//2055, 1266); // HEAD
-//		grids[View::MOUTH].draw(926, 560);//1403, 849); // MOUTH
-//		grids[View::NOSE].draw(493, 812);//748, 1230); // NOSE
-//		grids[View::FORHEAD].draw(326, 596);//494, 904); // FOREHEAD
-//		grids[View::EYES].draw(59, 1828);//90, 2770); // EYES
-		
+		grids[View::HEAD].draw();//2055, 1266); // HEAD
+		grids[View::MOUTH].draw();//1403, 849); // MOUTH
+		grids[View::NOSE].draw();//748, 1230); // NOSE
+		grids[View::FORHEAD].draw();//494, 904); // FOREHEAD
+		grids[View::EYES].draw();//90, 2770); // EYES
+ 
 		
 		//    tableHeader.draw(0, 0);
 		//    grids[0].draw(0, tableHeader.getHeight());
@@ -592,7 +609,7 @@ User* ofApp::getRandomUser() {
     }
     return NULL;
 }
-
+/*///
 void ofApp::drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, int w, int h) {
     if (player.isFrameNew()) {
         ofPushMatrix();
@@ -600,7 +617,7 @@ void ofApp::drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, in
         int boxSize = 400;
         ofColor dark(0,0,0,125);
         ofPath path;
-		
+*///
         /*
         player.bind();
         sepiaShader.begin();
@@ -632,7 +649,7 @@ void ofApp::drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, in
 		sepiaShader.end();
 		player.unbind();
         */
-		
+/*///
         //ofPath path;
         path.clear();
         path.setFillColor(dark);
@@ -647,6 +664,7 @@ void ofApp::drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, in
         ofPopMatrix();
     }
 }
+
 
 ofPoint ofApp::getGridLocation() {
     ofPoint p(0,0);
@@ -667,7 +685,7 @@ ofPoint ofApp::getGridLocation() {
             return ofPoint(0 , recSize);
     }
 }
-
+*///
 void ofApp::keyReleased(int key){
 
 	if (key == OF_KEY_UP) {
@@ -745,7 +763,9 @@ void ofApp::keyReleased(int key){
 void ofApp::setFeatureToFocus(View::Features feature, float animTime) {
 	currentFeatureToFocus = feature;
 	float toY = View::getLocationForFeature(currentFeatureToFocus);
-	
+    float toX = View::getLocationForFeature(currentFeatureToFocus);
+
+	/*
 	if (gridTween != nullptr) {
 		gridTween->clear();
 	}
@@ -757,6 +777,7 @@ void ofApp::setFeatureToFocus(View::Features feature, float animTime) {
 									  TIME_GIRD_MOVE_DELAY,
 									  TWEEN::Ease::Quadratic::Out);
 	gridTween->start();
+     */
 }
 
 void ofApp::presentationUpdater()
@@ -764,11 +785,11 @@ void ofApp::presentationUpdater()
     User* user = presentationUpdate.update();
     if (user != NULL) {
         currentUser = user;
-        frontPlayer.setUseTexture(true);
-        profilePlayer.setUseTexture(true);
+        //frontPlayer.setUseTexture(true);
+        //profilePlayer.setUseTexture(true);
         // TODO::deal with start frame
-        frontPlayer.play();
-        profilePlayer.play();
+        //frontPlayer.play();
+        //profilePlayer.play();
         //frontPlayer.firstFrame();
     }
 }

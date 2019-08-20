@@ -32,7 +32,7 @@ public:
 	
     static const int NUM_IMAGE_GRIDS = 10;
     //static const int NUM_GROUPS = 8;
-    const long VIDEO_GRID_REFRESH = 2000;
+    //const long VIDEO_GRID_REFRESH = 2000;
     static const long PRESENTATION_UPDATE_REFRESH = 10000;
     static const int MUGSHOT_REFRESH = 15000;
     static const int CURRENT_USER_REFRESH = 45000;// 120000
@@ -44,13 +44,13 @@ public:
     void draw();
     void keyReleased(int key);
 	
-    ofRectangle getBoundingBox(ofRectangle rec1, ofRectangle rec2);
-    void drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, int w, int h);
+    //ofRectangle getBoundingBox(ofRectangle rec1, ofRectangle rec2);
+    //void drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, int w, int h);
     void presentationUpdater();
     void drawMugshotPage();
     User* getRandomUser();
     void drawGridPage();
-	void drawBg();
+	//void drawBg();
 	
 	void setFeatureToFocus(View::Features, float);
 	void selectNewFeature();
@@ -60,8 +60,8 @@ public:
 
     ofxFaceTracker2 frontTracker;
     ofxFaceTracker2 profileTracker;
-    ofVideoPlayer frontPlayer;
-    ofVideoPlayer profilePlayer;
+    //ofVideoPlayer frontPlayer;
+    //ofVideoPlayer profilePlayer;
     PresentationUpdate presentationUpdate;
     UserMap users;
     ofImage tablePage;
@@ -71,9 +71,9 @@ public:
     GroupManager groupManager;
     
     ofShader sepiaShader;
-    ofRectangle frontFace;
-    ofRectangle profileFace;
-    int rotation;
+    //ofRectangle frontFace;
+    //ofRectangle profileFace;
+    //int rotation;
     ImageGrid grids[NUM_IMAGE_GRIDS];
     Mugshot* currMugshot;
     
@@ -107,10 +107,10 @@ public:
     static const int ANIM_DELAY = 0.2;
     void animateMagshots();
 	
-	bool mugshotIsLeft;
+	//bool mugshotIsLeft;
 	
 	View::Features currentFeatureToFocus;
-	float gridY = 0.0;
+	float gridY = 200.0;
 	shared_ptr<TWEEN::Tween> gridTween;
 	ofImage partImage;
 	ofRectangle featureRect;
@@ -124,6 +124,7 @@ public:
 	// variable to adjust the black bar on the right...
 	float blackBarRotation = 0.0;
 	float blackBarX = 0.0;
+    float gridScale =1.0;
 	bool doShowDebug = false;
 
 private:

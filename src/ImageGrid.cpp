@@ -53,7 +53,9 @@ void ImageGrid::setup(ofApp* app,
 					  int hElement,
 					  int userPerLevel,					  
 					  ofPoint flyInStartPos,
-					  float scale,
+                      float gridX,
+                      float gridY,
+                      float scale,
 					  int delayLoading,
 					  string title,
 					  ofColor bg)
@@ -69,6 +71,8 @@ void ImageGrid::setup(ofApp* app,
     this->bg = bg;
     this->delayLoading = delayLoading;
 	this->flyInStartPosition = flyInStartPos;
+    this->gridLocation.x = gridX;
+    this->gridLocation.y = gridY;
 	
     //this->leftPanel = leftPanel;
     aspectRatio = (float)w/h;
@@ -78,7 +82,7 @@ void ImageGrid::setup(ofApp* app,
     int fboH = wholeSize.y;
 	
     fbo.allocate(fboW, fboH, GL_RGBA);
-	maskFbo.allocate(fboW, fboH, GL_RGB);
+	//maskFbo.allocate(fboW, fboH, GL_RGB);
 	outputFbo.allocate(fboW, fboH, GL_RGBA);
 //	outputFbo.getTexture().getTextureData().bFlipTexture = true;
 	
@@ -87,13 +91,13 @@ void ImageGrid::setup(ofApp* app,
     fbo.begin();
     ofClear(0,0,0,0);
     fbo.end();
-	
+/*
 	maskFbo.begin();
 	ofClear(0,0,0,0);
 	ofSetColor(255);
 	ofDrawCircle(fboW/2, fboH/2, fboW/2);
 	maskFbo.end();
-	
+*/
 	outputFbo.begin();
 	ofClear(0,0,0,0);
 	outputFbo.end();
@@ -213,8 +217,8 @@ void ImageGrid::setupAnimation() {
 	// setup inital values
 	flyInImagePosition = ofPoint(flyInStartPosition.x, flyInStartPosition.y);
 	flyingImageImageOffset = ofPoint(featureRect.x, featureRect.y);
-	flyingImageSize = ofPoint(featureRect.width, featureRect.height);
-	flyingImageRectSize = ofPoint(featureRect.width, featureRect.height);
+	flyingImageSize = ofPoint(featureRect.width , featureRect.height);
+	flyingImageRectSize = ofPoint(featureRect.width , featureRect.height );
 	flyingImageRectPos = ofPoint(featureRect.x, featureRect.y);
 }
 
@@ -275,7 +279,7 @@ void ImageGrid::startFlyingAnimation() {
 	// tween position
 	auto tween = tweenManager.addTween(flyInImagePosition,
 									   flyInImagePosition,
-									   currentUserPosition,
+									   currentUserPosition + gridLocation,
 									   TIME_FEATURE_FLY,
 									   0.0,
 									   TWEEN::Ease::Quadratic::Out);
@@ -292,7 +296,7 @@ void ImageGrid::startFlyingAnimation() {
 	
 	//----------------------------------------
 	// tween for scale
-	ofPoint target_scale(w*GRID_SCALE/partScale.x, h*GRID_SCALE/partScale.y);
+	ofPoint target_scale(w/partScale.x, h/partScale.y);
 	auto tween_scale = tweenManager.addTween(flyingImageSize,
 											 flyingImageSize,
 											 target_scale,
@@ -352,7 +356,7 @@ void ImageGrid::calculateSizes() {
     //    wholeSize.y = HEADER_HEIGHT + lineSize.y * group->numLevels + Y_SPACING * (group->numLevels- 1);
 }
 
-void ImageGrid::draw(int x, int y) {
+void ImageGrid::draw() {
 	
 //	outputFbo.begin();
 //	ofClear(0, 0, 0, 0);
@@ -362,7 +366,7 @@ void ImageGrid::draw(int x, int y) {
 	
     ofPushMatrix();
 	{
-		ofTranslate(x,y);
+		ofTranslate(gridLocation);
 #ifdef DRAW_DEBUG
 		ofSetColor(200, 200, 0, 100);
 		ofDrawRectangle(0, 0, 20, 20);
@@ -373,8 +377,8 @@ void ImageGrid::draw(int x, int y) {
 //		maskShader.begin();
 //		maskShader.setUniformTexture("maskTex", maskFbo.getTexture(), 1 );
 		
-//		ofScale(scale);
-		
+		//ofScale(scale);
+       //ofScale(GRID_SCALE);
 		// draw grid
 		if (animStage == FADE_IN) {
 
@@ -420,7 +424,8 @@ void ImageGrid::draw(int x, int y) {
 			ofSetColor(255, 255, 255, fboAlpha*255);
 			fbo.draw(0,0);
 		}
-		
+    }
+    ofPopMatrix();
 //		maskShader.end();
 //		outputFbo.end();
 //		outputFbo.draw(0, 0);
@@ -432,8 +437,7 @@ void ImageGrid::draw(int x, int y) {
 			ofPushStyle();
 			{
 				// scale "out" of gridscale
-				ofScale(1.0/GRID_SCALE);
-				
+				//ofScale(1.0/GRID_SCALE);
 				ofTranslate(flyInImagePosition.x, flyInImagePosition.y);
 #ifdef DRAW_DEBUG
 				ofSetColor(200, 0, 0, 100);
@@ -482,8 +486,8 @@ void ImageGrid::draw(int x, int y) {
 		ofSetColor(200, 0, 200, 100);
 		ofDrawRectangle(0, -20, dummy*500.0, 20);
 #endif
-	}
-    ofPopMatrix();
+	//}
+    //ofPopMatrix();
 }
 
 void ImageGrid::drawFlyingImage() {
@@ -526,7 +530,7 @@ void ImageGrid::drawElement(User* user, int x, int y) {
 		
 		if (user->isCurrent && currentUserPosition.x < 0) {
 			ofLogNotice() << "current user position: " << x << " " << y;
-			currentUserPosition.set(x*GRID_SCALE, y*GRID_SCALE);
+			currentUserPosition.set(x, y);
 		}
 		
         if (view.isActive()) {
