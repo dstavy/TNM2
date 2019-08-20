@@ -91,10 +91,11 @@ void ofApp::setup(){
 	grids[View::FORHEAD].setup(this,
 							   &sepiaShader, // shader
 							   group, // newly created group
-							   160*gridScale, 50*gridScale, // width and height of element
+							   150,60, // width and height of element in image pix
 							   1, // user per level
 							   {screenOffset , MG_Y_START}, // start position for flying in image
-                               470.0*gridScale, 870.0*gridScale); // scale
+                               490.0, 876.0, // postion of grid
+                               gridScale); // scale
 	
 	// grids[0].Y_SPACING = 0;
 	//grids[0].SCORE_AREA_HEIGHT = 5;
@@ -110,7 +111,8 @@ void ofApp::setup(){
 							110, 102,
 							5,
 							{screenOffset , MG_Y_START}, // start position for flying in image
-                            926.0*gridScale, 560.0*gridScale);
+                            926.0, 560.0,
+                            gridScale);
     
     
     group = groupManager.groupFactory(
@@ -124,7 +126,8 @@ void ofApp::setup(){
 							80, 82,
 							7,
 							{screenOffset , MG_Y_START}, //{1668 / 1.0, 97 / 1.0}, // start position for flying in image
-                            493.0*gridScale, 812.0*gridScale);
+                            493.0, 812.0,
+                            gridScale);
     
     group = groupManager.groupFactory(
                                   View::MOUTH,
@@ -137,7 +140,8 @@ void ofApp::setup(){
 							 110, 110,
 							 5,
 							 {screenOffset , MG_Y_START}, //{1215 / 1.0, 47 / 1.0}, // start position for flying in image
-                             470.0*gridScale, 870.0*gridScale);
+                             470.0, 870.0,
+                             gridScale);
     
     group = groupManager.groupFactory(
                                   View::EYES,
@@ -150,7 +154,8 @@ void ofApp::setup(){
 							196, 87,
 							3,
 							{screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
-                            59.0*gridScale, 1828.0*gridScale);
+                            59.0, 1828.0,
+                            gridScale);
 	
 	
     currentUser = NULL;
@@ -560,8 +565,6 @@ void ofApp::drawGridPage() {
 		//grids[View::FORHEAD].draw(494, 904); // FOREHEAD
 		//grids[View::EYES].draw(90, 2770); // EYES
 
-        ofLogNotice() << "GRID_SCALE_TABLE: " << gridScale;
-ofLogNotice() << "1356.0*GRID_SCALE_TABLE: " << 1356.0*(float)gridScale;
 		// unscaled version
 		grids[View::HEAD].draw();//2055, 1266); // HEAD
 		grids[View::MOUTH].draw();//1403, 849); // MOUTH

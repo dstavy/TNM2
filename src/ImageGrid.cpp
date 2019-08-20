@@ -63,16 +63,16 @@ void ImageGrid::setup(ofApp* app,
 	this->appcontroller = app;
     this->shader = shader;
     this->group = group;
-    this->w = wElement;
-    this->h = hElement;
+    this->scale = scale;
+    this->w = wElement*scale;
+    this->h = hElement*scale;
     this->userPerLevel = userPerLevel;
     this->title = title;
-    this->scale = scale;
     this->bg = bg;
     this->delayLoading = delayLoading;
 	this->flyInStartPosition = flyInStartPos;
-    this->gridLocation.x = gridX;
-    this->gridLocation.y = gridY;
+    this->gridLocation.x = gridX*scale;
+    this->gridLocation.y = gridY*scale;
 	
     //this->leftPanel = leftPanel;
     aspectRatio = (float)w/h;
@@ -113,7 +113,7 @@ void ImageGrid::setup(ofApp* app,
 
 // call this to calculate where to draw next
 ofPoint ImageGrid::getSize() {
-    ofLogNotice("Grid:" + getTitle() + "size: " + ofToString(wholeSize.x/scale) + " " + ofToString(wholeSize.y/scale));
+    ofLogNotice("Grid:" + getTitle() + " size: " + ofToString(wholeSize.x/scale) + " " + ofToString(wholeSize.y/scale));
 	
 	return ofPoint(wholeSize.x/scale, wholeSize.y/scale);
 }
