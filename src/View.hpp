@@ -22,9 +22,9 @@ class View {
 public:
     enum Features {
         HEAD = 0,
-        FORHEAD,
-        NOSE,
         MOUTH,
+        NOSE,
+        FORHEAD,
         EYES,
         LEFT_EAR,
         RIGHT_EAR,

@@ -8,6 +8,7 @@
 #include "PresentationUpdate.hpp"
 #include "Analyzer.hpp"
 #include "Globals.h"
+#include "Gender.h"
 //#defne USE_MOVIE
 
 const string PresentationUpdate::JSON_FILE_LOCAL = "records/dataset.json";
@@ -83,9 +84,10 @@ User* PresentationUpdate::update() {
                 //frontTracker->setThreaded(false);
                // profileTracker->setThreaded(false);
 				int i = datasetJson.size() - MAX_USERS;
-				if (i < 0) {
-					i = 0;
-				}
+                if (i < 0) {
+                    i = 0;
+                }
+				
                 for (; i < datasetJson.size(); ++i) {
 					
                     Json::Value v = datasetJson[i];
@@ -97,7 +99,17 @@ User* PresentationUpdate::update() {
 					float totalHeight = v["totalHeight"].asFloat();
                     float headHeight = v["headHeight"].asFloat();
 					float armLength = v["armLength"].asFloat();
-					
+                    int age;
+                    Gender gender;
+                    float beard;
+                    string hairColor;
+//#ifdef FACE_API
+                     age = v["age"].asInt();
+                     gender = getGenderFromString(v["gender"].asString());
+                     beard = v["bead"].asFloat();
+                     hairColor = v["hairColor"].asString();
+//#endif
+                    age = 16;
                     if (id.size() > 0) {
 						UserMap::iterator it = users->find(id);
 						if (it == users->end()) {
@@ -113,7 +125,10 @@ User* PresentationUpdate::update() {
 										torsoLength,
 										totalHeight,
 										headHeight,
-										armLength);
+										armLength,
+                                        age,
+                                        gender
+                                        );
 								
 								users->insert(std::pair<string, User*>(id, tmp));
 								user = tmp;
@@ -229,50 +244,52 @@ User* PresentationUpdate::createUser(string id) {
         user = new User(id);
        // for (bool profileb : { false, true }) {
 		bool profileb = false;
-            bool resb;
-            //some path, may be absolute or relative to bin/data
-			string path = SEQ_IMAGE_DIR + id;//  +"_" + std::to_string(profileb);
-            ofDirectory dir(path);
-            if (dir.exists()) {
-                    //only show png files
-                    dir.allowExt(IMAGE_EXT);
-                    //populate the directory object
-                    dir.listDir();
-                    ofImage image;
-                    float highScore = 10;
-                    int selected = -1;
-                    
-                    //go through and print out all the paths
-                    for(int i = 0; i < dir.size(); i++){
-                        ofLogNotice(dir.getPath(i));
-                        if (image.load(dir.getPath(i))) {
-                            image.update();
-                            float score = Analyzer::getFaceScore(image, *frontTracker, profileb);
-							if (score != Analyzer::NO_FOUND) {
-								score = abs(score);
-								if (!profile && score < highScore) {
-									highScore = score;
-									selected = i;
-								}
-								image.clear();
-							}
+        bool resb;
+        //some path, may be absolute or relative to bin/data
+        string path = SEQ_IMAGE_DIR + id;//  +"_" + std::to_string(profileb);
+        ofDirectory dir(path);
+        if (dir.exists()) {
+            //only show png files
+            dir.allowExt(IMAGE_EXT);
+            //populate the directory object
+            dir.listDir();
+            ofImage image;
+            float highScore = 10;
+            int selected = -1;
+            
+            //go through and print out all the paths
+            for(int i = 0; i < dir.size(); i++){
+                ofLogNotice(dir.getPath(i));
+                if (image.load(dir.getPath(i))) {
+                    image.update();
+                    float score = Analyzer::getFaceScore(image, *frontTracker, profileb);
+                    if (score != Analyzer::NO_FOUND) {
+                        score = abs(score);
+                        if (!profile && score < highScore) {
+                            highScore = score;
+                            selected = i;
                         }
+                        image.clear();
                     }
-					if (selected >= 0) {
-                    resb = Analyzer::faceAnalyze(dir.getPath(selected), *profileTracker, *user, profileb);
-                    if (resb) {
-                        string outImage = FACE_DIR + id + "_" + std::to_string(profileb) + IMAGE_SUF;
-                        resb = saveUserImage(outImage, user->getView(profileb));
-                        resb = Analyzer::faceAnalyze(outImage, *profileTracker, *user, profileb); // do again on smaller image
-                        if (resb && !profileb) {
-                            //user->currentUser = true;
-                            res = resb;
-                        }
-                    }
-					//dir.remove(true);
-					}
                 }
-       // }
+            }
+            if (selected >= 0) {
+                string sourcImage = dir.getPath(selected);
+                resb = Analyzer::faceAnalyze(dir.getPath(selected), *profileTracker, *user, profileb);
+                if (resb) {
+                    string outImage = FACE_DIR + id + "_" + std::to_string(profileb) + IMAGE_SUF;
+                    resb = saveUserImage(outImage, user->getView(profileb));
+                    resb = Analyzer::faceAnalyze(outImage, *profileTracker, *user, profileb); // do again on smaller image
+                    if (resb && !profileb) {
+                        //user->currentUser = true;
+                        faceApi.analyzeFace(outImage, user); // try small image if good enugh.
+                        // todo: this syncronized call and should change to unsyncronizd
+                        res = resb;
+                    }
+            }
+            //dir.remove(true);
+            }
+        }
     }
     
     if (res) {
@@ -282,6 +299,7 @@ User* PresentationUpdate::createUser(string id) {
     else {
         if (user != NULL) {
             delete(user);
+            user = NULL;
         }
         return NULL;
     }
@@ -293,7 +311,7 @@ void PresentationUpdate::updateUser(User* user, int vScore, int xScore) {
     user->score = (float)vScore / (vScore + xScore + 1); // avoid getting 100%
 }
 
-void PresentationUpdate::setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight, float armLength)
+void PresentationUpdate::setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight, float armLength, int age, Gender gender)
 {
 	user->shouldersWidth = shouldersWidth;
 	user->torsoLength = torsoLength;

@@ -27,6 +27,7 @@ const static ofPoint r_ear_length_pos = {280, 175, 0};
 const static ofPoint cubit_pos = {428, 175, 0};
 
 const static ofPoint age_pos = {666, 85, 0};
+const static ofPoint apparent_gender_pos = {674, 124, 0};
 const static ofPoint apparent_age_pos = {720, 115, 0};
 
 
@@ -36,10 +37,13 @@ const static ofPoint forehead_width_pos = {123, 725, 0};
 const static ofPoint chin_pos = {438, 760, 0};
 
 
+
 const static ofPoint examined_1_pos = {580, 790, 0};
 const static ofPoint examined_2_pos = {700, 795, 0};
 
 const static ofPoint examined_at_pos = {139, 794, 0};
+
+const static string place = "Ars Electornica";
 
 static ofImage bgImage;
 
@@ -205,6 +209,13 @@ void Mugshot::drawBackground(User* user) {
 				font->draw(meterToCMDashMM(chin), chin_pos.x, chin_pos.y);
 			}
 			
+            if (user->age > 0.0) {
+                font->draw(ofToString(user->age), apparent_age_pos.x, apparent_age_pos.y);
+            }
+            
+            if (user->gender != None) {
+                font->draw(getStringFromGender(user->gender), apparent_gender_pos.x, apparent_gender_pos.y);
+            }
 
 			shared_ptr<ofxSmartFont> font_smaller = ofxSmartFont::get("AmericanTypewriter12");
 			
@@ -221,7 +232,7 @@ void Mugshot::drawBackground(User* user) {
 			}	
 			font_smaller->draw(date_string, examined_2_pos.x, examined_2_pos.y);
 			
-			font->draw("Berlin-Mitte", examined_at_pos.x, examined_at_pos.y);
+			font->draw(place, examined_at_pos.x, examined_at_pos.y);
 		} else {
 			ofLogNotice() << "mugshot no user!";
 		}

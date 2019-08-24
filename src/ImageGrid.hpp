@@ -140,6 +140,10 @@ public:
 	float imageAlpha = 1.0;
 	Mugshot* currentMugshot;
 	bool doUpdateNextUpdate = false;
+    
+    Group* getGroup() {
+        return group;
+    };
 };
 #endif /* ImageGrid_hpp */
 

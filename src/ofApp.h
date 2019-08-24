@@ -23,41 +23,41 @@
 
 class ofApp : public ofBaseApp{
 public:
-	
-	enum RejectedNextUser {
-		NONE,
-		NORMAL,
-		RANDOM,
-	};
-	
-    static const int NUM_IMAGE_GRIDS = 10;
+    
+    enum RejectedNextUser {
+        NONE,
+        NORMAL,
+        RANDOM,
+    };
+    
+    static const int NUM_IMAGE_GRIDS = 5;
     //static const int NUM_GROUPS = 8;
     //const long VIDEO_GRID_REFRESH = 2000;
     static const long PRESENTATION_UPDATE_REFRESH = 10000;
     static const int MUGSHOT_REFRESH = 15000;
     static const int CURRENT_USER_REFRESH = 45000;// 120000
-	static const int IDLE_REFRESH = 5000;
-	
+    static const int IDLE_REFRESH = 5000;
+    
     void setup();
     void exit();
     void update();
     void draw();
     void keyReleased(int key);
-	
+    
     //ofRectangle getBoundingBox(ofRectangle rec1, ofRectangle rec2);
     //void drawVideo(ofVideoPlayer& player, ofRectangle& face, int x, int y, int w, int h);
     void presentationUpdater();
     void drawMugshotPage();
     User* getRandomUser();
     void drawGridPage();
-	//void drawBg();
-	
-	void setFeatureToFocus(View::Features, float);
-	void selectNewFeature();
-	void selectFeature(View::Features);
-	void selectNextUser(bool random = false);
-
-
+    //void drawBg();
+    
+    void setFeatureToFocus(View::Features, float);
+    void selectNewFeature();
+    void selectFeature(View::Features);
+    void selectNextUser(bool random = false);
+    
+    
     ofxFaceTracker2 frontTracker;
     ofxFaceTracker2 profileTracker;
     //ofVideoPlayer frontPlayer;
@@ -74,15 +74,15 @@ public:
     //ofRectangle frontFace;
     //ofRectangle profileFace;
     //int rotation;
-    ImageGrid grids[NUM_IMAGE_GRIDS];
+    vector<ImageGrid*> grids[NUM_IMAGE_GRIDS];
     Mugshot* currMugshot;
     
     ofPoint  getGridLocation();
-	void mugshotIntroAnimationDone();
-	void signalCurrentMugshotImageOff();
-	Mugshot* getCurrentMugshot() {
-		return currMugshot;
-	}
+    void mugshotIntroAnimationDone();
+    void signalCurrentMugshotImageOff();
+    Mugshot* getCurrentMugshot() {
+        return currMugshot;
+    }
     
     //ofFbo gridFbo;
     int gridSize = 600;
@@ -96,39 +96,41 @@ public:
     static void setupFonts();
     static View::Features selectRandomFeature(View::Features feature);
     View::Features curFeature;
-	View::Features lastIdleFeature;
+    View::Features lastIdleFeature;
     long lastMugshotUpdate = 0;
     long lastUserUpdate = 0;
-	long lastIdleUpdate = 0;
-    ofEasyCam cam;
+    long lastIdleUpdate = 0;
     TWEEN::Manager tweenManager;
     glm::vec3 camScale;
     vector<Mugshot*> mugshots;
     static const int ANIM_DELAY = 0.2;
     void animateMagshots();
-	
-	//bool mugshotIsLeft;
-	
-	View::Features currentFeatureToFocus;
-	float gridY = 200.0;
-	shared_ptr<TWEEN::Tween> gridTween;
-	ofImage partImage;
-	ofRectangle featureRect;
-	bool autoupdateFeatures = true;
-	//
-	ofFbo outputFbo;
-	bool scaleOutput = false;
-	
-	RejectedNextUser rejectedNextUser = NONE;
-	
-	// variable to adjust the black bar on the right...
-	float blackBarRotation = 0.0;
-	float blackBarX = 0.0;
+    
+    //bool mugshotIsLeft;
+    
+    View::Features currentFeatureToFocus;
+    float gridY = 200.0;
+    shared_ptr<TWEEN::Tween> gridTween;
+    ofImage partImage;
+    ofRectangle featureRect;
+    bool autoupdateFeatures = true;
+    //
+    ofFbo outputFbo;
+    bool scaleOutput = false;
+    
+    RejectedNextUser rejectedNextUser = NONE;
+    
+    // variable to adjust the black bar on the right...
+    float blackBarRotation = 0.0;
+    float blackBarX = 0.0;
     float gridScale =1.0;
-	bool doShowDebug = false;
-
+    bool doShowDebug = false;
+    
 private:
 #ifdef TARGET_WIN32
-	unique_ptr<WatchDog_Responder> wdr;
+    unique_ptr<WatchDog_Responder> wdr;
+#endif
+#ifdef NO_RELEASE_BERLIN
+    ofEasyCam cam;
 #endif
 };

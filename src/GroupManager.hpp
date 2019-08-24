@@ -26,10 +26,13 @@ public:
 		// cleanup groups we created!		
 	}
 	
-    void update(vector<User*> users);
+    void update(vector<User*>& users);
     void exit();
-    Group* groupFactory(View::Features feature, Group::GroupBy by, bool profile, int levels);
+    Group* groupFactory(View::Features feature, Group::GroupBy by, bool profile, int levels, Group::GroupFilter& filter);
     Group* getGroup(View::Features feature, Group::GroupBy by, bool profile);
+    vector<Group*> getGroups() {
+        return groups;
+    };
 };
     
 

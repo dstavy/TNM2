@@ -14,9 +14,10 @@
 class GenericGroup : public Group {
 public:
     GenericGroup(View::Features feature,
-				 GroupBy grouBy,
+				 GroupBy groupBy,
 				 bool profile,
-				 int levels) : Group(feature, grouBy, profile, levels )
+				 int levels,
+                 GroupFilter& filter) : Group(feature, groupBy, profile, levels, filter )
 	{};
 	~GenericGroup() {};
 	

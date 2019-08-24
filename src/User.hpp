@@ -10,7 +10,11 @@
 
 #include "ofMain.h"
 #include "View.hpp"
+#include "Gender.h"
 
+
+static const float BEARD_THRESHOLD = 0.5;
+static const float BALD_THRESHOLD = 0.65;
 
 class User {
 public:
@@ -30,9 +34,19 @@ public:
     View profileView;
     //int measures[5];
     bool isCurrent = false;
-    
+    int age = 0;
+    Gender gender = None;
+    string hairColor;
+    float beard = 0.0;
     User(string id) {
         this->id = id;
+    };
+    
+    bool getBeardBoolean() {
+        if (beard > BEARD_THRESHOLD) {
+            return true;
+        }
+        return false;
     };
     
     static void setHighestScore(float score) {

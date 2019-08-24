@@ -6,10 +6,11 @@
 //
 
 #include "GroupManager.hpp"
+#include "AgeGroup.hpp"
 
 
 
-void GroupManager::update(vector<User*> users) {
+void GroupManager::update(vector<User*>& users) {
     for(auto const& group: groups) {
         group->update(users);
     }
@@ -32,22 +33,28 @@ Group* GroupManager::getGroup(View::Features feature, Group::GroupBy by, bool pr
 	return NULL;
 }
 
-Group* GroupManager::groupFactory(View::Features feature, Group::GroupBy by, bool profile, int levels) {
-  
+Group* GroupManager::groupFactory(View::Features feature, Group::GroupBy by, bool profile, int levels, GenericGroup::GroupFilter& filter) {
+  /*
     Group* group = getGroup(feature, by, profile);
     if (group != NULL) {
         return group;
     }
-	
+  */
 	// create new group
+    Group* g = NULL;
 	switch ((int)by) {
-		case Group::GENERIC:
-			Group* g  = new GenericGroup(feature, by, profile, levels);
-			groups.push_back(g);
-			return g;
-	}
+        case Group::AGE:
+             g  = new AgeGroup(feature, by, profile, levels, filter);
+            break;
+        case Group::GENERIC:
+            default:
+           g  = new GenericGroup(feature, by, profile, levels, filter);
+            break;
+        }
+        groups.push_back(g);
+        return g;
+
 	
 	ofLogNotice() << "did not create group for :" << by;
     return NULL;
 }
-

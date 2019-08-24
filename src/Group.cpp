@@ -8,6 +8,7 @@
 #include "Group.hpp"
 
 User* Group::getGridUsers(int usersPerLevel, vector<User*>& outUsers, int& outIndex) {
+    filterGroup(filter);
    /* bool currentFound = false;
     
     for (int i = 0; i < numLevels; i++) {
@@ -48,17 +49,17 @@ User* Group::getGridUsers(int usersPerLevel, vector<User*>& outUsers, int& outIn
     }
     */
 	
+    if(allUsers.size() > 0) {
 	// do a simple colection based on number of users
     int numberNeeded = numLevels * usersPerLevel;
     //float ratio = (float)allUsers.size() / (numberNeeded - 1);
     float increment = 1.0/(numberNeeded -1);
-    
+
     for (int j =0; j <numberNeeded; j++) {
         //ofLerp(0, allUsers.size(), j*increment);
         outUsers.push_back(allUsers[round(ofLerp(0, allUsers.size() -1, j*increment))]);
     }
-	
-	
+
     // Iterate over all elements in Vector
 	bool found = false;
     int i = 0;
@@ -77,11 +78,13 @@ User* Group::getGridUsers(int usersPerLevel, vector<User*>& outUsers, int& outIn
 		outIndex = index;
 		return allUsers[i];
     }
-	
+    }
+    
 	outIndex = -1;
 	return nullptr;
 }
 
+/*
 float Group::getScore(User* user) {
     for (int i = 0; i < numLevels; i++) {
         if (std::find(users[i].begin(), users[i].end(), user) != users[i].end()) {
@@ -89,4 +92,38 @@ float Group::getScore(User* user) {
         }
     }
     return 0.0;
+}
+ */
+
+void Group::sortUsersByAge() {
+    //sort users by age
+    sort(allUsers.begin(), allUsers.end(), [](const User* lhs, const User* rhs) {
+        return lhs->age < rhs->age;
+    });
+    //set refoctor values on users
+    //return usersOnly;
+}
+
+
+void Group::filterGroup(GroupFilter& filter) {
+    allUsers.erase(std::remove_if(
+                               allUsers.begin(), allUsers.end(),
+                                [&filter]( User*& user) {
+                                    if (filter.gender != None) {
+                                        if (user->gender != filter.gender) return true;
+                                    }
+                                    
+                                    if (filter.beard == true )  {
+                                        if (user->getBeardBoolean() != true) return true;
+                                    }
+                                    
+                                    if (filter.minAge != -1 )  {
+                                        if (user->age < filter.minAge) return true;
+                                    }
+                                    
+                                    if (filter.maxAge != -1 )  {
+                                        if (user->age > filter.maxAge) return true;
+                                    }
+                                    return false;// put your condition here
+                                }), allUsers.end());
 }

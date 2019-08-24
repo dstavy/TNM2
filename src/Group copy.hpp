@@ -12,37 +12,16 @@
 #include "User.hpp"
 #include "View.hpp"
 
+class GroupFilter {
+    Gender gender;
+    int mimAge = -1;
+    int maxAge = -1;
+    bool beard;
+};
 
 class Group {
 public:
 	
-    class GroupFilter {
-        public:
-        Gender gender = None;
-        int minAge = -1;
-        int maxAge = -1;
-        bool beard = false;
-        
-        bool inFilter(User* user) {
-            if (this->gender != None && this->gender != user->gender) {
-                 return false;
-            }
-            
-            if (this->beard == true && user->getBeardBoolean() == false)  {
-                return false;
-            }
-            
-            if (this->minAge != -1 && user->age <  this->minAge)  {
-                 return false;
-            }
-            
-            if (this->maxAge != -1 && user->age >  this->maxAge)  {
-                return false;
-            }
-            return true;// put your condition here
-        };
-    };
-    
     enum GroupBy {
         GENERIC = 0,// does nothing
         AGE
@@ -60,7 +39,7 @@ public:
 		this->numLevels = levels;
         this->filter = filter;
 		
-		//users = new vector<User*>[numLevels];
+		users = new vector<User*>[numLevels];
 		//levelScores = new float[numLevels];
 	};
 	
@@ -84,34 +63,27 @@ public:
 	
 	// returns current user
 	User* getGridUsers(int usersPerLevel, vector<User*>& outUsers, int& outIndex);
-	/*
+	
 	void clear() {
 		for (int i = 0; i < numLevels; i++) {
 			users[i].clear();
 			//levelScores[i] = 0.;
 		}
 	};
-	*/
+	
 	View::Features getFeature() {
 		return feature;
 	}
-    
-    GroupFilter getFilter()
-    {
-        return filter;
-    }
 	
     //static const int NUM_LEVELS = 5;
     View::Features feature;
     GroupBy grouBy;
     int numLevels;
     bool profile;
-	//vector<User*>* users;
+	vector<User*>* users;
     vector<User*> allUsers;
     //float* levelScores;
-    GroupFilter filter;
-    void sortUsersByAge();
-    void filterGroup(GroupFilter& filter);
+    GroupFilter filter;Z
 };
 
 #endif /* Group_hpp */

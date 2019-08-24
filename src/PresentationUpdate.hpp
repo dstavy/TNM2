@@ -13,6 +13,8 @@
 #include "ofxFaceTracker2.h"
 #include "User.hpp"
 #include "GroupManager.hpp"
+#include "Gender.h"
+#include "FaceApi.hpp"
 
 // his class check the videos. add a new user and update scores
 class PresentationUpdate {
@@ -53,9 +55,10 @@ private:
     //ofxJSONElement datasetJson;
     User* createUser(string id);
     static void updateUser(User* user, int vScore, int xScore);
-	static void setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight, float armLength);
+	static void setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight, float armLength, int age, Gender gender);
     void getUsersList(vector<User*>& usersOnly);
     ofxJSONElement datasetJson;
     static bool saveUserImage(string fileName, View& view);
+    FaceApi faceApi;
 };
 #endif /* PresentationUpdate_hpp */
