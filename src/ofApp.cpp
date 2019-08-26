@@ -82,7 +82,7 @@ void ofApp::setup(){
 #endif
     GenericGroup::GroupFilter emptyFilter;
     GenericGroup::GroupFilter genderMale;
-    genderMale.gender = Male;
+    genderMale.gender = Female;
     //emptyFilter.beard  = true;
     
     // START GRID ////////////////////////////////////////
