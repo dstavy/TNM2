@@ -106,7 +106,7 @@ User* PresentationUpdate::update() {
 //#ifdef FACE_API
                      age = v["age"].asInt();
                      gender = getGenderFromString(v["gender"].asString());
-                     beard = v["bead"].asFloat();
+                     beard = v["beard"].asFloat();
                      hairColor = v["hairColor"].asString();
 //#endif
                     age = 16;

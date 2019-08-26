@@ -81,13 +81,17 @@ void ofApp::setup(){
     screenOffset += SCREEN_WIDTH - MG_WIDTH;
 #endif
     GenericGroup::GroupFilter emptyFilter;
+    GenericGroup::GroupFilter genderMale;
+    genderMale.gender = Male;
     //emptyFilter.beard  = true;
+    
+    // START GRID ////////////////////////////////////////
     Group* group = groupManager.groupFactory(
                                              View::FORHEAD, // fragment
                                              Group::GENERIC, // type of group
                                              false, // is profile?
-                                             7, // user per level
-                                             emptyFilter); //number of levels
+                                             7, // # of columns
+                                             emptyFilter); //filter
     
     
     ImageGrid* a = new ImageGrid();
@@ -96,19 +100,21 @@ void ofApp::setup(){
              &sepiaShader, // shader
              group, // newly created group
              150,60, // width and height of element in image pix
-             1, // user per level
+             1, // # of rows
              {screenOffset , MG_Y_START}, // start position for flying in image
              490.0, 876.0, // postion of grid
              gridScale); // scale
     
     grids[View::FORHEAD].push_back(a);
+    // END GRID ////////////////////////////////////////
     
+    // START GRID ////////////////////////////////////////
     group = groupManager.groupFactory(
                                       View::HEAD,
                                       Group::GENERIC,
                                       false,
                                       4,
-                                      emptyFilter);
+                                      genderMale);
     ImageGrid* b = new ImageGrid();
     
     b->setup(this,
@@ -121,6 +127,7 @@ void ofApp::setup(){
              gridScale);
     
     grids[View::HEAD].push_back(b);
+    // END GRID ////////////////////////////////////////
     
     group = groupManager.groupFactory(
                                       View::NOSE,

@@ -1,353 +1,92 @@
 [
-    {
-       "headHeight" : 285.6376953125,
-       "shouldersWidth" : 361.09619140625,
-       "torsoLength" : 527.01953125,
-       "totalHeight" : 1805.102416992188,
-       "id" : "dan_1",
-       "others" : [
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : true
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          }
-       ],
-       "vScore" : 1,
-       "xScore" : 99
-    },
-    {
-      "headHeight" : 285.6376953125,
-      "shouldersWidth" : 361.09619140625,
-      "torsoLength" : 527.01953125,
-      "totalHeight" : 1805.102416992188,
-       "id" : "dan_2",
-       "others" : [
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : true
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          }
-       ],
-       "vScore" : 11,
-       "xScore" : 89
-    },
-    {
-      "headHeight" : 285.6376953125,
-      "shouldersWidth" : 361.09619140625,
-      "torsoLength" : 527.01953125,
-      "totalHeight" : 1805.102416992188,
-       "id" : "dan_3",
-       "others" : [
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : true
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          }
-       ],
-       "vScore" : 31,
-       "xScore" : 69
-    },
-    {
-      "headHeight" : 285.6376953125,
-      "shouldersWidth" : 361.09619140625,
-      "torsoLength" : 527.01953125,
-      "totalHeight" : 1805.102416992188,
-       "id" : "bertillon_1",
-       "others" : [
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : true
-          }
-       ],
-       "vScore" : 42,
-       "xScore" : 58
-    },
-    {
-      "headHeight" : 285.6376953125,
-      "shouldersWidth" : 361.09619140625,
-      "torsoLength" : 527.01953125,
-      "totalHeight" : 1805.102416992188,
-       "id" : "bertillon_2",
-       "others" : [
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : true
-          }
-       ],
-       "vScore" : 35,
-       "xScore" : 65
-    },
-    {
-      "headHeight" : 285.6376953125,
-      "shouldersWidth" : 361.09619140625,
-      "torsoLength" : 527.01953125,
-      "totalHeight" : 1805.102416992188,
-       "id" : "mug_1",
-       "others" : [
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : true
-          }
-       ],
-       "vScore" : 80,
-       "xScore" : 20
-    },
-    {
-      "headHeight" : 285.6376953125,
-      "shouldersWidth" : 361.09619140625,
-      "torsoLength" : 527.01953125,
-      "totalHeight" : 1805.102416992188,
-       "id" : "mug_2",
-       "others" : [
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : true
-          }
-       ],
-       "vScore" : 16,
-       "xScore" : 84
-    },
-    {
-      "headHeight" : 285.6376953125,
-      "shouldersWidth" : 361.09619140625,
-      "torsoLength" : 527.01953125,
-      "totalHeight" : 1805.102416992188,
-       "id" : "mug_3",
-       "others" : [
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : true
-          }
-       ],
-       "vScore" : 3,
-       "xScore" : 97
-    },
-    {
-      "headHeight" : 285.6376953125,
-      "shouldersWidth" : 361.09619140625,
-      "torsoLength" : 527.01953125,
-      "totalHeight" : 1805.102416992188,
-       "id" : "mug_4",
-       "others" : [
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : true
-          }
-       ],
-       "vScore" : 50,
-       "xScore" : 50
-    },
-    {
-      "headHeight" : 285.6376953125,
-      "shouldersWidth" : 361.09619140625,
-      "torsoLength" : 527.01953125,
-      "totalHeight" : 1805.102416992188,
-       "id" : "mug_5",
-       "others" : [
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : true
-          }
-       ],
-       "vScore" : 68,
-       "xScore" : 32
-    },
-    {
-      "headHeight" : 285.6376953125,
-      "shouldersWidth" : 361.09619140625,
-      "torsoLength" : 527.01953125,
-      "totalHeight" : 1805.102416992188,
-       "id" : "mug_6",
-       "others" : [
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : true
-          }
-       ],
-       "vScore" : 94,
-       "xScore" : 6
-    },
-    {
-      "headHeight" : 285.6376953125,
-      "shouldersWidth" : 361.09619140625,
-      "torsoLength" : 527.01953125,
-      "totalHeight" : 1805.102416992188,
-       "id" : "mug_7",
-       "others" : [
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : true
-          }
-       ],
-       "vScore" : 48,
-       "xScore" : 52
-    },
-    {
-      "headHeight" : 285.6376953125,
-      "shouldersWidth" : 361.09619140625,
-      "torsoLength" : 527.01953125,
-      "totalHeight" : 1805.102416992188,
-       "id" : "mug_8",
-       "others" : [
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : false
-          },
-          {
-             "id" : "test1.oni",
-             "selection" : true
-          }
-       ],
-       "vScore" : 55,
-       "xScore" : 45
-    }
- ]
+  {
+    "id": "berlin_ars_1",
+    "vScore": 1,
+    "xScore": 99,
+    "gender": "female"
+  },
+  {
+    "id": "berlin_ars_2",
+    "vScore": 11,
+    "xScore": 89,
+    "gender": "male"
+  },
+  {
+    "id": "berlin_ars_3",
+    "vScore": 31,
+    "xScore": 69,
+    "gender": "male"
+  },
+  {
+    "id": "berlin_ars_4",
+    "vScore": 42,
+    "xScore": 58,
+    "gender": "female"
+  },
+  {
+    "id": "berlin_ars_5",
+    "vScore": 35,
+    "xScore": 65,
+    "gender": "male"
+  },
+  {
+    "id": "berlin_ars_6",
+    "vScore": 80,
+    "xScore": 20,
+    "gender": "female"
+  },
+  {
+    "id": "berlin_ars_7",
+    "vScore": 16,
+    "xScore": 84,
+    "gender": "female"
+  },
+  {
+    "id": "berlin_ars_8",
+    "vScore": 3,
+    "xScore": 97,
+    "gender": "female"
+  },
+  {
+    "id": "berlin_ars_9",
+    "vScore": 50,
+    "xScore": 50,
+    "gender": "male"
+  },
+  {
+    "id": "berlin_ars_10",
+    "vScore": 68,
+    "xScore": 32,
+    "gender": "male"
+  },
+  {
+    "id": "berlin_ars_11",
+    "vScore": 94,
+    "xScore": 6,
+    "gender": "male"
+  },
+  {
+    "id": "berlin_ars_12",
+    "vScore": 48,
+    "xScore": 52,
+    "gender": "male"
+  },
+  {
+    "id": "berlin_ars_13",
+    "vScore": 55,
+    "xScore": 45,
+    "gender": "female"
+  },
+  {
+    "id": "berlin_ars_14",
+    "vScore": 94,
+    "xScore": 6,
+    "gender": "male"
+  },
+  {
+    "id": "berlin_ars_15",
+    "vScore": 48,
+    "xScore": 52,
+    "gender": "male"
+  }
+]
