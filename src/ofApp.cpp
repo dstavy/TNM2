@@ -6,7 +6,7 @@
 void ofApp::setup(){
     // here also goes what ever else you need to setup of course
 #ifdef NO_RELEASE_BERLIN
-    //cam.removeAllInteractions();
+    cam.removeAllInteractions();
     cam.addInteraction(ofEasyCam::TRANSFORM_TRANSLATE_XY,OF_MOUSE_BUTTON_LEFT);
     // cam.addInteraction(ofEasyCam::TRANSFORM_TRANSLATE_Z, OF_MOUSE_BUTTON_RIGHT);
     
@@ -57,7 +57,7 @@ void ofApp::setup(){
     frontTracker.setThreaded(false);
     profileTracker.setThreaded(false);
     frontTracker.setup("Model/shape_predictor_68_face_landmarks.dat");
-    profileTracker.setup("Model/shape_predictor_68_face_landmarks.dat");
+    profileTracker.setup("Model/shape_predictor_5_face_landmarks.dat");
     frontTracker.setThreaded(false);
     profileTracker.setThreaded(false);
 #if not defined NO_RELEASE_BERLIN
@@ -96,7 +96,7 @@ void ofApp::setup(){
              &sepiaShader, // shader
              group, // newly created group
              150,60, // width and height of element in image pix
-             1, // user per level
+             1,
              {screenOffset , MG_Y_START}, // start position for flying in image
              490.0, 876.0, // postion of grid
              gridScale); // scale
@@ -230,7 +230,7 @@ void ofApp::setup(){
     cam.removeAllInteractions();
     cam.addInteraction(ofEasyCam::TRANSFORM_TRANSLATE_XY,OF_MOUSE_BUTTON_LEFT);
     cam.addInteraction(ofEasyCam::TRANSFORM_TRANSLATE_Z, OF_MOUSE_BUTTON_RIGHT);
-    
+    /*
     cam.enableOrtho();
     cam.setNearClip(-1000000);
     cam.setFarClip(1000000);
@@ -240,7 +240,7 @@ void ofApp::setup(){
     //cam.move(2880, 540, cam.getZ());
     camScale = cam.getScale();
     //mugshotIsLeft = false;
-    
+    */
     outputFbo.allocate(SCREEN_WIDTH*2, SCREEN_HEIGHT, GL_RGB);
     currentFeatureToFocus = View::Features::INVALID;
     
@@ -280,7 +280,7 @@ void ofApp::exit(){
 void ofApp::update(){
     
     bool newUser = false;
-    cam.setScale(camScale);
+   // cam.setScale(camScale);
     for (auto gridv : grids)
     {
         for (auto & grid : gridv) {
