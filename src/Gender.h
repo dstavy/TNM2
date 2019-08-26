@@ -9,7 +9,11 @@
 #define Gender_h
 #include <string>
 
-enum Gender {None, Male, Female};
+enum Gender {
+    None = 0,
+    Male,
+    Female
+};
 
 Gender getGenderFromString(std::string genderString);
 std::string getStringFromGender(Gender gender);

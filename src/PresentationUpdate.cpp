@@ -99,17 +99,12 @@ User* PresentationUpdate::update() {
 					float totalHeight = v["totalHeight"].asFloat();
                     float headHeight = v["headHeight"].asFloat();
 					float armLength = v["armLength"].asFloat();
-                    int age;
-                    Gender gender;
-                    float beard;
-                    string hairColor;
-//#ifdef FACE_API
-                     age = v["age"].asInt();
-                     gender = getGenderFromString(v["gender"].asString());
-                     beard = v["beard"].asFloat();
-                     hairColor = v["hairColor"].asString();
-//#endif
-                    age = 16;
+                    
+                     int age = v["age"].asInt();
+                     Gender gender = getGenderFromString(v["gender"].asString());
+                     float beard = v["beard"].asFloat();
+                     string hairColor = v["hairColor"].asString();
+
                     if (id.size() > 0) {
 						UserMap::iterator it = users->find(id);
 						if (it == users->end()) {
@@ -127,7 +122,9 @@ User* PresentationUpdate::update() {
 										headHeight,
 										armLength,
                                         age,
-                                        gender
+                                        gender,
+                                        beard,
+                                        hairColor
                                         );
 								
 								users->insert(std::pair<string, User*>(id, tmp));
@@ -311,13 +308,18 @@ void PresentationUpdate::updateUser(User* user, int vScore, int xScore) {
     user->score = (float)vScore / (vScore + xScore + 1); // avoid getting 100%
 }
 
-void PresentationUpdate::setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight, float armLength, int age, Gender gender)
+void PresentationUpdate::setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight, float armLength, int age, Gender gender, float beard,string hairColor)
 {
 	user->shouldersWidth = shouldersWidth;
 	user->torsoLength = torsoLength;
 	user->totalHeight = totalHeight;
 	user->headHeight = headHeight;
 	user->lowerArm = armLength;
+    user->age = age;
+    user->gender = gender;
+    user->beard = beard;
+    user->hairColor = hairColor;
+    
 	updateUser(user, vScore, xScore);
 }
 

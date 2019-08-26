@@ -81,8 +81,8 @@ void ofApp::setup(){
     screenOffset += SCREEN_WIDTH - MG_WIDTH;
 #endif
     GenericGroup::GroupFilter emptyFilter;
-    GenericGroup::GroupFilter genderMale;
-    genderMale.gender = Female;
+    GenericGroup::GroupFilter genderFemale;
+    genderFemale.gender = Female;
     //emptyFilter.beard  = true;
     
     // START GRID ////////////////////////////////////////
@@ -91,7 +91,7 @@ void ofApp::setup(){
                                              Group::GENERIC, // type of group
                                              false, // is profile?
                                              7, // # of columns
-                                             emptyFilter); //filter
+                                             genderFemale); //filter
     
     
     ImageGrid* a = new ImageGrid();
@@ -114,7 +114,7 @@ void ofApp::setup(){
                                       Group::GENERIC,
                                       false,
                                       4,
-                                      genderMale);
+                                      genderFemale);
     ImageGrid* b = new ImageGrid();
     
     b->setup(this,
@@ -134,7 +134,7 @@ void ofApp::setup(){
                                       Group::GENERIC,
                                       false,
                                       5,
-                                      emptyFilter);
+                                      genderFemale);
     
     ImageGrid* c = new ImageGrid();
     c->setup(this,
@@ -153,7 +153,7 @@ void ofApp::setup(){
                                       Group::GENERIC,
                                       false,
                                       3,
-                                      emptyFilter);
+                                      genderFemale);
     
     ImageGrid* d = new ImageGrid();
     d->setup(this,
@@ -172,7 +172,7 @@ void ofApp::setup(){
                                       Group::GENERIC,
                                       false,
                                       6,
-                                      emptyFilter);
+                                      genderFemale);
     
     ImageGrid* e = new ImageGrid();
     e->setup(this,
@@ -290,8 +290,16 @@ void ofApp::update(){
     cam.setScale(camScale);
     for (auto gridv : grids)
     {
+        // go over all the gread of same feature and randomly selcet one thst fits user filter
+        // using built-in random generator: to shuffle order of grids
+       // std::random_shuffle ( gridv.begin(), gridv.end());
         for (auto & grid : gridv) {
-            grid->update();
+            if (grid->getGroup()->getFilter().inFilter(currentUser))  {
+                grid->update(true);
+            }
+            else {
+                grid->update(false);
+            }
         }
         
         /*
@@ -386,7 +394,7 @@ void ofApp::selectNextUser(bool random) {
         // check if an animation is running
         for (ImageGrid *grid : grids[curFeature])
         {
-            if (grid->animStage != ImageGrid::AnimationStage::DONE) {
+            if (grid->animStage != ImageGrid::AnimationStage::DONE && grid->animStage !=ImageGrid::AnimationStage::NO_ANIM) {
                 
                 // return, will try next turn...
                 rejectedNextUser = random ? RANDOM : NORMAL;

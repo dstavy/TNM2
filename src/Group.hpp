@@ -22,6 +22,7 @@ public:
         int minAge = -1;
         int maxAge = -1;
         bool beard = false;
+        string hairColor = "";
         
         bool inFilter(User* user) {
             if (this->gender != None && this->gender != user->gender) {
@@ -37,6 +38,9 @@ public:
             }
             
             if (this->maxAge != -1 && user->age >  this->maxAge)  {
+                return false;
+            }
+            if (!this->hairColor.empty() && this->hairColor.compare(user->hairColor) != 0)  {
                 return false;
             }
             return true;// put your condition here

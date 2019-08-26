@@ -20,6 +20,7 @@ class ImageGrid  {
 public:
 	
 	enum AnimationStage {
+        NO_ANIM,
 		INIT,
 		DELAY,
 		SCALE,
@@ -50,8 +51,8 @@ public:
 			   ofColor bg = ofColor::fromHex(0xe6e0d3)
                );
 	
-    void update();
-	void doUpdate();
+    void update(bool doAnim);
+	void doUpdate(bool doAnim);
     void draw();
 	
 	ofPoint getSize();

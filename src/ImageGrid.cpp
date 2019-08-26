@@ -13,15 +13,15 @@
 #include "Mugshot.hpp"
 
 #define FIXED_FLOAT(x) std::fixed <<std::setprecision(2)<<(x)
-
+/*
 static void myCB_FadeoutDone(void* ptr) {
-    
+ 
     if (ptr) {
         ImageGrid* grid = (ImageGrid*)ptr;
         grid->update();
     }
 }
-
+*/
 static void myCB_DummyDone(void* ptr) {
     
     if (ptr) {
@@ -138,14 +138,14 @@ void ImageGrid::resetLoading() {
     }
 }
 
-void ImageGrid::update() {
+void ImageGrid::update(bool doAnim) {
     if (doUpdateNextUpdate) {
         doUpdateNextUpdate = false;
-        doUpdate();
+        doUpdate(doAnim);
     }
 }
 
-void ImageGrid::doUpdate() {
+void ImageGrid::doUpdate(bool doAnim) {
     
     vector<User*> users(0);
     int currentUserIndex;
@@ -190,8 +190,8 @@ void ImageGrid::doUpdate() {
         imageAlpha = 0.0;
         flyInImage = ofImage();
         
-        
-        
+        if (doAnim)
+        {
         // add a delay before starting fly-ing animation
         auto tween_dummy = tweenManager.addTween(dummy,
                                                  (float)1.0,
@@ -203,6 +203,10 @@ void ImageGrid::doUpdate() {
         tween_dummy->start();
         
         animStage = DELAY;
+        }
+        else {
+            animStage = NO_ANIM;
+        }
     }
 }
 

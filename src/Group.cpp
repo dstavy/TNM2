@@ -110,19 +110,33 @@ void Group::filterGroup(GroupFilter& filter) {
                                allUsers.begin(), allUsers.end(),
                                 [&filter]( User*& user) {
                                     if (filter.gender != None) {
-                                        if (user->gender != filter.gender) return true;
+                                        if (user->gender != filter.gender)
+                                        {
+                                            return true;
+                                        }
                                     }
                                     
                                     if (filter.beard == true )  {
-                                        if (user->getBeardBoolean() != true) return true;
+                                        if (user->getBeardBoolean() != true) {
+                                            return true;
+                                        }
                                     }
                                     
                                     if (filter.minAge != -1 )  {
-                                        if (user->age < filter.minAge) return true;
+                                        if (user->age < filter.minAge) {
+                                            return true;
+                                        }
                                     }
                                     
                                     if (filter.maxAge != -1 )  {
-                                        if (user->age > filter.maxAge) return true;
+                                        if (user->age > filter.maxAge) {
+                                            return true;
+                                        }
+                                    }
+                                    if (!filter.hairColor.empty() )  {
+                                        if (filter.hairColor.compare(user->hairColor) == 0) {
+                                            return true;
+                                        }
                                     }
                                     return false;// put your condition here
                                 }), allUsers.end());

@@ -25,7 +25,7 @@
 // settings
 #define SCREEN_WIDTH 1080	//
 #define SCREEN_HEIGHT 1920
-#define MUGSHOT_IS_LEFT
+//#define MUGSHOT_IS_LEFT
 //#define GRID_SCALE_TABLE 1.0//0.37125f  // scaling factor for grid-image
 //#define GRID_SCALE 1.0//0.37125f//0.66 * (1080.0/1920.0)
 #define TIME_WAIT_BEFORE_FLY 2.0
