@@ -91,7 +91,7 @@ void ofApp::setup(){
                                              Group::GENERIC, // type of group
                                              false, // is profile?
                                              7, // # of columns
-                                             genderFemale); //filter
+                                             emptyFilter); //filter
     
     
     ImageGrid* a = new ImageGrid();
@@ -114,7 +114,7 @@ void ofApp::setup(){
                                       Group::GENERIC,
                                       false,
                                       4,
-                                      genderFemale);
+                                      emptyFilter);
     ImageGrid* b = new ImageGrid();
     
     b->setup(this,
@@ -134,7 +134,7 @@ void ofApp::setup(){
                                       Group::GENERIC,
                                       false,
                                       5,
-                                      genderFemale);
+                                      emptyFilter);
     
     ImageGrid* c = new ImageGrid();
     c->setup(this,
@@ -153,7 +153,7 @@ void ofApp::setup(){
                                       Group::GENERIC,
                                       false,
                                       3,
-                                      genderFemale);
+                                      emptyFilter);
     
     ImageGrid* d = new ImageGrid();
     d->setup(this,
@@ -172,7 +172,7 @@ void ofApp::setup(){
                                       Group::GENERIC,
                                       false,
                                       6,
-                                      genderFemale);
+                                      emptyFilter);
     
     ImageGrid* e = new ImageGrid();
     e->setup(this,
