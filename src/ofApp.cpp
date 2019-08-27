@@ -83,108 +83,222 @@ void ofApp::setup(){
     GenericGroup::GroupFilter emptyFilter;
     GenericGroup::GroupFilter genderFemale;
     genderFemale.gender = Female;
+    GenericGroup::GroupFilter genderMale;
+    genderMale.gender = Male;
     //emptyFilter.beard  = true;
     
-    // START GRID ////////////////////////////////////////
+    // FOREHEAD / FEMALE ////////////////////////////////////////
     Group* group = groupManager.groupFactory(
                                              View::FORHEAD, // fragment
                                              Group::GENERIC, // type of group
                                              false, // is profile?
-                                             7, // # of columns
-                                             emptyFilter); //filter
+                                             7, // # of rows
+                                             genderFemale); //filter
     
     
-    ImageGrid* a = new ImageGrid();
+    ImageGrid* af = new ImageGrid();
     
-    a->setup(this,
+    af->setup(this,
              &sepiaShader, // shader
              group, // newly created group
-             150,60, // width and height of element in image pix
-             1, // # of rows
+             189.0,109.0, // width and height of element in image pix
+             1, // # of columns
              {screenOffset , MG_Y_START}, // start position for flying in image
-             490.0, 876.0, // postion of grid
+             500.0, 893.0, // postion of grid
              gridScale); // scale
     
-    grids[View::FORHEAD].push_back(a);
+    grids[View::FORHEAD].push_back(af);
+    
+    // FOREHEAD / MALE ////////////////////////////////////////
+    group = groupManager.groupFactory(
+                                      View::FORHEAD, // fragment
+                                      Group::GENERIC, // type of group
+                                      false, // is profile?
+                                      3, // # of rows
+                                      genderMale); //filter
+    ImageGrid* am = new ImageGrid();
+
+    am->setup(this,
+             &sepiaShader,
+             group,
+             189.0,109.0, // width and height of element in image pix
+             2,
+             {screenOffset , MG_Y_START}, // start position for flying in image
+             82, 1111,
+             gridScale);
+
+    grids[View::FORHEAD].push_back(am);
     // END GRID ////////////////////////////////////////
     
-    // START GRID ////////////////////////////////////////
+    // HEAD / FEMALE ////////////////////////////////////////
     group = groupManager.groupFactory(
                                       View::HEAD,
                                       Group::GENERIC,
                                       false,
-                                      4,
-                                      emptyFilter);
-    ImageGrid* b = new ImageGrid();
+                                      4, // # of rows
+                                      genderFemale);
+    ImageGrid* bf = new ImageGrid();
     
-    b->setup(this,
-             &sepiaShader,
-             group,
-             110, 102,
-             5,
-             {screenOffset , MG_Y_START}, // start position for flying in image
-             926.0, 560.0,
-             gridScale);
+    bf->setup(this,
+              &sepiaShader,
+              group,
+              109, 113,
+              5,
+              {screenOffset , MG_Y_START}, // start position for flying in image
+              2042, 1273,
+              gridScale);
     
-    grids[View::HEAD].push_back(b);
-    // END GRID ////////////////////////////////////////
+    grids[View::HEAD].push_back(bf);
+    
+    // HEAD / MALE ////////////////////////////////////////
+    group = groupManager.groupFactory(
+                                      View::HEAD,
+                                      Group::GENERIC,
+                                      false,
+                                      5, // # of rows
+                                      genderMale);
+    ImageGrid* bm = new ImageGrid();
+    
+    bm->setup(this,
+              &sepiaShader,
+              group,
+              109, 113,
+              5,
+              {screenOffset , MG_Y_START}, // start position for flying in image
+              2042, 1932,
+              gridScale);
+    
+    grids[View::HEAD].push_back(bm);
+    
+    
+    // NOSE / FEMALE ////////////////////////////////////////
     
     group = groupManager.groupFactory(
                                       View::NOSE,
                                       Group::GENERIC,
                                       false,
-                                      5,
-                                      emptyFilter);
+                                      7, // # of rows
+                                      genderFemale);
     
-    ImageGrid* c = new ImageGrid();
-    c->setup(this,
+    ImageGrid* cf = new ImageGrid();
+    cf->setup(this,
              &sepiaShader,
              group,
-             80, 82,
+             77, 77,
              7,
              {screenOffset , MG_Y_START}, //{1668 / 1.0, 97 / 1.0}, // start position for flying in image
-             493.0, 812.0,
+             75, 1920,
              gridScale);
     
-    grids[View::NOSE].push_back(c);
+    grids[View::NOSE].push_back(cf);
+    
+    // NOSE / MALE ////////////////////////////////////////
+    
+    group = groupManager.groupFactory(
+                                      View::NOSE,
+                                      Group::GENERIC,
+                                      false,
+                                      5, // # of rows
+                                      genderMale);
+    
+    ImageGrid* cm = new ImageGrid();
+    cm->setup(this,
+              &sepiaShader,
+              group,
+              77, 77,
+              7,
+              {screenOffset , MG_Y_START}, //{1668 / 1.0, 97 / 1.0}, // start position for flying in image
+              756, 1240,
+              gridScale);
+    
+    grids[View::NOSE].push_back(cm);
+    
+    // MOUTH / FEMALE ////////////////////////////////////////
     
     group = groupManager.groupFactory(
                                       View::MOUTH,
                                       Group::GENERIC,
                                       false,
-                                      3,
-                                      emptyFilter);
+                                      3, // # of rows
+                                      genderFemale);
     
-    ImageGrid* d = new ImageGrid();
-    d->setup(this,
+    ImageGrid* df = new ImageGrid();
+    df->setup(this,
              &sepiaShader,
              group,
              110, 110,
              5,
              {screenOffset , MG_Y_START}, //{1215 / 1.0, 47 / 1.0}, // start position for flying in image
-             470.0, 870.0,
+             1405, 315,
              gridScale);
     
-    grids[View::MOUTH].push_back(d);
+    grids[View::MOUTH].push_back(df);
+    
+    // MOUTH / MALE ////////////////////////////////////////
+    
+    group = groupManager.groupFactory(
+                                      View::MOUTH,
+                                      Group::GENERIC,
+                                      false,
+                                      3, // # of rows
+                                      genderMale);
+    
+    ImageGrid* dm = new ImageGrid();
+    dm->setup(this,
+             &sepiaShader,
+             group,
+             110, 110,
+             5,
+             {screenOffset , MG_Y_START}, //{1215 / 1.0, 47 / 1.0}, // start position for flying in image
+             1405, 315,
+             gridScale);
+    
+    grids[View::MOUTH].push_back(dm);
+    
+    // EYES / FEMALE ////////////////////////////////////////
     
     group = groupManager.groupFactory(
                                       View::EYES,
                                       Group::GENERIC,
                                       false,
-                                      6,
+                                      6, // # of rows
                                       emptyFilter);
     
-    ImageGrid* e = new ImageGrid();
-    e->setup(this,
+    ImageGrid* ef = new ImageGrid();
+    ef->setup(this,
              &sepiaShader,
              group,
              196, 87,
              3,
              {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
-             59.0, 1828.0,
+             90, 2780,
              gridScale);
     
-    grids[View::EYES].push_back(e);
+    grids[View::EYES].push_back(ef);
+    
+    // EYES / MALE ////////////////////////////////////////
+    
+    group = groupManager.groupFactory(
+                                      View::EYES,
+                                      Group::GENERIC,
+                                      false,
+                                      6, // # of rows
+                                      emptyFilter);
+    
+    ImageGrid* em = new ImageGrid();
+    em->setup(this,
+              &sepiaShader,
+              group,
+              196, 87,
+              3,
+              {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
+              1368, 2780,
+              gridScale);
+    
+    grids[View::EYES].push_back(em);
+    
+    // EYES / MALE ////////////////////////////////////////
+
     
     currentUser = NULL;
     //update
@@ -870,7 +984,7 @@ void ofApp::setupFonts()
     ofxSmartFont::add(FONT_DIR + "Crimson Text 700.ttf", 18, "CrimsonText700");
     ofxSmartFont::add(FONT_DIR + "Crimson Text 700italic.ttf", 18, "CrimsonText700I");
     ofxSmartFont::add(FONT_DIR + "Crimson Text italic.ttf", 18, "CrimsonTextI");
-    ofxSmartFont::add(FONT_DIR + "Crimson Text regular.ttf", 12, "CrimsonRegular");
+    ofxSmartFont::add(FONT_DIR + "Crimson Text regular.ttf", 9, "CrimsonRegular");
     ofxSmartFont::add(FONT_DIR + "Crimson Text 700.ttf", 12, "CrimsonText700Mugshot");
 }
 

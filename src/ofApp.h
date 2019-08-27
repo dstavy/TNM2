@@ -123,7 +123,7 @@ public:
     // variable to adjust the black bar on the right...
     float blackBarRotation = 0.0;
     float blackBarX = 0.0;
-    float gridScale =1.0;
+    float gridScale = 1.0;
     bool doShowDebug = false;
     
 private:

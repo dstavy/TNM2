@@ -68,11 +68,11 @@ public:
 	void drawFlyingImage();
 	
 	
-    int PADDING_ROW = 4;
-    int SCORE_AREA_HEIGHT = 18;
+    int PADDING_ROW = 1;
+    int SCORE_AREA_HEIGHT = 9;
     int ELEMENT_SIDE_PADDING = 1;
 	int HEADER_HEIGHT = 60;
-    int Y_SPACING = 4;
+    int Y_SPACING = 1;
 	
     
     ofFbo fbo;

@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/Group.cpp"
-            timestampString = "588546888.662866"
+            timestampString = "588624958.944556"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "110"
@@ -41,30 +41,46 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "src/ofApp.cpp"
-            timestampString = "588546974.079712"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
-            landmarkName = "ofApp::setup()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "src/Group.cpp"
-            timestampString = "588547197.663697"
+            timestampString = "588624958.945599"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "127"
             endingLineNumber = "127"
             landmarkName = "Group::filterGroup(GroupFilter&amp; filter)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Group::filterGroup(Group::GroupFilter&amp;)"
+                  moduleName = "TNM2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mushon/www/of_v0.10.1_osx_release/apps/myApps/TNM2/src/Group.cpp"
+                  timestampString = "588624959.588673"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "131"
+                  endingLineNumber = "131"
+                  offsetFromSymbolStart = "184">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Group::filterGroup(Group::GroupFilter&amp;)"
+                  moduleName = "TNM2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mushon/www/of_v0.10.1_osx_release/apps/myApps/TNM2/src/Group.cpp"
+                  timestampString = "588624959.590449"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "131"
+                  endingLineNumber = "131"
+                  offsetFromSymbolStart = "1358">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -74,13 +90,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/Group.cpp"
-            timestampString = "588547202.3550299"
+            timestampString = "588624958.9457951"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "113"
             endingLineNumber = "113"
             landmarkName = "Group::filterGroup(GroupFilter&amp; filter)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Group::filterGroup(Group::GroupFilter&amp;)"
+                  moduleName = "TNM2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mushon/www/of_v0.10.1_osx_release/apps/myApps/TNM2/src/Group.cpp"
+                  timestampString = "588624959.595022"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "113"
+                  endingLineNumber = "113"
+                  offsetFromSymbolStart = "132">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Group::filterGroup(Group::GroupFilter&amp;)"
+                  moduleName = "TNM2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mushon/www/of_v0.10.1_osx_release/apps/myApps/TNM2/src/Group.cpp"
+                  timestampString = "588624959.5966901"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "113"
+                  endingLineNumber = "113"
+                  offsetFromSymbolStart = "1299">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
