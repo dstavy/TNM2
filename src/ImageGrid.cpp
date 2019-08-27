@@ -188,21 +188,21 @@ void ImageGrid::doUpdate(bool doAnim) {
         // set alpha, but also FLY_IN so we dont see the fbo yet
         fboAlpha = 1.0;
         imageAlpha = 0.0;
-        flyInImage = ofImage();
-        
         if (doAnim)
         {
-        // add a delay before starting fly-ing animation
-        auto tween_dummy = tweenManager.addTween(dummy,
-                                                 (float)1.0,
-                                                 (float)0.0,
-                                                 TIME_WAIT_BEFORE_FLY,
-                                                 0.0,
-                                                 TWEEN::Ease::Linear);
-        tween_dummy->onComplete(myCB_DummyDone, this);
-        tween_dummy->start();
-        
-        animStage = DELAY;
+            flyInImage = ofImage();
+            
+            // add a delay before starting fly-ing animation
+            auto tween_dummy = tweenManager.addTween(dummy,
+                                                     (float)1.0,
+                                                     (float)0.0,
+                                                     TIME_WAIT_BEFORE_FLY,
+                                                     0.0,
+                                                     TWEEN::Ease::Linear);
+            tween_dummy->onComplete(myCB_DummyDone, this);
+            tween_dummy->start();
+            
+            animStage = DELAY;
         }
         else {
             animStage = NO_ANIM;

@@ -292,30 +292,21 @@ void ofApp::update(){
     {
         // go over all the gread of same feature and randomly selcet one thst fits user filter
         // using built-in random generator: to shuffle order of grids
-       // std::random_shuffle ( gridv.begin(), gridv.end());
+        std::random_shuffle ( gridv.begin(), gridv.end());
+        bool updated = false;
+        // if we find one mutch grid use it
         for (auto & grid : gridv) {
             if (grid->getGroup()->getFilter().inFilter(currentUser))  {
                 grid->update(true);
-            }
-            else {
-                grid->update(false);
+                updated = true;
+                break;
             }
         }
-        
-        /*
-         // go over all the gread of same feature and randomly selcet one thst fits user filter
-         ImageGrid *grid;
-         // todo:: this will run for ever if we dont have any grid that poass filter
-         do {
-         int rand = (int)ofRandom(0, gridv.size());
-         grid = gridv.at(rand);
-         } while (!grid->getGroup()->getFilter().inFilter(currentUser));
-         */
-        // grids[View::HEAD].update();
-        // grids[View::MOUTH].update();
-        // grids[View::NOSE].update();
-        //  grids[View::FORHEAD].update();
-        //  grids[View::EYES].update();
+        // if we did not find just do nothng
+        if (!updated && gridv.size() > 0)
+        {
+            gridv[0]->update(false);
+        }
     }
     
     if (rejectedNextUser == NORMAL) {
