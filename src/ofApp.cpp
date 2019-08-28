@@ -406,21 +406,21 @@ void ofApp::update(){
     {
         // go over all the gread of same feature and randomly selcet one thst fits user filter
         // using built-in random generator: to shuffle order of grids
-        std::random_shuffle ( gridv.begin(), gridv.end());
+       // std::random_shuffle ( gridv.begin(), gridv.end());
         bool updated = false;
         // if we find one mutch grid use it
         for (auto & grid : gridv) {
-            if (grid->getGroup()->getFilter().inFilter(currentUser))  {
-                grid->update(true);
+            if (!updated && grid->getGroup()->getFilter().inFilter(currentUser))  {
                 updated = true;
+            grid->update(true);
                 break;
             }
         }
         // if we did not find just do nothng
-        if (!updated && gridv.size() > 0)
-        {
-            gridv[0]->update(false);
-        }
+       // if (!updated && gridv.size() > 0)
+      //  {
+       //     gridv[0]->update(false);
+       // }
     }
     
     if (rejectedNextUser == NORMAL) {
@@ -572,7 +572,10 @@ void ofApp::selectFeature(View::Features feature) {
             // need to cleanup grid
             // todo check if it works
             for (ImageGrid *grid : grids[curFeature])  {
-                grid->reset(); // this will call "update" when fade-out is done!
+                if (grid->getGroup()->getFilter().inFilter(currentUser))  {
+                    grid->reset(); // this will call "update" when fade-out is done!
+                    break;
+                }
             }
             
         } else {
