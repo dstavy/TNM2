@@ -101,10 +101,10 @@ void ofApp::setup(){
     af->setup(this,
              &sepiaShader, // shader
              group, // newly created group
-             189.0,109.0, // width and height of element in image pix
+             189,107, // width and height of element in image pix
              1, // # of columns
              {screenOffset , MG_Y_START}, // start position for flying in image
-             500.0, 893.0, // postion of grid
+             500, 893, // postion of grid
              gridScale); // scale
     
     grids[View::FORHEAD].push_back(af);
@@ -121,7 +121,7 @@ void ofApp::setup(){
     am->setup(this,
              &sepiaShader,
              group,
-             189.0,109.0, // width and height of element in image pix
+             189,109, // width and height of element in image pix
              2,
              {screenOffset , MG_Y_START}, // start position for flying in image
              82, 1111,
@@ -142,10 +142,10 @@ void ofApp::setup(){
     bf->setup(this,
               &sepiaShader,
               group,
-              109, 113,
+              109, 111,
               5,
               {screenOffset , MG_Y_START}, // start position for flying in image
-              2042, 1273,
+              2042, 1263,
               gridScale);
     
     grids[View::HEAD].push_back(bf);
@@ -177,7 +177,7 @@ void ofApp::setup(){
                                       View::NOSE,
                                       Group::GENERIC,
                                       false,
-                                      7, // # of rows
+                                      6, // # of rows
                                       genderFemale);
     
     ImageGrid* cf = new ImageGrid();
@@ -187,7 +187,7 @@ void ofApp::setup(){
              77, 77,
              7,
              {screenOffset , MG_Y_START}, //{1668 / 1.0, 97 / 1.0}, // start position for flying in image
-             75, 1920,
+             755, 260,
              gridScale);
     
     grids[View::NOSE].push_back(cf);
@@ -229,7 +229,7 @@ void ofApp::setup(){
              110, 110,
              5,
              {screenOffset , MG_Y_START}, //{1215 / 1.0, 47 / 1.0}, // start position for flying in image
-             1405, 315,
+             1405, 822,
              gridScale);
     
     grids[View::MOUTH].push_back(df);
@@ -262,7 +262,7 @@ void ofApp::setup(){
                                       Group::GENERIC,
                                       false,
                                       6, // # of rows
-                                      emptyFilter);
+                                      genderFemale);
     
     ImageGrid* ef = new ImageGrid();
     ef->setup(this,
@@ -283,7 +283,7 @@ void ofApp::setup(){
                                       Group::GENERIC,
                                       false,
                                       6, // # of rows
-                                      emptyFilter);
+                                      genderMale);
     
     ImageGrid* em = new ImageGrid();
     em->setup(this,
