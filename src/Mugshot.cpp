@@ -27,8 +27,11 @@ const static ofPoint r_ear_length_pos = {280, 175, 0};
 const static ofPoint cubit_pos = {428, 175, 0};
 
 const static ofPoint age_pos = {666, 85, 0};
-const static ofPoint apparent_gender_pos = {674, 124, 0};
+const static ofPoint apparent_gender_pos = {740, 175, 0};
 const static ofPoint apparent_age_pos = {720, 115, 0};
+const static ofPoint hair_color_pos = {590, 650, 0};
+const static ofPoint beard_pos = {715, 652, 0};
+
 
 
 const static ofPoint forehead_height_pos = {121, 692, 0};
@@ -214,9 +217,18 @@ void Mugshot::drawBackground(User* user) {
             }
             
             if (user->gender != None) {
-                font->draw(getStringFromGender(user->gender), apparent_gender_pos.x, apparent_gender_pos.y);
+                string gender = (user->gender == Male) ? "M" : "F";
+                font->draw(gender, apparent_gender_pos.x, apparent_gender_pos.y);
+            }
+            
+            if (!user->hairColor.empty()) {
+                font->draw(user->hairColor, hair_color_pos.x, hair_color_pos.y);
             }
 
+           if (user->getBeardBoolean()) {
+                font->draw("yes", beard_pos.x, beard_pos.y);
+           }
+            
 			shared_ptr<ofxSmartFont> font_smaller = ofxSmartFont::get("AmericanTypewriter12");
 			
 			// 2018_11_13_23_28_03_647_0
