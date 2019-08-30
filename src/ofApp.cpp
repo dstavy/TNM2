@@ -85,7 +85,6 @@ void ofApp::setup(){
     genderFemale.gender = Female;
     GenericGroup::GroupFilter genderMale;
     genderMale.gender = Male;
-    //emptyFilter.beard  = true;
     
     // FOREHEAD / FEMALE ////////////////////////////////////////
     Group* group = groupManager.groupFactory(
@@ -407,20 +406,17 @@ void ofApp::update(){
         // go over all the gread of same feature and randomly selcet one thst fits user filter
         // using built-in random generator: to shuffle order of grids
        // std::random_shuffle ( gridv.begin(), gridv.end());
-        bool updated = false;
         // if we find one mutch grid use it
         for (auto & grid : gridv) {
-            if (!updated && grid->getGroup()->getFilter().inFilter(currentUser))  {
-                updated = true;
-            grid->update(true);
-                break;
+            grid->update();
+            if ( grid->animStage == ImageGrid::AnimationStage::FLY_IN) {
+              //  if (signalOnNextRender > -1 && ++signalOnNextRender == 1) {
+              //      signalOnNextRender = -1;
+                    
+                    signalCurrentMugshotImageOff();
+              //  }
             }
         }
-        // if we did not find just do nothng
-       // if (!updated && gridv.size() > 0)
-      //  {
-       //     gridv[0]->update(false);
-       // }
     }
     
     if (rejectedNextUser == NORMAL) {
@@ -493,18 +489,21 @@ void ofApp::update(){
 }
 
 void ofApp::selectNextUser(bool random) {
-    
-    
+    bool changeUser = false;
     if (curFeature != View::Features::INVALID) {
         // check if an animation is running
         for (ImageGrid *grid : grids[curFeature])
         {
-            if (grid->animStage != ImageGrid::AnimationStage::DONE && grid->animStage !=ImageGrid::AnimationStage::NO_ANIM) {
-                
+            if (grid->animStage == ImageGrid::AnimationStage::DONE) {
                 // return, will try next turn...
-                rejectedNextUser = random ? RANDOM : NORMAL;
-                return;
+                //rejectedNextUser = random ? RANDOM : NORMAL;
+               // return;
+                changeUser = true;
             }
+        }
+        if (!changeUser) {
+            rejectedNextUser = random ? RANDOM : NORMAL;
+             return;
         }
     }
     
@@ -574,7 +573,7 @@ void ofApp::selectFeature(View::Features feature) {
             for (ImageGrid *grid : grids[curFeature])  {
                 if (grid->getGroup()->getFilter().inFilter(currentUser))  {
                     grid->reset(); // this will call "update" when fade-out is done!
-                    break;
+                    //break;
                 }
             }
             
@@ -735,6 +734,7 @@ void ofApp::drawGridPage() {
         //grids[View::EYES].draw(90, 2770); // EYES
         
         // unscaled version
+        bool nextFeature = false;
         for (auto & gridv : grids)
         {
             for (auto & grid : gridv) {

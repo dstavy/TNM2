@@ -125,6 +125,8 @@ public:
     float blackBarX = 0.0;
     float gridScale = 1.0;
     bool doShowDebug = false;
+    int signalOnNextRender = -1;
+
     
 private:
 #ifdef TARGET_WIN32

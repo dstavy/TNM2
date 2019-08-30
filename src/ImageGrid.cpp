@@ -138,14 +138,14 @@ void ImageGrid::resetLoading() {
     }
 }
 
-void ImageGrid::update(bool doAnim) {
+void ImageGrid::update() {
     if (doUpdateNextUpdate) {
         doUpdateNextUpdate = false;
-        doUpdate(doAnim);
+        doUpdate();
     }
 }
 
-void ImageGrid::doUpdate(bool doAnim) {
+void ImageGrid::doUpdate() {
     
     vector<User*> users(0);
     int currentUserIndex;
@@ -188,25 +188,21 @@ void ImageGrid::doUpdate(bool doAnim) {
         // set alpha, but also FLY_IN so we dont see the fbo yet
         fboAlpha = 1.0;
         imageAlpha = 0.0;
-        if (doAnim)
-        {
-            flyInImage = ofImage();
-            
-            // add a delay before starting fly-ing animation
-            auto tween_dummy = tweenManager.addTween(dummy,
-                                                     (float)1.0,
-                                                     (float)0.0,
-                                                     TIME_WAIT_BEFORE_FLY,
-                                                     0.0,
-                                                     TWEEN::Ease::Linear);
-            tween_dummy->onComplete(myCB_DummyDone, this);
-            tween_dummy->start();
-            
-            animStage = DELAY;
-        }
-        else {
-            animStage = NO_ANIM;
-        }
+       
+        flyInImage = ofImage();
+        
+        // add a delay before starting fly-ing animation
+        auto tween_dummy = tweenManager.addTween(dummy,
+                                                 (float)1.0,
+                                                 (float)0.0,
+                                                 TIME_WAIT_BEFORE_FLY,
+                                                 0.0,
+                                                 TWEEN::Ease::Linear);
+        tween_dummy->onComplete(myCB_DummyDone, this);
+        tween_dummy->start();
+        
+        animStage = DELAY;
+      
     }
 }
 
@@ -476,7 +472,7 @@ void ImageGrid::draw() {
         }
         ofPopStyle();
         ofPopMatrix();
-        
+    /*
         //---
         if (signalOnNextRender > -1 && ++signalOnNextRender == 1) {
             signalOnNextRender = -1;
@@ -486,6 +482,7 @@ void ImageGrid::draw() {
                 appcontroller->signalCurrentMugshotImageOff();
             }
         }
+     */
     }
     
 #ifdef DRAW_DEBUG
