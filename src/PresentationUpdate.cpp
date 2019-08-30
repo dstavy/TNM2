@@ -100,10 +100,10 @@ User* PresentationUpdate::update() {
                     float headHeight = v["headHeight"].asFloat();
 					float armLength = v["armLength"].asFloat();
                     
-                     int age = v["age"].asInt();
-                     Gender gender = getGenderFromString(v["gender"].asString());
-                     float beard = v["beard"].asFloat();
-                     string hairColor = v["hairColor"].asString();
+                    int age = v["age"].asInt();
+                    Gender gender = getGenderFromString(v["gender"].asString());
+                    float beard = v["beard"].asFloat();
+                    string hairColor = v["hairColor"].asString();
 
                     if (id.size() > 0) {
 						UserMap::iterator it = users->find(id);

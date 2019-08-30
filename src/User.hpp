@@ -13,8 +13,8 @@
 #include "Gender.h"
 
 
-static const float BEARD_THRESHOLD = 0.5;
-static const float BALD_THRESHOLD = 0.65;
+static const float BEARD_THRESHOLD = 0.5f;
+static const float BALD_THRESHOLD = 0.65f;
 
 class User {
 public:

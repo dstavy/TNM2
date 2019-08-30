@@ -4,16 +4,18 @@
     "vScore": 1,
     "xScore": 99,
     "gender": "female",
-    "beard": false,
-    "age": 45
+    "age": 46,
+    "beard": 0.78,
+    "hairColor": "gray"
   },
   {
     "id": "berlin_ars_2",
     "vScore": 11,
     "xScore": 89,
     "gender": "male",
-    "beard": true,
-    "age": 35
+    "age": 46,
+    "beard": 0.18,
+    "hairColor": "black"
   },
   {
     "id": "berlin_ars_3",
