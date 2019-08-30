@@ -5,7 +5,7 @@
     "xScore": 99,
     "gender": "female",
     "age": 46,
-    "beard": 0.78,
+    "beard": false,
     "hairColor": "gray"
   },
   {

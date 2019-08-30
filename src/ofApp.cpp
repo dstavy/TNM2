@@ -322,7 +322,7 @@ void ofApp::setup(){
     db->setup(this,
               &sepiaShader,
               group,
-              118, 65,
+              118, 80,
               5,
               {screenOffset , MG_Y_START}, //{1215 / 1.0, 47 / 1.0}, // start position for flying in image
               1385, 1352,
