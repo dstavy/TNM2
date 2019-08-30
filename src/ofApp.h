@@ -103,7 +103,7 @@ public:
     TWEEN::Manager tweenManager;
     glm::vec3 camScale;
     vector<Mugshot*> mugshots;
-    static const int ANIM_DELAY = 0.2;
+    static const int ANIM_DELAY = 0.1;
     void animateMagshots();
     
     //bool mugshotIsLeft;

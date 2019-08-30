@@ -85,6 +85,20 @@ void ofApp::setup(){
     genderFemale.gender = Female;
     GenericGroup::GroupFilter genderMale;
     genderMale.gender = Male;
+    GenericGroup::GroupFilter olderFemale;
+    olderFemale.gender = Female;
+    olderFemale.minAge = 40;
+    GenericGroup::GroupFilter youngerFemale;
+    youngerFemale.gender = Female;
+    youngerFemale.maxAge = 40;
+    GenericGroup::GroupFilter olderMale;
+    olderMale.gender = Male;
+    olderMale.minAge = 40;
+    GenericGroup::GroupFilter youngerMale;
+    youngerMale.gender = Male;
+    youngerMale.maxAge = 40;
+    GenericGroup::GroupFilter beard;
+    beard.beard = true;
     
     // FOREHEAD / FEMALE ////////////////////////////////////////
     Group* group = groupManager.groupFactory(
@@ -100,7 +114,7 @@ void ofApp::setup(){
     af->setup(this,
              &sepiaShader, // shader
              group, // newly created group
-             189,107, // width and height of element in image pix
+             189,101, // width and height of element in image pix
              1, // # of columns
              {screenOffset , MG_Y_START}, // start position for flying in image
              500, 893, // postion of grid
@@ -129,45 +143,86 @@ void ofApp::setup(){
     grids[View::FORHEAD].push_back(am);
     // END GRID ////////////////////////////////////////
     
-    // HEAD / FEMALE ////////////////////////////////////////
-    group = groupManager.groupFactory(
-                                      View::HEAD,
-                                      Group::GENERIC,
-                                      false,
-                                      4, // # of rows
-                                      genderFemale);
-    ImageGrid* bf = new ImageGrid();
-    
-    bf->setup(this,
-              &sepiaShader,
-              group,
-              109, 111,
-              5,
-              {screenOffset , MG_Y_START}, // start position for flying in image
-              2042, 1263,
-              gridScale);
-    
-    grids[View::HEAD].push_back(bf);
-    
-    // HEAD / MALE ////////////////////////////////////////
+    // HEAD / YOUNGER FEMALE ////////////////////////////////////////
     group = groupManager.groupFactory(
                                       View::HEAD,
                                       Group::GENERIC,
                                       false,
                                       5, // # of rows
-                                      genderMale);
-    ImageGrid* bm = new ImageGrid();
+                                      youngerFemale);
+    ImageGrid* byf = new ImageGrid();
     
-    bm->setup(this,
+    byf->setup(this,
+               &sepiaShader,
+               group,
+               115, 115,
+               5,
+               {screenOffset , MG_Y_START}, // start position for flying in image
+               78, 1919,
+               gridScale);
+    
+    grids[View::HEAD].push_back(byf);
+    
+    // HEAD / OLDER FEMALE ////////////////////////////////////////
+    group = groupManager.groupFactory(
+                                      View::HEAD,
+                                      Group::GENERIC,
+                                      false,
+                                      5, // # of rows
+                                      olderFemale);
+    ImageGrid* bof = new ImageGrid();
+    
+    bof->setup(this,
+               &sepiaShader,
+               group,
+               115, 115,
+               5,
+               {screenOffset , MG_Y_START}, // start position for flying in image
+               740, 1910,
+               gridScale);
+    
+    grids[View::HEAD].push_back(bof);
+    
+    // HEAD / YOUNGER MALE ////////////////////////////////////////
+    group = groupManager.groupFactory(
+                                      View::HEAD,
+                                      Group::GENERIC,
+                                      false,
+                                      5, // # of rows
+                                      youngerMale);
+    ImageGrid* bym = new ImageGrid();
+    
+    bym->setup(this,
               &sepiaShader,
               group,
-              109, 113,
+              115, 115,
+              5,
+              {screenOffset , MG_Y_START}, // start position for flying in image
+              1384, 1905,
+              gridScale);
+    
+    grids[View::HEAD].push_back(bym);
+    
+    
+    // HEAD / OLDER MALE ////////////////////////////////////////
+    group = groupManager.groupFactory(
+                                      View::HEAD,
+                                      Group::GENERIC,
+                                      false,
+                                      5, // # of rows
+                                      olderMale);
+    ImageGrid* bom = new ImageGrid();
+    
+    bom->setup(this,
+              &sepiaShader,
+              group,
+              115, 115,
               5,
               {screenOffset , MG_Y_START}, // start position for flying in image
               2042, 1932,
               gridScale);
     
-    grids[View::HEAD].push_back(bm);
+    grids[View::HEAD].push_back(bom);
     
     
     // NOSE / FEMALE ////////////////////////////////////////
@@ -176,17 +231,17 @@ void ofApp::setup(){
                                       View::NOSE,
                                       Group::GENERIC,
                                       false,
-                                      6, // # of rows
+                                      5, // # of rows
                                       genderFemale);
     
     ImageGrid* cf = new ImageGrid();
     cf->setup(this,
              &sepiaShader,
              group,
-             77, 77,
-             7,
+              64, 84,
+              9,
              {screenOffset , MG_Y_START}, //{1668 / 1.0, 97 / 1.0}, // start position for flying in image
-             755, 260,
+             735, 545,
              gridScale);
     
     grids[View::NOSE].push_back(cf);
@@ -197,17 +252,17 @@ void ofApp::setup(){
                                       View::NOSE,
                                       Group::GENERIC,
                                       false,
-                                      5, // # of rows
+                                      6, // # of rows
                                       genderMale);
     
     ImageGrid* cm = new ImageGrid();
     cm->setup(this,
               &sepiaShader,
               group,
-              77, 77,
-              7,
+              64, 84,
+              9,
               {screenOffset , MG_Y_START}, //{1668 / 1.0, 97 / 1.0}, // start position for flying in image
-              756, 1240,
+              730, 1120,
               gridScale);
     
     grids[View::NOSE].push_back(cm);
@@ -225,10 +280,10 @@ void ofApp::setup(){
     df->setup(this,
              &sepiaShader,
              group,
-             110, 110,
+             118, 110,
              5,
              {screenOffset , MG_Y_START}, //{1215 / 1.0, 47 / 1.0}, // start position for flying in image
-             1405, 822,
+             1385, 822,
              gridScale);
     
     grids[View::MOUTH].push_back(df);
@@ -244,15 +299,36 @@ void ofApp::setup(){
     
     ImageGrid* dm = new ImageGrid();
     dm->setup(this,
-             &sepiaShader,
-             group,
-             110, 110,
-             5,
-             {screenOffset , MG_Y_START}, //{1215 / 1.0, 47 / 1.0}, // start position for flying in image
-             1405, 315,
-             gridScale);
+              &sepiaShader,
+              group,
+              118, 110,
+              5,
+              {screenOffset , MG_Y_START}, //{1215 / 1.0, 47 / 1.0}, // start position for flying in image
+              1385, 315,
+              gridScale);
     
     grids[View::MOUTH].push_back(dm);
+    
+    // MOUTH / BEARD ////////////////////////////////////////
+    
+    group = groupManager.groupFactory(
+                                      View::MOUTH,
+                                      Group::GENERIC,
+                                      false,
+                                      4, // # of rows
+                                      beard);
+    
+    ImageGrid* db = new ImageGrid();
+    db->setup(this,
+              &sepiaShader,
+              group,
+              118, 65,
+              5,
+              {screenOffset , MG_Y_START}, //{1215 / 1.0, 47 / 1.0}, // start position for flying in image
+              1385, 1352,
+              gridScale);
+    
+    grids[View::MOUTH].push_back(db);
     
     // EYES / FEMALE ////////////////////////////////////////
     
