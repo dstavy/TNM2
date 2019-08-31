@@ -122,6 +122,12 @@ void Group::filterGroup(GroupFilter& filter) {
                                         }
                                     }
                                     
+                                    if (filter.glasses == true )  {
+                                        if (user->glasses != true) {
+                                            return true;
+                                        }
+                                    }
+                                    
                                     if (filter.minAge != -1 )  {
                                         if (user->age < filter.minAge) {
                                             return true;

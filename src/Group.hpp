@@ -22,6 +22,7 @@ public:
         int minAge = -1;
         int maxAge = -1;
         bool beard = false;
+        bool glasses = false;
         string hairColor = "";
         
         bool inFilter(User* user) {
@@ -30,6 +31,10 @@ public:
             }
             
             if (this->beard == true && user->getBeardBoolean() == false)  {
+                return false;
+            }
+            
+            if (this->glasses == true && user->glasses == false)  {
                 return false;
             }
             

@@ -38,6 +38,8 @@ public:
     Gender gender = None;
     string hairColor;
     float beard = 0.0;
+    bool glasses = false;
+    
     User(string id) {
         this->id = id;
     };
