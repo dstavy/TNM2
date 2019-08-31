@@ -1,98 +1,125 @@
-    [
-      {
-        "id": "berlin_ars_1",
-        "vScore": 1,
-        "xScore": 99,
-        "gender": "female",
-        "age": 46,
-        "beard": 0.78,
-        "hairColor": "gray"
-      },
-      {
-          "id": "berlin_ars_2",
-          "vScore": 11,
-          "xScore": 89,
-          "gender": "male",
-          "age": 46,
-          "beard": 0.18,
-          "hairColor": "black"
-      },
-      {
-          "id": "berlin_ars_3",
-          "vScore": 31,
-          "xScore": 69,
-          "gender": "male"
-      },
-      {
-          "id": "berlin_ars_4",
-          "vScore": 42,
-          "xScore": 58,
-          "gender": "female"
-      },
-      {
-          "id": "berlin_ars_5",
-          "vScore": 35,
-          "xScore": 65,
-          "gender": "male"
-      },
-      {
-          "id": "berlin_ars_6",
-          "vScore": 80,
-          "xScore": 20,
-          "gender": "female"
-      },
-      {
-          "id": "berlin_ars_7",
-          "vScore": 16,
-          "xScore": 84,
-          "gender": "female"
-      },
-      {
-          "id": "berlin_ars_8",
-          "vScore": 3,
-          "xScore": 97,
-          "gender": "female"
-      },
-      {
-          "id": "berlin_ars_9",
-          "vScore": 50,
-          "xScore": 50,
-          "gender": "male"
-      },
-      {
-          "id": "berlin_ars_10",
-          "vScore": 68,
-          "xScore": 32,
-          "gender": "male"
-      },
-      {
-          "id": "berlin_ars_11",
-          "vScore": 94,
-          "xScore": 6,
-          "gender": "male"
-      },
-      {
-          "id": "berlin_ars_12",
-          "vScore": 48,
-          "xScore": 52,
-          "gender": "male"
-      },
-      {
-          "id": "berlin_ars_13",
-          "vScore": 55,
-          "xScore": 45,
-          "gender": "female"
-      },
-      {
-          "id": "berlin_ars_14",
-          "vScore": 94,
-          "xScore": 6,
-          "gender": "male"
-      },
-      {
-          "id": "berlin_ars_15",
-          "vScore": 48,
-          "xScore": 52,
-          "gender": "male"
-      }
-    ]
+[
+  {
+    "id": "berlin_ars_1",
+    "vScore": 1,
+    "xScore": 99,
+    "gender": "female",
+    "age": 46,
+    "beard": false,
+    "hairColor": "gray"
+  },
+  {
+    "id": "berlin_ars_2",
+    "vScore": 11,
+    "xScore": 89,
+    "gender": "male",
+    "age": 46,
+    "beard": 0.18,
+    "hairColor": "black"
+  },
+  {
+    "id": "berlin_ars_3",
+    "vScore": 31,
+    "xScore": 69,
+    "gender": "male",
+    "beard": false,
+    "age": 25
+  },
+  {
+    "id": "berlin_ars_4",
+    "vScore": 42,
+    "xScore": 58,
+    "gender": "female",
+    "beard": false,
+    "age": 22
+  },
+  {
+    "id": "berlin_ars_5",
+    "vScore": 35,
+    "xScore": 65,
+    "gender": "male",
+    "beard": true,
+    "age": 35
+  },
+  {
+    "id": "berlin_ars_6",
+    "vScore": 80,
+    "xScore": 20,
+    "gender": "female",
+    "beard": false,
+    "age": 26
+  },
+  {
+    "id": "berlin_ars_7",
+    "vScore": 16,
+    "xScore": 84,
+    "gender": "female",
+    "beard": false,
+    "age": 65
+  },
+  {
+    "id": "berlin_ars_8",
+    "vScore": 3,
+    "xScore": 97,
+    "gender": "female",
+    "beard": false,
+    "age": 24
+  },
+  {
+    "id": "berlin_ars_9",
+    "vScore": 50,
+    "xScore": 50,
+    "gender": "male",
+    "beard": true,
+    "age": 50
+  },
+  {
+    "id": "berlin_ars_10",
+    "vScore": 68,
+    "xScore": 32,
+    "gender": "male",
+    "beard": true,
+    "age": 46
+  },
+  {
+    "id": "berlin_ars_11",
+    "vScore": 94,
+    "xScore": 6,
+    "gender": "male",
+    "beard": true,
+    "age": 35,
+    "age": 54
+  },
+  {
+    "id": "berlin_ars_12",
+    "vScore": 48,
+    "xScore": 52,
+    "gender": "male",
+    "beard": false,
+    "age": 48
+  },
+  {
+    "id": "berlin_ars_13",
+    "vScore": 55,
+    "xScore": 45,
+    "gender": "female",
+    "beard": false,
+    "age": 49
+  },
+  {
+    "id": "berlin_ars_14",
+    "vScore": 94,
+    "xScore": 6,
+    "gender": "male",
+    "beard": false,
+    "age": 38
+  },
+  {
+    "id": "berlin_ars_15",
+    "vScore": 48,
+    "xScore": 52,
+    "gender": "male",
+    "beard": false,
+    "age": 25
+  }
+]
