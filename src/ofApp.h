@@ -127,6 +127,7 @@ public:
     bool doShowDebug = false;
     int signalOnNextRender = -1;
     int translateY;
+    int translateX;
     
 private:
 #ifdef TARGET_WIN32

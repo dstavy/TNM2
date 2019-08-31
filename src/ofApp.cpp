@@ -684,7 +684,7 @@ void ofApp::draw(){
     ofPushStyle();
     ofPushMatrix();
     {
-        ofTranslate(0, translateY);
+        ofTranslate(translateX, translateY);
         if (scaleOutput) {
             ofScale(0.4);
         }
@@ -800,9 +800,22 @@ void ofApp::drawGridPage() {
         
         // unscaled version
         bool nextFeature = false;
+        // draw in order
         for (auto & gridv : grids)
         {
+            if (gridv != grids[curFeature]) {
             for (auto & grid : gridv) {
+                    grid->draw();
+                }
+            }
+        }
+        for (ImageGrid *grid : grids[curFeature])  {
+            if (!grid->getGroup()->getFilter().inFilter(currentUser))  {
+                grid->draw();
+            }
+        }
+        for (ImageGrid *grid : grids[curFeature])  {
+            if (grid->getGroup()->getFilter().inFilter(currentUser))  {
                 grid->draw();
             }
         }
@@ -932,22 +945,22 @@ User* ofApp::getRandomUser() {
 void ofApp::keyReleased(int key){
     
     if (key == OF_KEY_UP) {
-        translateY -= 20;
+        translateX -= 20;
         blackBarRotation += 0.05;
         ofLogNotice() << "rot: " << blackBarRotation;
     }
     else if (key == OF_KEY_DOWN) {
-        translateY += 20;
+        translateX += 20;
         blackBarRotation -= 0.05;
         ofLogNotice() << "rot: " << blackBarRotation;
     }
     else if (key == OF_KEY_LEFT) {
-        
+        translateY -= 20;
         blackBarX -= 0.1;
         ofLogNotice() << "blackBarX: " << blackBarX;
     }
     else if (key == OF_KEY_RIGHT) {
-        
+        translateY -= 20;
         blackBarX += 0.1;
         ofLogNotice() << "blackBarX: " << blackBarX;
     }
