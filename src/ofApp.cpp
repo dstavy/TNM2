@@ -5,17 +5,6 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     // here also goes what ever else you need to setup of course
-#ifdef NO_RELEASE_BERLIN
-    //cam.removeAllInteractions();
-    cam.addInteraction(ofEasyCam::TRANSFORM_TRANSLATE_XY,OF_MOUSE_BUTTON_LEFT);
-    // cam.addInteraction(ofEasyCam::TRANSFORM_TRANSLATE_Z, OF_MOUSE_BUTTON_RIGHT);
-    
-    cam.enableOrtho();
-    cam.enableMouseInput();
-    cam.setNearClip(-1000000);
-    cam.setFarClip(1000000);
-    cam.setVFlip(true);
-#endif
     
     float screenOffset = SCREEN_WIDTH/2.;
     ofBackground(0,0,0,255);
@@ -347,18 +336,18 @@ void ofApp::setup(){
     //gridFbo.end();
     //  ofEnableAlphaBlending();
     
-    cam.removeAllInteractions();
-    cam.addInteraction(ofEasyCam::TRANSFORM_TRANSLATE_XY,OF_MOUSE_BUTTON_LEFT);
-    cam.addInteraction(ofEasyCam::TRANSFORM_TRANSLATE_Z, OF_MOUSE_BUTTON_RIGHT);
+    //cam.removeAllInteractions();
+    //cam.addInteraction(ofEasyCam::TRANSFORM_TRANSLATE_XY,OF_MOUSE_BUTTON_LEFT);
+   // cam.addInteraction(ofEasyCam::TRANSFORM_TRANSLATE_Z, OF_MOUSE_BUTTON_RIGHT);
     
-    cam.enableOrtho();
-    cam.setNearClip(-1000000);
-    cam.setFarClip(1000000);
-    cam.setVFlip(true);
+   // cam.enableOrtho();
+    //cam.setNearClip(-1000000);
+    //cam.setFarClip(1000000);
+    //cam.setVFlip(true);
     //cam.lookAt(glm::vec3(2880, 540,0));
     // cam.setPosition(2880, 540, cam.getZ());
     //cam.move(2880, 540, cam.getZ());
-    camScale = cam.getScale();
+    //camScale = cam.getScale();
     //mugshotIsLeft = false;
     
     outputFbo.allocate(SCREEN_WIDTH*2, SCREEN_HEIGHT, GL_RGB);
@@ -400,7 +389,7 @@ void ofApp::exit(){
 void ofApp::update(){
     
     bool newUser = false;
-    cam.setScale(camScale);
+    //cam.setScale(camScale);
     for (auto gridv : grids)
     {
         // go over all the gread of same feature and randomly selcet one thst fits user filter
@@ -619,10 +608,10 @@ void ofApp::draw(){
     ofPushStyle();
     ofPushMatrix();
     {
+        ofTranslate(0, translateY);
         if (scaleOutput) {
             ofScale(0.4);
         }
-        
         int x = 0;
         int y = 0;
         ofSetColor(ofColor::white);
@@ -660,8 +649,8 @@ void ofApp::draw(){
     
     if (doShowDebug) {
         // draw debug strings
-        ofDrawBitmapString(ofToString(cam.getX()) + "  " + ofToString(cam.getY()) + "  " + ofToString(cam.getZ()), 50, 50);
-        ofDrawBitmapString(ofToString(cam.getFov()) + "  " + ofToString(cam.getDistance()) + "  " + ofToString(cam.getScale()), 50, 70);
+       // ofDrawBitmapString(ofToString(cam.getX()) + "  " + ofToString(cam.getY()) + "  " + ofToString(cam.getZ()), 50, 50);
+      //  ofDrawBitmapString(ofToString(cam.getFov()) + "  " + ofToString(cam.getDistance()) //+ "  " + ofToString(cam.getScale()), 50, 70);
         
         ofDrawBitmapString("auto feature: " + ofToString(autoupdateFeatures), 50, 110);
     }
@@ -867,12 +856,12 @@ User* ofApp::getRandomUser() {
 void ofApp::keyReleased(int key){
     
     if (key == OF_KEY_UP) {
-        
+        translateY -= 20;
         blackBarRotation += 0.05;
         ofLogNotice() << "rot: " << blackBarRotation;
     }
     else if (key == OF_KEY_DOWN) {
-        
+        translateY += 20;
         blackBarRotation -= 0.05;
         ofLogNotice() << "rot: " << blackBarRotation;
     }
@@ -912,9 +901,11 @@ void ofApp::keyReleased(int key){
          */
     } else if (key == 'w') {
         autoupdateFeatures = !autoupdateFeatures;
-    } else if (key == 's') {
+    } 
+    else if (key == 's') {
         scaleOutput = !scaleOutput;
-    } else if (key == '1') {
+    }
+    else if (key == '1') {
         selectFeature(View::Features::HEAD);
     } else if (key == '2') {
         selectFeature(View::Features::FORHEAD);

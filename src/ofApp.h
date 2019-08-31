@@ -126,13 +126,10 @@ public:
     float gridScale = 1.0;
     bool doShowDebug = false;
     int signalOnNextRender = -1;
-
+    int translateY;
     
 private:
 #ifdef TARGET_WIN32
     unique_ptr<WatchDog_Responder> wdr;
-#endif
-#ifdef NO_RELEASE_BERLIN
-    ofEasyCam cam;
 #endif
 };
