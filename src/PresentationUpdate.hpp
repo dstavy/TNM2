@@ -55,7 +55,7 @@ private:
     //ofxJSONElement datasetJson;
     User* createUser(string id);
     static void updateUser(User* user, int vScore, int xScore);
-	static void setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight, float armLength, int age, Gender gender, float beard,string hairColor, bool glasses);
+	static void setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight, float armLength, int age, Gender gender, float beard,string hairColor, Glasses glasses);
     void getUsersList(vector<User*>& usersOnly);
     ofxJSONElement datasetJson;
     static bool saveUserImage(string fileName, View& view);

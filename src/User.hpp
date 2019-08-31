@@ -11,6 +11,7 @@
 #include "ofMain.h"
 #include "View.hpp"
 #include "Gender.h"
+#include "Glasses.h"
 
 
 static const float BEARD_THRESHOLD = 0.5f;
@@ -38,7 +39,7 @@ public:
     Gender gender = None;
     string hairColor;
     float beard = 0.0;
-    bool glasses = false;
+    Glasses glasses = DontCare;
     
     User(string id) {
         this->id = id;

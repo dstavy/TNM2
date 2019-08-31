@@ -122,8 +122,8 @@ void Group::filterGroup(GroupFilter& filter) {
                                         }
                                     }
                                     
-                                    if (filter.glasses == true )  {
-                                        if (user->glasses != true) {
+                                    if (filter.glasses != DontCare )  {
+                                        if (user->glasses != filter.glasses) {
                                             return true;
                                         }
                                     }

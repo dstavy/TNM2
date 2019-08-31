@@ -89,7 +89,7 @@ void ofApp::setup(){
     GenericGroup::GroupFilter beard;
     beard.beard = true;
     GenericGroup::GroupFilter glasses;
-    glasses.glasses = true;
+    glasses.glasses = On;
     
     // FOREHEAD / FEMALE ////////////////////////////////////////
     Group* group = groupManager.groupFactory(
@@ -326,56 +326,54 @@ void ofApp::setup(){
     GenericGroup::GroupFilter underageM;
     underageM.gender = Male;
     underageM.maxAge = 17;
-    underageM.glasses = false;
+    underageM.glasses = Off;
     GenericGroup::GroupFilter underageF;
     underageF.gender = Female;
     underageF.maxAge = 17;
-    underageF.glasses = false;
+    underageF.glasses = Off;
     GenericGroup::GroupFilter underage;
     underage.maxAge = 17;
-    underage.glasses = false;
+    underage.glasses = Off;
     
     GenericGroup::GroupFilter youngM;
     youngM.gender = Male;
     youngM.minAge = 18;
     youngM.maxAge = 35;
-    youngM.glasses = false;
+    youngM.glasses = Off;
     GenericGroup::GroupFilter youngF;
     youngF.gender = Female;
     youngF.minAge = 18;
     youngF.maxAge = 35;
-    youngF.glasses = false;
+    youngF.glasses = Off;
     GenericGroup::GroupFilter young;
     young.minAge = 18;
     young.maxAge = 35;
-    young.glasses = false;
+    young.glasses = Off;
     
     GenericGroup::GroupFilter midage;
     midage.minAge = 36;
     midage.maxAge = 50;
-    midage.glasses = 50;
     GenericGroup::GroupFilter midageM;
     midageM.gender = Male;
     midageM.minAge = 36;
     midageM.maxAge = 50;
-    midageM.glasses = 50;
     GenericGroup::GroupFilter midageF;
     midageF.gender = Female;
     midageF.minAge = 36;
     midageF.maxAge = 50;
-    midageF.glasses = false;
+    midageF.glasses = Off;
     
     GenericGroup::GroupFilter older;
     older.minAge = 51;
-    older.glasses = false;
+    older.glasses = Off;
     GenericGroup::GroupFilter olderM;
     olderM.gender = Male;
     olderM.minAge = 51;
-    olderM.glasses = false;
+    olderM.glasses = Off;
     GenericGroup::GroupFilter olderF;
     olderF.gender = Female;
     olderF.minAge = 51;
-    olderF.glasses = false;
+    olderF.glasses = Off;
     
 //    GenericGroup::GroupFilter glasses;
 //    glasses.glasses = TRUE;
@@ -985,7 +983,12 @@ void ofApp::drawGridPage() {
 #ifdef MUGSHOT_IS_LEFT
         ofTranslate(SCREEN_WIDTH, 0);
 #endif
-        
+        ofPushStyle();
+        {
+            ofSetColor(ofColor::black);
+            ofDrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        }
+         ofPopStyle();
         ///ofTranslate(30, gridY);
         
         //ofPushMatrix();

@@ -11,22 +11,22 @@
 #include "ofMain.h"
 #include "User.hpp"
 #include "View.hpp"
-
+#include "Glasses.h"
 
 class Group {
 public:
 	
     class GroupFilter {
         public:
-        Gender gender = None;
+        Gender gender = Gender::None;
         int minAge = -1;
         int maxAge = -1;
         bool beard = false;
-        bool glasses = false;
+        Glasses glasses = DontCare;
         string hairColor = "";
         
         bool inFilter(User* user) {
-            if (this->gender != None && this->gender != user->gender) {
+            if (this->gender != Gender::None && this->gender != user->gender) {
                  return false;
             }
             
@@ -34,7 +34,7 @@ public:
                 return false;
             }
             
-            if (this->glasses == true && user->glasses == false)  {
+            if (this->glasses != DontCare && this->glasses != user->glasses)  {
                 return false;
             }
             
