@@ -6,7 +6,15 @@
     "gender": "female",
     "age": 46,
     "beard": false,
-    "hairColor": "gray"
+    /*"hairColor": "gray"*/
+    "score": 0.3,
+    "selections": [
+        "berlin_ars_5",
+        "berlin_ars_2",
+        "berlin_ars_3",
+        "berlin_ars_4"
+    ]
+    "timestamp": 1567243546
   },
   {
     "id": "berlin_ars_2",
