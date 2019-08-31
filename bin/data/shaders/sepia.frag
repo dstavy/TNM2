@@ -53,9 +53,10 @@ out vec4 outputColor;
 
 #define boxradius 0.9
 #define boxdarkness 0.95
-#define desat 0.95
-#define black vec3(0.32,0.3,0.28)
-#define sepia vec3(0.84,0.76,0.62)
+#define desat 0.9
+#define black vec3(0.22,0.23,0.28)
+#define sepia vec3(0.66,0.62,0.55)
+//#define sepia vec3(0.5,0.5,0.5)
 
 //#define halfsies
 
@@ -73,9 +74,9 @@ void main(void)
 #endif
 
     outputColor = ch0 * 1;// add some grit, overexposure
-//    outputColor = ch0 * 0.98;// add some grit, overexposure
+//    outputColor = ch0 * 0.9;// add some grit, overexposure
 //    outputColor = ch0 * ch0 * 1.4;// add some grit, overexposure
-    float lum = (outputColor.r + outputColor.g + outputColor.b) /3.0;
+    float lum = (outputColor.r + outputColor.g + outputColor.b) /2.0;
     outputColor.rgb = outputColor.rgb * (1.0 - desat) + sepia * vec3(lum,lum,lum) * desat;
     outputColor.a = alpha;
 //    // shadowbox it

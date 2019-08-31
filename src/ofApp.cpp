@@ -74,6 +74,9 @@ void ofApp::setup(){
     genderFemale.gender = Female;
     GenericGroup::GroupFilter genderMale;
     genderMale.gender = Male;
+    GenericGroup::GroupFilter unbeardedMale;
+    unbeardedMale.gender = Male;
+    unbeardedMale.beard = false;
     GenericGroup::GroupFilter olderFemale;
     olderFemale.gender = Female;
     olderFemale.minAge = 40;
@@ -286,7 +289,7 @@ void ofApp::setup(){
                                       Group::GENERIC,
                                       false,
                                       3, // # of rows
-                                      genderMale);
+                                      unbeardedMale);
     
     ImageGrid* dm = new ImageGrid();
     dm->setup(this,
@@ -541,7 +544,7 @@ void ofApp::setup(){
                    140, 80,
                    1,
                    {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
-                   1195, 3222,
+                   1198, 3222,
                    gridScale);
     
     grids[View::EYES].push_back(eolderM);
@@ -562,7 +565,7 @@ void ofApp::setup(){
                    194, 87,
                    3,
                    {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
-                   1368, 2744,
+                   1380, 2724,
                    gridScale);
     
     grids[View::EYES].push_back(eglasses);
