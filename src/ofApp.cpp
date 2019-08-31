@@ -225,17 +225,17 @@ void ofApp::setup(){
                                       View::NOSE,
                                       Group::GENERIC,
                                       false,
-                                      5, // # of rows
+                                      4, // # of rows
                                       genderFemale);
     
     ImageGrid* cf = new ImageGrid();
     cf->setup(this,
              &sepiaShader,
              group,
-              64, 84,
-              9,
+              85, 111,
+              7,
              {screenOffset , MG_Y_START}, //{1668 / 1.0, 97 / 1.0}, // start position for flying in image
-             735, 545,
+             735, 538,
              gridScale);
     
     grids[View::NOSE].push_back(cf);
@@ -246,17 +246,17 @@ void ofApp::setup(){
                                       View::NOSE,
                                       Group::GENERIC,
                                       false,
-                                      6, // # of rows
+                                      5, // # of rows
                                       genderMale);
     
     ImageGrid* cm = new ImageGrid();
     cm->setup(this,
               &sepiaShader,
               group,
-              64, 84,
-              9,
+              85, 111,
+              7,
               {screenOffset , MG_Y_START}, //{1668 / 1.0, 97 / 1.0}, // start position for flying in image
-              730, 1120,
+              730, 1100,
               gridScale);
     
     grids[View::NOSE].push_back(cm);
@@ -394,7 +394,7 @@ void ofApp::setup(){
     eunderageF->setup(this,
                       &sepiaShader,
                       group,
-                      194, 87,
+                      190, 87,
                       1,
                       {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
                       90, 2780,
@@ -415,7 +415,7 @@ void ofApp::setup(){
     eunderageM->setup(this,
                       &sepiaShader,
                       group,
-                      194, 87,
+                      190, 87,
                       1,
                       {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
                       291, 2781,
@@ -436,10 +436,10 @@ void ofApp::setup(){
     eyoungF->setup(this,
                       &sepiaShader,
                       group,
-                      194, 87,
+                      190, 87,
                       1,
                       {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
-                      492, 2779,
+                      495, 2779,
                       gridScale);
     
     grids[View::EYES].push_back(eyoungF);
@@ -457,7 +457,7 @@ void ofApp::setup(){
     eyoungM->setup(this,
                       &sepiaShader,
                       group,
-                      140, 80,
+                      138, 80,
                       1,
                       {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
                       722, 2754,
