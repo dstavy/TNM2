@@ -669,6 +669,7 @@ void ofApp::exit(){
 void ofApp::update(){
     
     bool newUser = false;
+    bool changeFeature = true;
     //cam.setScale(camScale);
     for (auto gridv : grids)
     {
@@ -678,7 +679,11 @@ void ofApp::update(){
         // if we find one mutch grid use it
         for (auto & grid : gridv) {
             grid->update();
+            if (gridv == grids[curFeature] && grid->getGroup()->getFilter().inFilter(currentUser)) {
+                changeFeature = false;
+            }
             if ( grid->animStage == ImageGrid::AnimationStage::FLY_IN) {
+                
               //  if (signalOnNextRender > -1 && ++signalOnNextRender == 1) {
               //      signalOnNextRender = -1;
                     
@@ -714,7 +719,7 @@ void ofApp::update(){
         // only update automatically if intro-animation is done
         if (autoupdateFeatures && currMugshot->m_introAnimationDone) {
             
-            if ((ofGetElapsedTimeMillis() -  lastMugshotUpdate) > MUGSHOT_REFRESH) {
+            if ((ofGetElapsedTimeMillis() -  lastMugshotUpdate) > MUGSHOT_REFRESH  || changeFeature)  {
                 selectNewFeature();
             }
         }
