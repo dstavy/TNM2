@@ -88,6 +88,8 @@ void ofApp::setup(){
     youngerMale.maxAge = 40;
     GenericGroup::GroupFilter beard;
     beard.beard = true;
+    GenericGroup::GroupFilter glasses;
+    glasses.glasses = true;
     
     // FOREHEAD / FEMALE ////////////////////////////////////////
     Group* group = groupManager.groupFactory(
@@ -324,44 +326,56 @@ void ofApp::setup(){
     GenericGroup::GroupFilter underageM;
     underageM.gender = Male;
     underageM.maxAge = 17;
+    underageM.glasses = false;
     GenericGroup::GroupFilter underageF;
     underageF.gender = Female;
     underageF.maxAge = 17;
+    underageF.glasses = false;
     GenericGroup::GroupFilter underage;
     underage.maxAge = 17;
+    underage.glasses = false;
     
     GenericGroup::GroupFilter youngM;
     youngM.gender = Male;
     youngM.minAge = 18;
     youngM.maxAge = 35;
+    youngM.glasses = false;
     GenericGroup::GroupFilter youngF;
     youngF.gender = Female;
     youngF.minAge = 18;
     youngF.maxAge = 35;
+    youngF.glasses = false;
     GenericGroup::GroupFilter young;
     young.minAge = 18;
     young.maxAge = 35;
+    young.glasses = false;
     
     GenericGroup::GroupFilter midage;
     midage.minAge = 36;
     midage.maxAge = 50;
+    midage.glasses = 50;
     GenericGroup::GroupFilter midageM;
     midageM.gender = Male;
     midageM.minAge = 36;
     midageM.maxAge = 50;
+    midageM.glasses = 50;
     GenericGroup::GroupFilter midageF;
     midageF.gender = Female;
     midageF.minAge = 36;
     midageF.maxAge = 50;
+    midageF.glasses = false;
     
     GenericGroup::GroupFilter older;
     older.minAge = 51;
+    older.glasses = false;
     GenericGroup::GroupFilter olderM;
     olderM.gender = Male;
     olderM.minAge = 51;
+    olderM.glasses = false;
     GenericGroup::GroupFilter olderF;
     olderF.gender = Female;
     olderF.minAge = 51;
+    olderF.glasses = false;
     
 //    GenericGroup::GroupFilter glasses;
 //    glasses.glasses = TRUE;
@@ -524,15 +538,36 @@ void ofApp::setup(){
     
     ImageGrid* eolderM = new ImageGrid();
     eolderM->setup(this,
-                      &sepiaShader,
-                      group,
-                      140, 80,
-                      1,
-                      {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
-                      1195, 3222,
-                      gridScale);
+                   &sepiaShader,
+                   group,
+                   140, 80,
+                   1,
+                   {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
+                   1195, 3222,
+                   gridScale);
     
     grids[View::EYES].push_back(eolderM);
+    
+    // EYES / glasses ////////////////////////////////////////
+    
+    group = groupManager.groupFactory(
+                                      View::EYES,
+                                      Group::GENERIC,
+                                      false,
+                                      7, // # of rows
+                                      glasses);
+    
+    ImageGrid* eglasses = new ImageGrid();
+    eglasses->setup(this,
+                   &sepiaShader,
+                   group,
+                   194, 87,
+                   3,
+                   {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
+                   1368, 2744,
+                   gridScale);
+    
+    grids[View::EYES].push_back(eglasses);
 
     
     currentUser = NULL;
@@ -1116,22 +1151,22 @@ User* ofApp::getRandomUser() {
 void ofApp::keyReleased(int key){
     
     if (key == OF_KEY_UP) {
-        translateX -= 20;
+        translateY -= 20;
         blackBarRotation += 0.05;
         ofLogNotice() << "rot: " << blackBarRotation;
     }
     else if (key == OF_KEY_DOWN) {
-        translateX += 20;
+        translateY += 20;
         blackBarRotation -= 0.05;
         ofLogNotice() << "rot: " << blackBarRotation;
     }
     else if (key == OF_KEY_LEFT) {
-        translateY -= 20;
+        translateX -= 20;
         blackBarX -= 0.1;
         ofLogNotice() << "blackBarX: " << blackBarX;
     }
     else if (key == OF_KEY_RIGHT) {
-        translateY -= 20;
+        translateX += 20;
         blackBarX += 0.1;
         ofLogNotice() << "blackBarX: " << blackBarX;
     }

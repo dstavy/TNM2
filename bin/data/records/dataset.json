@@ -7,12 +7,13 @@
     "age": 39,
     "beard": false,
     "hairColor": "gray",
+    "glasses": 0.8,
     "score": 0.3,
     "selections": [
-        "berlin_ars_5",
-        "berlin_ars_2",
-        "berlin_ars_3",
-        "berlin_ars_4"
+      "berlin_ars_5",
+      "berlin_ars_2",
+      "berlin_ars_3",
+      "berlin_ars_4"
     ],
     "timestamp": 1567243546
   },
@@ -23,7 +24,8 @@
     "gender": "male",
     "age": 46,
     "beard": 0.18,
-    "hairColor": "black"
+    "hairColor": "black",
+    "glasses": 0.8
   },
   {
     "id": "berlin_ars_3",
@@ -47,6 +49,7 @@
     "xScore": 65,
     "gender": "male",
     "beard": true,
+    "glasses": 0.8,
     "age": 35
   },
   {
@@ -63,6 +66,7 @@
     "xScore": 84,
     "gender": "female",
     "beard": false,
+    "glasses": 0.8,
     "age": 65
   },
   {
@@ -95,6 +99,7 @@
     "xScore": 6,
     "gender": "male",
     "beard": true,
+    "glasses": 0.8,
     "age": 35
   },
   {
@@ -119,6 +124,7 @@
     "xScore": 6,
     "gender": "male",
     "beard": false,
+    "glasses": 0.8,
     "age": 38
   },
   {
@@ -127,6 +133,169 @@
     "xScore": 52,
     "gender": "male",
     "beard": false,
+    "glasses": 0.8,
     "age": 18
+  },
+  {
+    "id": "berlin_ars_16",
+    "vScore": 87,
+    "xScore": 26,
+    "gender": "male",
+    "beard": false,
+    "glasses": false,
+    "age": 68
+  },
+  {
+    "id": "berlin_ars_17",
+    "vScore": 43,
+    "xScore": 67,
+    "gender": "male",
+    "beard": 0.2,
+    "glasses": false,
+    "age": 65
+  },
+  {
+    "id": "berlin_ars_18",
+    "vScore": 23,
+    "xScore": 59,
+    "gender": "female",
+    "beard": false,
+    "glasses": false,
+    "age": 36
+  },
+  {
+    "id": "berlin_ars_19",
+    "vScore": 23,
+    "xScore": 59,
+    "gender": "male",
+    "beard": 0.9,
+    "glasses": false,
+    "age": 37
+  },
+  {
+    "id": "berlin_ars_20",
+    "vScore": 83,
+    "xScore": 49,
+    "gender": "male",
+    "beard": 0.7,
+    "glasses": false,
+    "age": 34
+  },
+  {
+    "id": "berlin_ars_21",
+    "vScore": 13,
+    "xScore": 89,
+    "gender": "male",
+    "beard": false,
+    "glasses": false,
+    "age": 58
+  },
+  {
+    "id": "berlin_ars_22",
+    "vScore": 67,
+    "xScore": 43,
+    "gender": "male",
+    "beard": 0.1,
+    "glasses": false,
+    "age": 17
+  },
+  {
+    "id": "berlin_ars_23",
+    "vScore": 97,
+    "xScore": 32,
+    "gender": "female",
+    "beard": false,
+    "glasses": false,
+    "age": 41
+  },
+  {
+    "id": "berlin_ars_24",
+    "vScore": 36,
+    "xScore": 67,
+    "gender": "female",
+    "beard": false,
+    "glasses": false,
+    "age": 37
+  },
+  {
+    "id": "berlin_ars_25",
+    "vScore": 76,
+    "xScore": 35,
+    "gender": "male",
+    "beard": false,
+    "glasses": false,
+    "age": 12
+  },
+  {
+    "id": "berlin_ars_26",
+    "vScore": 82,
+    "xScore": 43,
+    "gender": "male",
+    "beard": false,
+    "glasses": false,
+    "age": 38
+  },
+  {
+    "id": "berlin_ars_27",
+    "vScore": 23,
+    "xScore": 78,
+    "gender": "male",
+    "beard": 0.99,
+    "glasses": false,
+    "age": 29
+  },
+  {
+    "id": "berlin_ars_28",
+    "vScore": 68,
+    "xScore": 35,
+    "gender": "male",
+    "beard": 0.29,
+    "glasses": true,
+    "age": 37
+  },
+  {
+    "id": "berlin_ars_28",
+    "vScore": 56,
+    "xScore": 46,
+    "gender": "female",
+    "beard": false,
+    "glasses": false,
+    "age": 15
+  },
+  {
+    "id": "berlin_ars_30",
+    "vScore": 89,
+    "xScore": 24,
+    "gender": "male",
+    "beard": false,
+    "glasses": true,
+    "age": 11
+  },
+  {
+    "id": "berlin_ars_31",
+    "vScore": 46,
+    "xScore": 24,
+    "gender": "female",
+    "beard": false,
+    "glasses": false,
+    "age": 61
+  },
+  {
+    "id": "berlin_ars_32",
+    "vScore": 46,
+    "xScore": 24,
+    "gender": "male",
+    "beard": 0.4,
+    "glasses": true,
+    "age": 34
+  },
+  {
+    "id": "berlin_ars_33",
+    "vScore": 46,
+    "xScore": 24,
+    "gender": "male",
+    "beard": false,
+    "glasses": false,
+    "age": 10
   }
 ]
