@@ -104,6 +104,7 @@ User* PresentationUpdate::update() {
                     Gender gender = getGenderFromString(v["gender"].asString());
                     float beard = v["beard"].asFloat();
                     string hairColor = v["hairColor"].asString();
+                    bool glasses = v["glasses"].asBool();
 
                     if (id.size() > 0) {
 						UserMap::iterator it = users->find(id);
@@ -124,7 +125,8 @@ User* PresentationUpdate::update() {
                                         age,
                                         gender,
                                         beard,
-                                        hairColor
+                                        hairColor,
+                                        glasses
                                         );
 								
 								users->insert(std::pair<string, User*>(id, tmp));
@@ -308,7 +310,7 @@ void PresentationUpdate::updateUser(User* user, int vScore, int xScore) {
     user->score = (float)vScore / (vScore + xScore + 1); // avoid getting 100%
 }
 
-void PresentationUpdate::setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight, float armLength, int age, Gender gender, float beard,string hairColor)
+void PresentationUpdate::setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight, float armLength, int age, Gender gender, float beard,string hairColor, bool glasses)
 {
 	user->shouldersWidth = shouldersWidth;
 	user->torsoLength = torsoLength;
@@ -319,6 +321,7 @@ void PresentationUpdate::setUser(User* user, int vScore, int xScore, float shoul
     user->gender = gender;
     user->beard = beard;
     user->hairColor = hairColor;
+    user->glasses = glasses;
     
 	updateUser(user, vScore, xScore);
 }
