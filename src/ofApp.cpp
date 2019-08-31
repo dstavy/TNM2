@@ -103,7 +103,7 @@ void ofApp::setup(){
     af->setup(this,
              &sepiaShader, // shader
              group, // newly created group
-             189,101, // width and height of element in image pix
+             189,100, // width and height of element in image pix
              1, // # of columns
              {screenOffset , MG_Y_START}, // start position for flying in image
              500, 893, // postion of grid
@@ -319,49 +319,187 @@ void ofApp::setup(){
     
     grids[View::MOUTH].push_back(db);
     
-    // EYES / FEMALE ////////////////////////////////////////
+    ///// AGE GROUPS
+    
+    GenericGroup::GroupFilter underageM;
+    underageM.gender = Male;
+    underageM.maxAge = 18;
+    GenericGroup::GroupFilter underageF;
+    underageF.gender = Female;
+    underageF.maxAge = 18;
+    GenericGroup::GroupFilter underage;
+    underage.maxAge = 18;
+    
+    GenericGroup::GroupFilter twenties;
+    twenties.minAge = 19;
+    twenties.maxAge = 29;
+    GenericGroup::GroupFilter twentiesM;
+    twentiesM.gender = Male;
+    twentiesM.minAge = 19;
+    twentiesM.maxAge = 29;
+    GenericGroup::GroupFilter twentiesF;
+    twentiesF.gender = Female;
+    twentiesF.minAge = 19;
+    twentiesF.maxAge = 29;
+    
+    GenericGroup::GroupFilter thirties;
+    thirties.minAge = 30;
+    thirties.maxAge = 39;
+    GenericGroup::GroupFilter thirtiesM;
+    thirtiesM.gender = Male;
+    thirtiesM.minAge = 30;
+    thirtiesM.maxAge = 39;
+    GenericGroup::GroupFilter thirtiesF;
+    thirtiesF.gender = Female;
+    thirtiesF.minAge = 30;
+    thirtiesF.maxAge = 39;
+    
+    GenericGroup::GroupFilter fourties;
+    fourties.minAge = 40;
+    fourties.maxAge = 54;
+    GenericGroup::GroupFilter fourtiesM;
+    fourtiesM.gender = Male;
+    fourtiesM.minAge = 40;
+    fourtiesM.maxAge = 54;
+    GenericGroup::GroupFilter fourtiesF;
+    fourtiesF.gender = Female;
+    fourtiesF.minAge = 40;
+    fourtiesF.maxAge = 54;
+    
+    GenericGroup::GroupFilter older;
+    older.minAge = 55;
+    GenericGroup::GroupFilter olderM;
+    olderM.gender = Male;
+    olderM.minAge = 55;
+    GenericGroup::GroupFilter olderF;
+    olderF.gender = Female;
+    olderF.minAge = 55;
+    
+    // EYES / underageF ////////////////////////////////////////
     
     group = groupManager.groupFactory(
                                       View::EYES,
                                       Group::GENERIC,
                                       false,
                                       6, // # of rows
-                                      genderFemale);
+                                      underageF);
     
-    ImageGrid* ef = new ImageGrid();
-    ef->setup(this,
-             &sepiaShader,
-             group,
-             196, 87,
-             3,
-             {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
-             90, 2780,
-             gridScale);
+    ImageGrid* eunderageF = new ImageGrid();
+    eunderageF->setup(this,
+                      &sepiaShader,
+                      group,
+                      194, 87,
+                      1,
+                      {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
+                      90, 2780,
+                      gridScale);
     
-    grids[View::EYES].push_back(ef);
+    grids[View::EYES].push_back(eunderageF);
     
-    // EYES / MALE ////////////////////////////////////////
+    // EYES / underageM ////////////////////////////////////////
     
     group = groupManager.groupFactory(
                                       View::EYES,
                                       Group::GENERIC,
                                       false,
                                       6, // # of rows
-                                      genderMale);
+                                      underageM);
     
-    ImageGrid* em = new ImageGrid();
-    em->setup(this,
-              &sepiaShader,
-              group,
-              196, 87,
-              3,
-              {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
-              1368, 2780,
-              gridScale);
+    ImageGrid* eunderageM = new ImageGrid();
+    eunderageM->setup(this,
+                      &sepiaShader,
+                      group,
+                      194, 87,
+                      1,
+                      {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
+                      291, 2781,
+                      gridScale);
     
-    grids[View::EYES].push_back(em);
+    grids[View::EYES].push_back(eunderageM);
     
-    // EYES / MALE ////////////////////////////////////////
+    // EYES / twentiesF ////////////////////////////////////////
+    
+    group = groupManager.groupFactory(
+                                      View::EYES,
+                                      Group::GENERIC,
+                                      false,
+                                      6, // # of rows
+                                      twentiesF);
+    
+    ImageGrid* etwentiesF = new ImageGrid();
+    etwentiesF->setup(this,
+                      &sepiaShader,
+                      group,
+                      194, 87,
+                      1,
+                      {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
+                      492, 2779,
+                      gridScale);
+    
+    grids[View::EYES].push_back(etwentiesF);
+    
+    // EYES / twentiesM ////////////////////////////////////////
+    
+    group = groupManager.groupFactory(
+                                      View::EYES,
+                                      Group::GENERIC,
+                                      false,
+                                      7, // # of rows
+                                      twentiesM);
+    
+    ImageGrid* etwentiesM = new ImageGrid();
+    etwentiesM->setup(this,
+                      &sepiaShader,
+                      group,
+                      140, 80,
+                      1,
+                      {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
+                      722, 2754,
+                      gridScale);
+    
+    grids[View::EYES].push_back(etwentiesM);
+    
+    // EYES / thirtiesF ////////////////////////////////////////
+    
+    group = groupManager.groupFactory(
+                                      View::EYES,
+                                      Group::GENERIC,
+                                      false,
+                                      7, // # of rows
+                                      thirtiesF);
+    
+    ImageGrid* ethirtiesF = new ImageGrid();
+    ethirtiesF->setup(this,
+                      &sepiaShader,
+                      group,
+                      140, 80,
+                      1,
+                      {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
+                      880, 2756,
+                      gridScale);
+    
+    grids[View::EYES].push_back(ethirtiesF);
+    
+    // EYES / thirtiesM ////////////////////////////////////////
+    
+    group = groupManager.groupFactory(
+                                      View::EYES,
+                                      Group::GENERIC,
+                                      false,
+                                      7, // # of rows
+                                      thirtiesM);
+    
+    ImageGrid* ethirtiesM = new ImageGrid();
+    ethirtiesM->setup(this,
+                      &sepiaShader,
+                      group,
+                      140, 80,
+                      1,
+                      {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
+                      1038, 2754,
+                      gridScale);
+    
+    grids[View::EYES].push_back(ethirtiesM);
 
     
     currentUser = NULL;

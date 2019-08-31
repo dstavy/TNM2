@@ -4,16 +4,16 @@
     "vScore": 1,
     "xScore": 99,
     "gender": "female",
-    "age": 46,
+    "age": 39,
     "beard": false,
-    /*"hairColor": "gray"*/
+    "hairColor": "gray",
     "score": 0.3,
     "selections": [
         "berlin_ars_5",
         "berlin_ars_2",
         "berlin_ars_3",
         "berlin_ars_4"
-    ]
+    ],
     "timestamp": 1567243546
   },
   {
@@ -71,7 +71,7 @@
     "xScore": 97,
     "gender": "female",
     "beard": false,
-    "age": 24
+    "age": 18
   },
   {
     "id": "berlin_ars_9",
@@ -95,8 +95,7 @@
     "xScore": 6,
     "gender": "male",
     "beard": true,
-    "age": 35,
-    "age": 54
+    "age": 35
   },
   {
     "id": "berlin_ars_12",
@@ -128,6 +127,6 @@
     "xScore": 52,
     "gender": "male",
     "beard": false,
-    "age": 25
+    "age": 18
   }
 ]
