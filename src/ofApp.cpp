@@ -323,57 +323,48 @@ void ofApp::setup(){
     
     GenericGroup::GroupFilter underageM;
     underageM.gender = Male;
-    underageM.maxAge = 18;
+    underageM.maxAge = 17;
     GenericGroup::GroupFilter underageF;
     underageF.gender = Female;
-    underageF.maxAge = 18;
+    underageF.maxAge = 17;
     GenericGroup::GroupFilter underage;
-    underage.maxAge = 18;
+    underage.maxAge = 17;
     
-    GenericGroup::GroupFilter twenties;
-    twenties.minAge = 19;
-    twenties.maxAge = 29;
-    GenericGroup::GroupFilter twentiesM;
-    twentiesM.gender = Male;
-    twentiesM.minAge = 19;
-    twentiesM.maxAge = 29;
-    GenericGroup::GroupFilter twentiesF;
-    twentiesF.gender = Female;
-    twentiesF.minAge = 19;
-    twentiesF.maxAge = 29;
+    GenericGroup::GroupFilter youngM;
+    youngM.gender = Male;
+    youngM.minAge = 18;
+    youngM.maxAge = 35;
+    GenericGroup::GroupFilter youngF;
+    youngF.gender = Female;
+    youngF.minAge = 18;
+    youngF.maxAge = 35;
+    GenericGroup::GroupFilter young;
+    young.minAge = 18;
+    young.maxAge = 35;
     
-    GenericGroup::GroupFilter thirties;
-    thirties.minAge = 30;
-    thirties.maxAge = 39;
-    GenericGroup::GroupFilter thirtiesM;
-    thirtiesM.gender = Male;
-    thirtiesM.minAge = 30;
-    thirtiesM.maxAge = 39;
-    GenericGroup::GroupFilter thirtiesF;
-    thirtiesF.gender = Female;
-    thirtiesF.minAge = 30;
-    thirtiesF.maxAge = 39;
-    
-    GenericGroup::GroupFilter fourties;
-    fourties.minAge = 40;
-    fourties.maxAge = 54;
-    GenericGroup::GroupFilter fourtiesM;
-    fourtiesM.gender = Male;
-    fourtiesM.minAge = 40;
-    fourtiesM.maxAge = 54;
-    GenericGroup::GroupFilter fourtiesF;
-    fourtiesF.gender = Female;
-    fourtiesF.minAge = 40;
-    fourtiesF.maxAge = 54;
+    GenericGroup::GroupFilter midage;
+    midage.minAge = 36;
+    midage.maxAge = 50;
+    GenericGroup::GroupFilter midageM;
+    midageM.gender = Male;
+    midageM.minAge = 36;
+    midageM.maxAge = 50;
+    GenericGroup::GroupFilter midageF;
+    midageF.gender = Female;
+    midageF.minAge = 36;
+    midageF.maxAge = 50;
     
     GenericGroup::GroupFilter older;
-    older.minAge = 55;
+    older.minAge = 51;
     GenericGroup::GroupFilter olderM;
     olderM.gender = Male;
-    olderM.minAge = 55;
+    olderM.minAge = 51;
     GenericGroup::GroupFilter olderF;
     olderF.gender = Female;
-    olderF.minAge = 55;
+    olderF.minAge = 51;
+    
+//    GenericGroup::GroupFilter glasses;
+//    glasses.glasses = TRUE;
     
     // EYES / underageF ////////////////////////////////////////
     
@@ -417,17 +408,17 @@ void ofApp::setup(){
     
     grids[View::EYES].push_back(eunderageM);
     
-    // EYES / twentiesF ////////////////////////////////////////
+    // EYES / youngF ////////////////////////////////////////
     
     group = groupManager.groupFactory(
                                       View::EYES,
                                       Group::GENERIC,
                                       false,
                                       6, // # of rows
-                                      twentiesF);
+                                      youngF);
     
-    ImageGrid* etwentiesF = new ImageGrid();
-    etwentiesF->setup(this,
+    ImageGrid* eyoungF = new ImageGrid();
+    eyoungF->setup(this,
                       &sepiaShader,
                       group,
                       194, 87,
@@ -436,19 +427,19 @@ void ofApp::setup(){
                       492, 2779,
                       gridScale);
     
-    grids[View::EYES].push_back(etwentiesF);
+    grids[View::EYES].push_back(eyoungF);
     
-    // EYES / twentiesM ////////////////////////////////////////
+    // EYES / youngM ////////////////////////////////////////
     
     group = groupManager.groupFactory(
                                       View::EYES,
                                       Group::GENERIC,
                                       false,
                                       7, // # of rows
-                                      twentiesM);
+                                      youngM);
     
-    ImageGrid* etwentiesM = new ImageGrid();
-    etwentiesM->setup(this,
+    ImageGrid* eyoungM = new ImageGrid();
+    eyoungM->setup(this,
                       &sepiaShader,
                       group,
                       140, 80,
@@ -457,49 +448,91 @@ void ofApp::setup(){
                       722, 2754,
                       gridScale);
     
-    grids[View::EYES].push_back(etwentiesM);
+    grids[View::EYES].push_back(eyoungM);
     
-    // EYES / thirtiesF ////////////////////////////////////////
-    
-    group = groupManager.groupFactory(
-                                      View::EYES,
-                                      Group::GENERIC,
-                                      false,
-                                      7, // # of rows
-                                      thirtiesF);
-    
-    ImageGrid* ethirtiesF = new ImageGrid();
-    ethirtiesF->setup(this,
-                      &sepiaShader,
-                      group,
-                      140, 80,
-                      1,
-                      {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
-                      880, 2756,
-                      gridScale);
-    
-    grids[View::EYES].push_back(ethirtiesF);
-    
-    // EYES / thirtiesM ////////////////////////////////////////
+    // EYES / midageF ////////////////////////////////////////
     
     group = groupManager.groupFactory(
                                       View::EYES,
                                       Group::GENERIC,
                                       false,
                                       7, // # of rows
-                                      thirtiesM);
+                                      midageF);
     
-    ImageGrid* ethirtiesM = new ImageGrid();
-    ethirtiesM->setup(this,
+    ImageGrid* emidageF = new ImageGrid();
+    emidageF->setup(this,
                       &sepiaShader,
                       group,
                       140, 80,
                       1,
                       {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
-                      1038, 2754,
+                      878, 2756,
                       gridScale);
     
-    grids[View::EYES].push_back(ethirtiesM);
+    grids[View::EYES].push_back(emidageF);
+    
+    // EYES / midageM ////////////////////////////////////////
+    
+    group = groupManager.groupFactory(
+                                      View::EYES,
+                                      Group::GENERIC,
+                                      false,
+                                      7, // # of rows
+                                      midageM);
+    
+    ImageGrid* emidageM = new ImageGrid();
+    emidageM->setup(this,
+                      &sepiaShader,
+                      group,
+                      140, 80,
+                      1,
+                      {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
+                      1036, 2754,
+                      gridScale);
+    
+    grids[View::EYES].push_back(emidageM);
+    
+    // EYES / olderF ////////////////////////////////////////
+    
+    group = groupManager.groupFactory(
+                                      View::EYES,
+                                      Group::GENERIC,
+                                      false,
+                                      3, // # of rows
+                                      olderF);
+    
+    ImageGrid* eolderF = new ImageGrid();
+    eolderF->setup(this,
+                      &sepiaShader,
+                      group,
+                      140, 80,
+                      1,
+                      {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
+                      1195, 2744,
+                      gridScale);
+    
+    grids[View::EYES].push_back(eolderF);
+    
+    // EYES / olderM ////////////////////////////////////////
+    
+    group = groupManager.groupFactory(
+                                      View::EYES,
+                                      Group::GENERIC,
+                                      false,
+                                      2, // # of rows
+                                      olderM);
+    
+    ImageGrid* eolderM = new ImageGrid();
+    eolderM->setup(this,
+                      &sepiaShader,
+                      group,
+                      140, 80,
+                      1,
+                      {screenOffset , MG_Y_START}, //{2058 / 1.0, -73 / 1.0}, // start position for flying in image
+                      1195, 3222,
+                      gridScale);
+    
+    grids[View::EYES].push_back(eolderM);
 
     
     currentUser = NULL;
