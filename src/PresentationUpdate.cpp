@@ -9,9 +9,12 @@
 #include "Analyzer.hpp"
 #include "Globals.h"
 #include "Gender.h"
+#include "Utils.hpp"
+
 //#defne USE_MOVIE
 
 const string PresentationUpdate::JSON_FILE_LOCAL = "records/dataset.json";
+const string PresentationUpdate::JSON_FILE_LOCAL_SAVE = "records/dataset2.json";
 const string PresentationUpdate::JSON_FILE = "../../../The-Normalizing-Machine/bin/Data/records/dataset.json";
 const string PresentationUpdate::FACE_DIR = "Faces/";
 const string PresentationUpdate::MOVIE_DIR = "Movies/";
@@ -137,8 +140,7 @@ User* PresentationUpdate::update() {
 							}
 						}
                         else {
-                        //
-                         ofLogError() << "json-entry without id!";
+                            ofLogError() << "json-entry without id!";
                         }
                 } // for (iterating ids)
                 float points = .99;
@@ -150,11 +152,19 @@ User* PresentationUpdate::update() {
                     }
                     points -= .33;
                 }
-                datasetJson.c
+                
+                ofLogNotice() << "sorting users";
+                
+                vector<User*> sortedUsers;
+                getUsersList(sortedUsers);
+                // set factor score
+                if (!sortedUsers.empty()) {
+                    groupManager->update(sortedUsers);
+                }
+                saveUsersToJson(users);
 			} else {
 				ofLogError() << "could not open json!";
 			}
-			
         } else {
 			// file not udpated!
            file.close();
@@ -309,7 +319,7 @@ void PresentationUpdate::setUser(User* user, float score, int rounds, string tim
 	user->torsoLength = torsoLength;
 	user->totalHeight = totalHeight;
 	user->headHeight = headHeight;
-	user->lowerArm = armLength;
+	user->armLength = armLength;
     user->age = age;
     user->gender = gender;
     user->beard = beard;

@@ -7,6 +7,8 @@
 
 #include "Utils.hpp"
 #include "ofImage.h"
+#include "ofxJSON.h"
+#include "PresentationUpdate.hpp"
 
 std::string meterToCMDashMM(float meter) {
 	
@@ -29,4 +31,22 @@ std::string meterToCMDashMM(float meter) {
 	
 	return hs;
 	
+}
+
+bool saveUsersToJson(UserMap *users) {
+    
+    ofxJSONElement json;
+    
+    for (UserMap::iterator it = users->begin(); it != users->end(); it++)
+    {
+        if (it->first != "")
+        {
+            json["users"].append(it->second->toJson());
+        }
+    }
+    
+    bool success = json.save(PresentationUpdate::JSON_FILE_LOCAL_SAVE, true);
+    ofLogNotice("save users to json") << (success ? "OK" : "FAIL");
+    
+    return success;
 }

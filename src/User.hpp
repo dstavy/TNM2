@@ -12,6 +12,7 @@
 #include "View.hpp"
 #include "Gender.h"
 #include "Glasses.h"
+#include "ofxJSON.h"
 
 
 static const float BEARD_THRESHOLD = 0.5f;
@@ -23,21 +24,21 @@ public:
     float score = 0.0;
     int rounds = 0;
     string timestamp = "";
-	int shouldersWidth;
-	float torsoLength;
-	float lowerArm = 0.0;
-	float totalHeight;
-	float headHeight;
-
-    View frontView;
-    View profileView;
-    //int measures[5];
-    bool isCurrent = false;
+	int shouldersWidth = 0.;
+	float torsoLength = 0.;
+	float armLength = 0.0;
+	float totalHeight = 0.;
+	float headHeight = 0.;
     int age = 0;
     Gender gender = None;
     string hairColor;
     float beard = 0.0;
     Glasses glasses = DontCare;
+    
+    bool isCurrent = false;
+
+    View frontView;
+    View profileView;
     
     User(string id) {
         this->id = id;
@@ -54,6 +55,9 @@ public:
         if(profile) return profileView;
         else return frontView;
     };
+    
+    Json::Value toJson();
+    
 };
 
 typedef map<string, User*> UserMap;

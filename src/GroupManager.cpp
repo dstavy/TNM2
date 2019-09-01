@@ -8,8 +8,6 @@
 #include "GroupManager.hpp"
 #include "AgeGroup.hpp"
 
-
-
 void GroupManager::update(vector<User*>& users) {
     for(auto const& group: groups) {
         group->update(users);

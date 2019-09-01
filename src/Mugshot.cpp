@@ -154,7 +154,7 @@ void Mugshot::drawBackground(User* user) {
 			
 			
 			// cubit: ellbow (from json) to wrist+20% (for hand)
-			float cubit = user->lowerArm; // + 20%
+			float cubit = user->armLength; // + 20%
 			
 	//		shouldersWidth;
 

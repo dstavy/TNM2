@@ -14,6 +14,10 @@ Gender getGenderFromString(std::string genderString) {
     } else if(genderString.compare("female") == 0) {
         gender = Female;
     }
+    else {
+       gender = None;
+    }
+    
     return gender;
 }
 

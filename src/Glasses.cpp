@@ -19,3 +19,10 @@ Glasses getGlassesFromBoolean(bool isGlasses) {
     }
     return Off;
 };
+
+bool getBooleanFromGlasses(Glasses glasses) {
+    if (glasses == Glasses::On) {
+        return true;
+    }
+    return false;
+};

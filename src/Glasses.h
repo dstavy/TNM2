@@ -19,6 +19,6 @@ enum Glasses {
 Glasses getGlassesFromString(std::string isGlasses);
 
 Glasses getGlassesFromBoolean(bool isGlasses);
-
+bool getBooleanFromGlasses(Glasses glasses);
 
 #endif /* Glasses_h */
