@@ -7,6 +7,8 @@
 
 #ifndef Glasses_h
 #define Glasses_h
+#include <string>
+
 
 enum Glasses {
     DontCare,
@@ -14,19 +16,9 @@ enum Glasses {
     Off
 };
 
-Glasses getGlassesFromString(string isGlasses) {
-    if (isGlasses.compare("NoGlasses") == 0) {
-        return Off;
-    }
-    return On;
-};
+Glasses getGlassesFromString(std::string isGlasses);
 
-Glasses getGlassesFromBoolean(bool isGlasses) {
-    if (isGlasses) {
-        return On;
-    }
-    return Off;
-};
+Glasses getGlassesFromBoolean(bool isGlasses);
 
 
 #endif /* Glasses_h */

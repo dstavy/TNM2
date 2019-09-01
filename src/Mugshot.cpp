@@ -233,14 +233,14 @@ void Mugshot::drawBackground(User* user) {
 			
 			// 2018_11_13_23_28_03_647_0
 			string date_string = ofGetTimestampString("%H:%M:%S");
-			if (user->id.length() >= 10) {
-				date_string = user->id.substr(0, 10);
+			if (user->timestamp.length() >= 10) {
+				date_string = user->timestamp.substr(0, 10);
 			}
 			font_smaller->draw(date_string, examined_1_pos.x, examined_1_pos.y);
 			
 			string time_String = ofGetTimestampString("%F");
-			if (user->id.length() >= 20) {
-				date_string = user->id.substr(11, 8);
+			if (user->timestamp.length() >= 20) {
+				date_string = user->timestamp.substr(11, 8);
 			}	
 			font_smaller->draw(date_string, examined_2_pos.x, examined_2_pos.y);
 			

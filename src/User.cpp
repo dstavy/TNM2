@@ -7,5 +7,3 @@
 
 #include "User.hpp"
 
-float User::highestScore = 1.0;
-float User::lowestScore = 0.0;

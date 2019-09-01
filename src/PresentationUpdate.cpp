@@ -83,17 +83,17 @@ User* PresentationUpdate::update() {
             if (datasetJson.open(json)) {
                 //frontTracker->setThreaded(false);
                // profileTracker->setThreaded(false);
-				int i = datasetJson.size() - MAX_USERS;
+				int i = datasetJson["users"].size() - MAX_USERS;
                 if (i < 0) {
                     i = 0;
                 }
 				
-                for (; i < datasetJson.size(); ++i) {
-					
-                    Json::Value v = datasetJson[i];
+                for (; i < datasetJson["users"].size(); ++i) {
+                    Json::Value v = datasetJson["users"][i];
                     string id = v["id"].asString();
-                    int vScore = v["vScore"].asInt();
-                    int xScore = v["xScore"].asInt();
+                    float score = v["score"].asFloat();
+                    int rounds = v["rounds"].asInt();
+                    string timestamp = v["timestamp"].asString();
 					float shouldersWidth = v["shouldersWidth"].asFloat();
 					float torsoLength = v["torsoLength"].asFloat();
 					float totalHeight = v["totalHeight"].asFloat();
@@ -107,16 +107,17 @@ User* PresentationUpdate::update() {
                     Glasses glasses = getGlassesFromBoolean(v["glasses"].asBool());
 
                     if (id.size() > 0) {
-						UserMap::iterator it = users->find(id);
-						if (it == users->end()) {
+						//UserMap::iterator it = users->find(id);
+						//if (it == users->end()) {
 							// not found
 							User* tmp = createUser(id);
 							if (tmp!= NULL) {
 								
 								// set data
 								setUser(tmp,
-										vScore,
-										xScore,
+										0.5, // med
+                                        rounds,
+                                        timestamp,
 										shouldersWidth,
 										torsoLength,
 										totalHeight,
@@ -131,47 +132,36 @@ User* PresentationUpdate::update() {
 								
 								users->insert(std::pair<string, User*>(id, tmp));
 								user = tmp;
-								updated = true;
 							} else {
 								ofLogError() << "could not create new user with id" << id;
 							}
 						}
-						else {
-							updateUser(it->second, vScore, xScore);
-						}
-						
-						//ofLogNotice() << "user with id: " << id;
-						
-					} else {
-						//
-						ofLogError() << "json-entry without id!";
-					}
-                } // for (iterating json)
+                        else {
+                        //
+                         ofLogError() << "json-entry without id!";
+                        }
+                } // for (iterating ids)
+                float points = .99;
+                for (int j = 0 ; j < datasetJson["selections"].size(); j++)
+                {
+                    UserMap::iterator it = users->find(datasetJson["selections"][j]["id"].asString());
+                    if (it != users->end()) {
+                        updateUser(it->second, points);
+                    }
+                    points -= .33;
+                }
+                datasetJson.c
 			} else {
 				ofLogError() << "could not open json!";
 			}
 			
-            if (updated) {
-				
-				ofLogNotice() << "sorting users";
-				
-                vector<User*> sortedUsers;
-                getUsersList(sortedUsers);
-				// set factor score
-                if (!sortedUsers.empty()) {
-                    User::setHighestScore(sortedUsers[sortedUsers.size() -1]->score
-                                          + 0.001);//we dont want 1
-                    User::setLowestScore(sortedUsers[0]->score - 0.001); // we dont want 0
-                    groupManager->update(sortedUsers);
-                }
-            }
         } else {
 			// file not udpated!
            file.close();
         }
         lastUpdate = ofGetSystemTimeMillis();
 	} else {
-		// file does not exist
+        ofLogError() << "could not open " + file.getAbsolutePath();
 	}
 	
    // frontTracker->setThreaded(true);
@@ -304,14 +294,17 @@ User* PresentationUpdate::createUser(string id) {
     }
 }
 
-void PresentationUpdate::updateUser(User* user, int vScore, int xScore) {
-    user->xScore = xScore;
-    user->vScore = vScore;
-    user->score = (float)vScore / (vScore + xScore + 1); // avoid getting 100%
+void PresentationUpdate::updateUser(User* user, float points) {
+    user->rounds++;
+    user->score = points * 1./user->rounds + user->score * (1. - 1./user->rounds);
+    // (vScore + xScore + 1); // avoid getting 100%
 }
 
-void PresentationUpdate::setUser(User* user, int vScore, int xScore, float shouldersWidth, float torsoLength, float totalHeight, float headHeight, float armLength, int age, Gender gender, float beard,string hairColor, Glasses glasses)
+void PresentationUpdate::setUser(User* user, float score, int rounds, string timestamp, float shouldersWidth, float torsoLength, float totalHeight, float headHeight, float armLength, int age, Gender gender, float beard,string hairColor, Glasses glasses)
 {
+    user->score = score;
+    user->rounds = rounds;
+    user->timestamp = timestamp;
 	user->shouldersWidth = shouldersWidth;
 	user->torsoLength = torsoLength;
 	user->totalHeight = totalHeight;
@@ -323,7 +316,7 @@ void PresentationUpdate::setUser(User* user, int vScore, int xScore, float shoul
     user->hairColor = hairColor;
     user->glasses = glasses;
     
-	updateUser(user, vScore, xScore);
+	//updateUser(user, points, rounds);
 }
 
 bool PresentationUpdate::saveUserImage(string fileName, View& view) {

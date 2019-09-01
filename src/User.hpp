@@ -19,18 +19,16 @@ static const float BALD_THRESHOLD = 0.65f;
 
 class User {
 public:
-    static float highestScore;
-    static float lowestScore;
     string id;
-    float selectionScore;
-    float score;
-    int vScore;
-    int xScore;
+    float score = 0.0;
+    int rounds = 0;
+    string timestamp = "";
 	int shouldersWidth;
 	float torsoLength;
 	float lowerArm = 0.0;
 	float totalHeight;
 	float headHeight;
+
     View frontView;
     View profileView;
     //int measures[5];
@@ -51,19 +49,6 @@ public:
         }
         return false;
     };
-    
-    static void setHighestScore(float score) {
-        highestScore  = score;
-    };
-    
-    static void setLowestScore(float score) {
-        lowestScore  = score;
-    };
-    
-    float getFactrorScore() {
-        return (ofMap(score, User::lowestScore, User::highestScore, 0., 1.));
-    };
-        
         
     View& getView(bool profile) {
         if(profile) return profileView;

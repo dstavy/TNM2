@@ -553,7 +553,7 @@ void ImageGrid::drawElement(User* user, int x, int y) {
                 shader->end();
                 face.unbind();
                 
-                drawScoreArea(user->getFactrorScore(), user->isCurrent, x , y + h);
+                drawScoreArea(user->score, user->isCurrent, x , y + h);
             }
         } else {
             ofLogNotice() << "view not active!";
