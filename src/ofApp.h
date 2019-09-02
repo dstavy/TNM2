@@ -34,8 +34,8 @@ public:
     //static const int NUM_GROUPS = 8;
     //const long VIDEO_GRID_REFRESH = 2000;
     static const long PRESENTATION_UPDATE_REFRESH = 10000;
-    static const int MUGSHOT_REFRESH = 4000;
-    static const int CURRENT_USER_REFRESH = 20000;// 120000
+    static const int MUGSHOT_REFRESH = 5000;
+    static const int CURRENT_USER_REFRESH = 25000;// 120000
     static const int IDLE_REFRESH = 5000;
     
     void setup();

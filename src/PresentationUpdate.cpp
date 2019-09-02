@@ -103,12 +103,34 @@ User* PresentationUpdate::update() {
                     float headHeight = v["headHeight"].asFloat();
 					float armLength = v["armLength"].asFloat();
                     
-                    int age = v["age"].asInt();
-                    Gender gender = getGenderFromString(v["gender"].asString());
-                    float beard = v["beard"].asFloat();
-                    string hairColor = v["hairColor"].asString();
-                    Glasses glasses = getGlassesFromBoolean(v["glasses"].asBool());
-
+                    int age = 0;
+                    Gender gender = None;
+                    float beard = 0.0;
+                    string hairColor;
+                    Glasses glasses = DontCare;
+                    
+                    if (v["face_api"].size() > 0) {
+                        ofxJSONElement faceV = v["face_api"][0]["faceAttributes"];
+                        age  =  faceV["age"].asInt();
+                        gender =  getGenderFromString(faceV["gender"].asString());
+                        beard = faceV["facialHair"]["beard"].asFloat();
+                        glasses = getGlassesFromString(faceV["glasses"].asString());
+                        if (faceV["hair"]["invisible"].asBool()) {
+                            hairColor = "invisible";
+                        }
+                        else if (faceV["hair"]["bald"].asFloat() > BALD_THRESHOLD) {
+                            hairColor = "bold";
+                        } else if (faceV["hair"]["hairColor"].size() > 0) {
+                            hairColor = faceV["hair"]["hairColor"][0]["color"].asString();
+                        }
+                    }
+                    else { // old user
+                        age = v["age"].asInt();
+                        gender = getGenderFromString(v["gender"].asString());
+                        beard = v["beard"].asFloat();
+                        hairColor = v["hairColor"].asString();
+                        glasses = getGlassesFromBoolean(v["glasses"].asBool());
+                    }
                     if (id.size() > 0) {
 						//UserMap::iterator it = users->find(id);
 						//if (it == users->end()) {
@@ -306,7 +328,7 @@ User* PresentationUpdate::createUser(string id) {
 
 void PresentationUpdate::updateUser(User* user, float points) {
     user->rounds++;
-    user->score = points * 1./user->rounds + user->score * (1. - 1./user->rounds);
+    user->score = points / user->rounds + user->score * (1. - 1./user->rounds);
     // (vScore + xScore + 1); // avoid getting 100%
 }
 
