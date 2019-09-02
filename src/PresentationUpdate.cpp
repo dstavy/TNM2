@@ -81,7 +81,8 @@ User* PresentationUpdate::update() {
         file.open(json);
 		
         if (std::filesystem::last_write_time(file) > lastUpdate) {
-            long f = std::filesystem::last_write_time(file);
+            std::time_t f = std::filesystem::last_write_time(file);
+            ofLogNotice() << "file time: " << f << " last update: "  << lastUpdate;
             file.close();
             if (datasetJson.open(json)) {
                 //frontTracker->setThreaded(false);
@@ -191,7 +192,7 @@ User* PresentationUpdate::update() {
 			// file not udpated!
            file.close();
         }
-        lastUpdate = ofGetSystemTimeMillis();
+        lastUpdate = ofGetUnixTime();
 	} else {
         ofLogError() << "could not open " + file.getAbsolutePath();
 	}

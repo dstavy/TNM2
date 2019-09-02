@@ -52,7 +52,7 @@ public:
     User* update();
 	
 private:
-    long lastUpdate;
+    uint64_t lastUpdate;
     //ofxJSONElement loadLibrary(string url);
     //ofxJSONElement datasetJson;
     User* createUser(string id);
