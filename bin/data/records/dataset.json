@@ -59,6 +59,17 @@
                 }
             }
         ]
+    },
+    {
+        "id": "ars",
+        "gender": "female",
+        "age": 39,
+        "beard": false,
+        "hairColor": "gray",
+        "glasses": 0.8,
+        "score": 0.3,
+        "rounds": 5,
+        "timestamp": "2018_11_13_23_28_03_647_0"
     }
     ],
     "selections": [

@@ -23,8 +23,8 @@ public:
     void analyzeFace(string image, User* usr);
 
     void urlResponse(ofHttpResponse &httpResponse);
-    const string api_key = "ebe890b853804e35873ea8f4036464a8";
-    const string action_url = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=false&returnFaceLandmarks=false&returnFaceAttributes=age,gender,facialHair,hair&recognitionModel=recognition_01&returnRecognitionModel=false&detectionModel=detection_01";
+    const string api_key = "24e48e2605994bcea11c18e2a1eae0c6";
+    const string action_url = "https://tnm.cognitiveservices.azure.com/face/v1.0/detect?returnFaceId=false&returnFaceLandmarks=false&returnFaceAttributes=age,gender,facialHair,glasses,hair&recognitionModel=recognition_01&returnRecognitionModel=false&detectionModel=detection_01";
     ofURLFileLoader loader;
     ofHttpRequest request;
     int requestId = 0;

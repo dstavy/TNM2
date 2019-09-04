@@ -44,27 +44,24 @@ void FaceApi::urlResponse(ofHttpResponse &response){
             ofLogNotice("ofApp::setup") << "Failed to parse JSON.";
             return;
         }
-        float colorConfidence = 0.0;
-        for (Json::ArrayIndex i = 0; i < json.size(); ++i)
+       
+		if (json.size() > 0) 
         {
-            user->age  = json[i]["faceAttributes"]["age"].asInt();
-            user->gender = getGenderFromString(json[i]["faceAttributes"]["gender"].asString());
-            float beard = json[i]["faceAttributes"]["facialHair"]["beard"].asFloat();
-            user->beard = beard;
-            if (json[i]["faceAttributes"]["hair"]["invisible"].asBool()) {
-                user->hairColor = "invisible";
-            }
-            else if (json[i]["faceAttributes"]["hair"]["bald"].asFloat() > BALD_THRESHOLD) {
-                user->hairColor = "bold";
-            } else {
-                for (Json::ArrayIndex j = 0; j < json[i]["faceAttributes"]["hair"]["hairColor"].size(); ++j)
-                {
-                    if (json[i]["faceAttributes"]["hair"]["hairColor"][i]["confidence"].asFloat() > colorConfidence) {
-                        user->hairColor = json[i]["faceAttributes"]["hair"]["hairColor"][i]["color"].asString();
-                    }
-                }
-            }
-        }
+			ofxJSONElement faceV = v["face_api"][0]["faceAttributes"];
+			user->age = faceV["age"].asInt();
+			user->gender = getGenderFromString(faceV["gender"].asString());
+			user->beard = faceV["facialHair"]["beard"].asFloat();
+			user->glasses = getGlassesFromString(faceV["glasses"].asString());
+			if (faceV["hair"]["invisible"].asBool()) {
+				user->hairColor = "invisible";
+			}
+			else if (faceV["hair"]["bald"].asFloat() > BALD_THRESHOLD) {
+				user->hairColor = "bold";
+			}
+			else if (faceV["hair"]["hairColor"].size() > 0) {
+				user->hairColor = faceV["hair"]["hairColor"][0]["color"].asString();
+			}
+		}
     }
     else {
         ofLog(OF_LOG_ERROR, "Failed get face api response.");

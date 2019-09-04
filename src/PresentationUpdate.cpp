@@ -64,7 +64,7 @@ User* PresentationUpdate::update() {
 #ifdef NO_RELEASE_BERLIN
 		json = JSON_FILE_LOCAL;
 #else
-		json = JSON_FILE;
+		json = JSON_FILE_LOCAL;
 #endif
 		firstUpdate = true;
 	}
@@ -138,7 +138,7 @@ User* PresentationUpdate::update() {
 							// not found
 							User* tmp = createUser(id);
 							if (tmp!= NULL) {
-								
+								if (age == 0) {}
 								// set data
 								setUser(tmp,
 										0.5, // med
@@ -165,16 +165,16 @@ User* PresentationUpdate::update() {
                         else {
                             ofLogError() << "json-entry without id!";
                         }
-                } // for (iterating ids)
-                float points = .99;
-                for (int j = 0 ; j < datasetJson["selections"].size(); j++)
-                {
-                    UserMap::iterator it = users->find(datasetJson["selections"][j]["id"].asString());
-                    if (it != users->end()) {
-                        updateUser(it->second, points);
-                    }
-                    points -= .33;
-                }
+					float points = .99;
+					for (int j = 0; j < v["selections"].size(); j++)
+					{
+						UserMap::iterator it = users->find(v["selections"][j]["id"].asString());
+						if (it != users->end()) {
+							updateUser(it->second, points);
+						}
+						points -= .33;
+					}
+                } // for (iterating ids
                 
                 ofLogNotice() << "sorting users";
                 

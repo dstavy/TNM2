@@ -27,7 +27,7 @@ static const int START_Y =  0;
 static const int MG_CARD_INSET_X = 82;
 static const int DROP_SHADOW_W = 20;
 static const int DROP_SHADOW_H = 18;
-static const int MG_Y_START = 238 + DROP_SHADOW_H;
+static const float MG_Y_START = 238 + DROP_SHADOW_H;
 
 class Mugshot  {
 public:
