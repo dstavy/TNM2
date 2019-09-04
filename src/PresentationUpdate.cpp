@@ -232,37 +232,6 @@ User* PresentationUpdate::createUser(string id) {
     } else // we dont have a face file . maybe new
     {
         profile = false;
-#ifdef USE_MOVIE
-        string videoFileName = MOVIE_DIR + id + "_" + std::to_string(profile) + ".mov";
-        imageFileName = FACE_DIR + id + "_" + std::to_string(profile) + IMAGE_SUF;
-        if (file.doesFileExist(videoFileName)) {
-            file.open(videoFileName);
-            if (std::filesystem::last_write_time(file) > lastUpdate) { // new
-                user = new User(id);
-                file.close();
-                frontPlayer->close();
-                profilePlayer->close();
-                res = Analyzer::videoAnalyze(videoFileName, *frontPlayer, *profileTracker, *user, profile, imageFileName);
-                if (res) {
-                    //user->currentUser = true;
-                }
-                profile = true;
-                videoFileName = MOVIE_DIR + id + "_" + std::to_string(profile) + ".mov";
-                imageFileName = FACE_DIR + id + "_" + std::to_string(profile) + IMAGE_SUF;
-                if (file.doesFileExist(videoFileName)) {
-                    file.open(videoFileName);
-                    if (std::filesystem::last_write_time(file) > lastUpdate) { // new
-                        file.close();
-                        Analyzer::videoAnalyze(videoFileName, *profilePlayer, *profileTracker, *user, profile, imageFileName);
-                    } else {
-                        file.close();
-                    }
-                }
-            } else {
-                file.close();
-            }
-        }
-#endif
         user = new User(id);
        // for (bool profileb : { false, true }) {
 		bool profileb = false;
