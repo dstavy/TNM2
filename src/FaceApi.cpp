@@ -33,7 +33,7 @@ void FaceApi::analyzeFace(string image, User* u) {
 
 void FaceApi::urlResponse(ofHttpResponse &response){
     ofxJSONElement json;
-    if(response.request.getId() == requestId && response.status==200 ){  // ok
+    if(/*response.request.getId() == requestId &&*/ response.status==200 ){  // ok
         // Now parse the JSON
         bool parsingSuccessful = json.openFromBuffer(response.data);
         
@@ -47,7 +47,7 @@ void FaceApi::urlResponse(ofHttpResponse &response){
        
 		if (json.size() > 0) 
         {
-			ofxJSONElement faceV = v["face_api"][0]["faceAttributes"];
+			ofxJSONElement faceV = json[0]["faceAttributes"];
 			user->age = faceV["age"].asInt();
 			user->gender = getGenderFromString(faceV["gender"].asString());
 			user->beard = faceV["facialHair"]["beard"].asFloat();

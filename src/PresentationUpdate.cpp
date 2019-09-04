@@ -77,9 +77,7 @@ User* PresentationUpdate::update() {
 	}
 	
     if (file.doesFileExist(json)) {
-		
         file.open(json);
-		
         if (std::filesystem::last_write_time(file) > lastUpdate) {
             std::time_t f = std::filesystem::last_write_time(file);
             ofLogNotice() << "file time: " << f << " last update: "  << lastUpdate;
@@ -138,7 +136,6 @@ User* PresentationUpdate::update() {
 							// not found
 							User* tmp = createUser(id);
 							if (tmp!= NULL) {
-								if (age == 0) {}
 								// set data
 								setUser(tmp,
 										0.5, // med
@@ -156,6 +153,11 @@ User* PresentationUpdate::update() {
                                         glasses
                                         );
 								
+                                if (age == 0) {
+                                    string imageFileName = FACE_DIR + id + "_" + std::to_string(0) + IMAGE_SUF;
+                                    FaceApi faceApi;
+                                    faceApi.analyzeFace(imageFileName, tmp);
+                                }
 								users->insert(std::pair<string, User*>(id, tmp));
 								user = tmp;
 							} else {

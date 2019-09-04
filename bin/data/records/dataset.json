@@ -1,89 +1,23 @@
 {
     "users": [{
         "id": "berlin_ars_1",
-        "gender": "female",
-        "age": 39,
-        "beard": false,
-        "hairColor": "gray",
-        "glasses": 0.8,
         "score": 0.3,
         "rounds": 5,
         "timestamp": "2018_11_13_23_28_03_647_0",
-        "face_api" :[
+        "selections": [
             {
-                "faceRectangle": {
-                    "top": 986,
-                    "left": 594,
-                    "width": 1044,
-                    "height": 1044
-                },
-                "faceAttributes": {
-                    "gender": "male",
-                    "age": 48.0,
-                    "facialHair": {
-                        "moustache": 0.6,
-                        "beard": 0.6,
-                        "sideburns": 0.6
-                    },
-                    "glasses": "NoGlasses",
-                    "hair": {
-                        "bald": 0.15,
-                        "invisible": false,
-                        "hairColor": [
-                            {
-                                "color": "brown",
-                                "confidence": 0.95
-                            },
-                            {
-                                "color": "gray",
-                                "confidence": 0.6
-                            },
-                            {
-                                "color": "blond",
-                                "confidence": 0.56
-                            },
-                            {
-                                "color": "red",
-                                "confidence": 0.4
-                            },
-                            {
-                                "color": "other",
-                                "confidence": 0.18
-                            },
-                            {
-                                "color": "black",
-                                "confidence": 0.14
-                            }
-                        ]
-                    }
-                }
+                "id": "4"
+            },
+            {
+                "id": "2"
+            },
+            {
+                "id": "3"
+            },
+            {
+                "id": "4"
             }
         ]
-    },
-    {
-        "id": "ars",
-        "gender": "female",
-        "age": 39,
-        "beard": false,
-        "hairColor": "gray",
-        "glasses": 0.8,
-        "score": 0.3,
-        "rounds": 5,
-        "timestamp": "2018_11_13_23_28_03_647_0"
     }
-    ],
-    "selections": [
-        {
-            "id": "1"
-        },
-        {
-            "id": "2"
-        },
-        {
-            "id": "3"
-        },
-        {
-            "id": "4"
-        }
     ]
 }

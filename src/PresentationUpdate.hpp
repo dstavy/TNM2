@@ -27,6 +27,7 @@ public:
     static const string IMAGE_SUF;
 	static const string JSON_FILE_LOCAL;
     static const string JSON_FILE_LOCAL_SAVE;
+    static const string NEW_USER_DIR;
 
 	
     string frontVideo;
