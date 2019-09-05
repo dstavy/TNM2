@@ -14,11 +14,13 @@
 //#defne USE_MOVIE
 
 const string PresentationUpdate::JSON_FILE_LOCAL = "records/dataset.json";
-const string PresentationUpdate::JSON_FILE_LOCAL_SAVE = "records/dataset2.json";
+const string PresentationUpdate::JSON_FILE_LOCAL_SAVE = "records/dataset.json";
 const string PresentationUpdate::JSON_FILE = "../../../The-Normalizing-Machine/bin/Data/records/dataset.json";
 const string PresentationUpdate::FACE_DIR = "Faces/";
 const string PresentationUpdate::MOVIE_DIR = "Movies/";
-const string PresentationUpdate::SEQ_IMAGE_DIR = "../../../The-Normalizing-Machine/bin/Data/SeqImg/";
+const string PresentationUpdate::SEQ_IMAGE_DIR = "Images/";
+const string PresentationUpdate::JSON_NEW_USER_FILE = "records/user.json";
+
 #ifdef NO_RELEASE_BERLIN
 const string PresentationUpdate::IMAGE_EXT = "jpg";
 #else
@@ -70,7 +72,7 @@ User* PresentationUpdate::update() {
 	}
 	else {
 #ifdef NO_RELEASE_BERLIN
-		json = JSON_FILE_LOCAL;
+		json = JSON_NEW_USER_FILE;
 #else
 		json = JSON_FILE;
 #endif
