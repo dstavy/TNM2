@@ -8,6 +8,7 @@
 #include "FaceApi.hpp"
 #include "ofxJSON.h"
 #include "Gender.h"
+#include "Glasses.h"
 
 FaceApi::FaceApi() {
     user = NULL;

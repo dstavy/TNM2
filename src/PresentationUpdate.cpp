@@ -24,7 +24,7 @@ const string PresentationUpdate::JSON_NEW_USER_FILE = "records/user.json";
 #ifdef NO_RELEASE_BERLIN
 const string PresentationUpdate::IMAGE_EXT = "jpg";
 #else
-const string PresentationUpdate::IMAGE_EXT = "jpeg";
+const string PresentationUpdate::IMAGE_EXT = "jpg";
 #endif
 const string PresentationUpdate::IMAGE_SUF = "." + IMAGE_EXT;
 #define MAX_USERS 300
@@ -172,7 +172,7 @@ User* PresentationUpdate::update() {
 					float points = .99;
 					for (int j = 0; j < v["selections"].size(); j++)
 					{
-						UserMap::iterator it = users->find(v["selections"][j]["id"].asString());
+						UserMap::iterator it = users->find(v["selections"][j].asString());
 						if (it != users->end()) {
 							updateUser(it->second, points);
 						}
@@ -188,7 +188,6 @@ User* PresentationUpdate::update() {
                 if (!sortedUsers.empty()) {
                     groupManager->update(sortedUsers);
                 }
-                saveUsersToJson(users);
 			} else {
 				ofLogError() << "could not open json!";
 			}
@@ -203,7 +202,7 @@ User* PresentationUpdate::update() {
 	
    // frontTracker->setThreaded(true);
    // profileTracker->setThreaded(true);
-
+    saveUsersToJson(users);
     return user;
 }
 void PresentationUpdate::getUsersList(vector<User*>& usersOnly) {
