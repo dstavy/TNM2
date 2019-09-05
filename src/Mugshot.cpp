@@ -239,7 +239,7 @@ void Mugshot::drawBackground(User* user) {
 			font_smaller->draw(date_string, examined_1_pos.x, examined_1_pos.y);
 			
 			string time_String = ofGetTimestampString("%F");
-			if (user->timestamp.length() >= 20) {
+			if (user->timestamp.length() >= 19) {
 				date_string = user->timestamp.substr(11, 8);
 			}	
 			font_smaller->draw(date_string, examined_2_pos.x, examined_2_pos.y);

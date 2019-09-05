@@ -18,13 +18,13 @@ const string PresentationUpdate::JSON_FILE_LOCAL_SAVE = "records/dataset.json";
 const string PresentationUpdate::JSON_FILE = "../../../The-Normalizing-Machine/bin/Data/records/dataset.json";
 const string PresentationUpdate::FACE_DIR = "Faces/";
 const string PresentationUpdate::MOVIE_DIR = "Movies/";
-const string PresentationUpdate::SEQ_IMAGE_DIR = "Images/";
+const string PresentationUpdate::SEQ_IMAGE_DIR = "../../incoming/";//Images/";
 const string PresentationUpdate::JSON_NEW_USER_FILE = "records/user.json";
 
 #ifdef NO_RELEASE_BERLIN
 const string PresentationUpdate::IMAGE_EXT = "jpg";
 #else
-const string PresentationUpdate::IMAGE_EXT = "jpeg";
+const string PresentationUpdate::IMAGE_EXT = "jpg";
 #endif
 const string PresentationUpdate::IMAGE_SUF = "." + IMAGE_EXT;
 #define MAX_USERS 300
@@ -74,7 +74,7 @@ User* PresentationUpdate::update() {
 #ifdef NO_RELEASE_BERLIN
 		json = JSON_NEW_USER_FILE;
 #else
-		json = JSON_FILE;
+		json = JSON_NEW_USER_FILE;
 #endif
 	}
 	
@@ -172,7 +172,7 @@ User* PresentationUpdate::update() {
 					float points = .99;
 					for (int j = 0; j < v["selections"].size(); j++)
 					{
-						UserMap::iterator it = users->find(v["selections"][j]["id"].asString());
+						UserMap::iterator it = users->find(v["selections"][j].asString());
 						if (it != users->end()) {
 							updateUser(it->second, points);
 						}
@@ -188,7 +188,6 @@ User* PresentationUpdate::update() {
                 if (!sortedUsers.empty()) {
                     groupManager->update(sortedUsers);
                 }
-                saveUsersToJson(users);
 			} else {
 				ofLogError() << "could not open json!";
 			}
@@ -201,6 +200,7 @@ User* PresentationUpdate::update() {
         ofLogError() << "could not open " + file.getAbsolutePath();
 	}
 	
+    saveUsersToJson(users);
    // frontTracker->setThreaded(true);
    // profileTracker->setThreaded(true);
 
@@ -241,7 +241,7 @@ User* PresentationUpdate::createUser(string id) {
 		bool profileb = false;
         bool resb;
         //some path, may be absolute or relative to bin/data
-        string path = SEQ_IMAGE_DIR + id;//  +"_" + std::to_string(profileb);
+        string path = SEQ_IMAGE_DIR;// + id;//  +"_" + std::to_string(profileb);
         ofDirectory dir(path);
         if (dir.exists()) {
             //only show png files
@@ -251,20 +251,26 @@ User* PresentationUpdate::createUser(string id) {
             ofImage image;
             float highScore = 10;
             int selected = -1;
-            
+            int numPhoto = 0;
             //go through and print out all the paths
             for(int i = 0; i < dir.size(); i++){
-                ofLogNotice(dir.getPath(i));
-                if (image.load(dir.getPath(i))) {
-                    image.update();
-                    float score = Analyzer::getFaceScore(image, *frontTracker, profileb);
-                    if (score != Analyzer::NO_FOUND) {
-                        score = abs(score);
-                        if (!profile && score < highScore) {
-                            highScore = score;
-                            selected = i;
+               // ofLogNotice(dir.getPath(i));
+                if (dir.getName(i).rfind(id, 0) == 0) {
+                    numPhoto++;
+                    if (image.load(dir.getPath(i))) {
+                        image.update();
+                        float score = Analyzer::getFaceScore(image, *frontTracker, profileb);
+                        if (score != Analyzer::NO_FOUND) {
+                            score = abs(score);
+                            if (!profile && score < highScore) {
+                                highScore = score;
+                                selected = i;
+                            }
+                            image.clear();
                         }
-                        image.clear();
+                    }
+                    if (numPhoto >= 5) {
+                        break;
                     }
                 }
             }

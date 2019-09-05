@@ -1,23 +1,37 @@
 {
-    "users": [{
-        "id": "berlin_ars_1",
-        "score": 0.3,
-        "rounds": 5,
-        "timestamp": "2018_11_13_23_28_03_647_0",
-        "selections": [
-            {
-                "id": "4"
-            },
-            {
-                "id": "2"
-            },
-            {
-                "id": "3"
-            },
-            {
-                "id": "4"
-            }
-        ]
-    }
-    ]
+   "users" : [
+      {
+         "age" : 42,
+         "armLength" : 0,
+         "beard" : 0.1000000014901161,
+         "gender" : "male",
+         "glasses" : false,
+         "hairColor" : "brown",
+         "headHeight" : 0,
+         "id" : "2019_09_05_08_43_40",
+         "rounds" : 0,
+         "score" : 0.5,
+         "shouldersWidth" : 0,
+         "timestamp" : "2019_09_05_08_44_50",
+         "torsoLength" : 0,
+         "totalHeight" : 0
+      },
+      {
+         "age" : 34,
+         "armLength" : 0,
+         "beard" : 0,
+         "gender" : "female",
+         "glasses" : true,
+         "hairColor" : "brown",
+         "headHeight" : 0,
+         "id" : "berlin_ars_1",
+         "rounds" : 5,
+         "score" : 0.5,
+         "shouldersWidth" : 0,
+         "timestamp" : "2018_11_13_23_28_03",
+         "torsoLength" : 0,
+         "totalHeight" : 0
+      }
+   ]
 }
+
