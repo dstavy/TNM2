@@ -18,8 +18,8 @@ const string PresentationUpdate::JSON_FILE_LOCAL_SAVE = "records/dataset.json";
 const string PresentationUpdate::JSON_FILE = "../../../The-Normalizing-Machine/bin/Data/records/dataset.json";
 const string PresentationUpdate::FACE_DIR = "Faces/";
 const string PresentationUpdate::MOVIE_DIR = "Movies/";
-#ifndef NO_RELEASE_BERLIN
-const string PresentationUpdate::SEQ_IMAGE_DIR = "../../incoming/";
+#ifdef NO_RELEASE_BERLIN
+const string PresentationUpdate::SEQ_IMAGE_DIR = "incoming/";
 #else
 const string PresentationUpdate::SEQ_IMAGE_DIR = "D:/capture/";//Images/";
 #endif
@@ -110,6 +110,7 @@ User* PresentationUpdate::update() {
                 for (; i < datasetJson["users"].size(); ++i) {
                     Json::Value v = datasetJson["users"][i];
                     string id = v["id"].asString();
+                    if ( users->find(id) == users->end() ) {
                     float score = v["score"].asFloat();
                     if (score == 0.0) {
                         score = 0.5; // med
@@ -196,6 +197,7 @@ User* PresentationUpdate::update() {
 						}
 						points -= .33;
 					}
+                }
                 } // for (iterating ids
                 
                 ofLogNotice() << "sorting users";
@@ -214,7 +216,7 @@ User* PresentationUpdate::update() {
            file.close();
         }
         saveUsersToJson(users);
-        ofFile::removeFile(JSON_NEW_USER_FILE);
+        //ofFile::removeFile(JSON_NEW_USER_FILE);
 	} else {
         ofLogError() << "could not open " + file.getAbsolutePath();
 	}
