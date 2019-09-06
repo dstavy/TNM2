@@ -18,7 +18,11 @@ const string PresentationUpdate::JSON_FILE_LOCAL_SAVE = "records/dataset.json";
 const string PresentationUpdate::JSON_FILE = "../../../The-Normalizing-Machine/bin/Data/records/dataset.json";
 const string PresentationUpdate::FACE_DIR = "Faces/";
 const string PresentationUpdate::MOVIE_DIR = "Movies/";
+#ifndef NO_RELEASE_BERLIN
+const string PresentationUpdate::SEQ_IMAGE_DIR = "../../incoming/";
+#else
 const string PresentationUpdate::SEQ_IMAGE_DIR = "D:/capture/";//Images/";
+#endif
 const string PresentationUpdate::JSON_NEW_USER_FILE = "records/user.json";
 
 #ifdef NO_RELEASE_BERLIN
@@ -68,7 +72,7 @@ User* PresentationUpdate::update() {
 #else
 		json = JSON_FILE_LOCAL;
 #endif
-		firstUpdate = true;
+		//firstUpdate = true;
 	}
 	else {
 #ifdef NO_RELEASE_BERLIN
@@ -82,10 +86,15 @@ User* PresentationUpdate::update() {
     if (file.doesFileExist(json)) {
         file.open(json);
 		
-		time_t t = std::filesystem::last_write_time(file);
+		long t = std::filesystem::last_write_time(file);
 		cout << "ttt" << t << endl;
         if (t > lastUpdate) {
-			lastUpdate = t;
+        if (!firstUpdate) {
+            firstUpdate  = true;
+        }
+        else {
+                lastUpdate = t;
+            }
 
             std::time_t f = std::filesystem::last_write_time(file);
             ofLogNotice() << "file time: " << f << " last update: "  << lastUpdate;
@@ -204,12 +213,13 @@ User* PresentationUpdate::update() {
 			// file not udpated!
            file.close();
         }
+        saveUsersToJson(users);
+        ofFile::removeFile(JSON_NEW_USER_FILE);
 	} else {
         ofLogError() << "could not open " + file.getAbsolutePath();
 	}
 	
-    saveUsersToJson(users);
-   // frontTracker->setThreaded(true);
+    // frontTracker->setThreaded(true);
    // profileTracker->setThreaded(true);
 
     return user;
@@ -299,6 +309,7 @@ User* PresentationUpdate::createUser(string id) {
                         res = resb;
                     }
             }
+                
             //dir.remove(true);
             }
         }
