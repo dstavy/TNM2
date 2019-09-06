@@ -21,7 +21,7 @@ int main( ){
 	//settings.setSize(1080, 1920);
 	//settings.setSize(1920, 1080 * 2);
 	
-#//ifdef TARGET_WIN32
+#ifdef TARGET_WIN32
 	settings.decorated = false;
 	// settings.windowMode = OF_FULLSCREEN;
 	//settings.multiMonitorFullScreen = true;
@@ -35,7 +35,7 @@ int main( ){
 	//settings.monitor = 1;
 	//settings.resizable = false;
 	//settings.resizable = true;
-//#endif
+#endif
     
 #ifdef DEBUG
      settings.multiMonitorFullScreen = false;

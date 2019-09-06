@@ -136,7 +136,7 @@ void Mugshot::drawBackground(User* user) {
 		
 		shared_ptr<ofxSmartFont> font = ofxSmartFont::get("AmericanTypewriter");
 		
-		ofSetColor(107, 55, 143); // #6B378F
+		//ofSetColor(107, 55, 143); // #6B378F
 		
 		if (user != NULL) {
 			

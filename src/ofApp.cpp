@@ -883,7 +883,8 @@ void ofApp::signalCurrentMugshotImageOff() {
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    
+    glEnable(GL_BLEND);
+    ofSetColor(ofColor::lightYellow);
     outputFbo.begin();
     
     ofClear(ofColor::black);
@@ -963,7 +964,6 @@ void ofApp::draw(){
  */
 
 void ofApp::drawMugshotPage() {
-    
     ofPushMatrix();
     {
 #ifndef MUGSHOT_IS_LEFT
@@ -996,13 +996,12 @@ void ofApp::drawGridPage() {
             ofSetColor(ofColor::black);
             ofDrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         }
-         ofPopStyle();
+        ofPopStyle();
         ///ofTranslate(30, gridY);
         
         //ofPushMatrix();
         //{
         //ofScale(GRID_SCALE_TABLE);
-        
         table_bg.draw(0, 0);
         //}
         // ofPopMatrix();
@@ -1036,6 +1035,7 @@ void ofApp::drawGridPage() {
                 grid->draw();
             }
         }
+       
         //grids[View::HEAD].draw();//2055, 1266); // HEAD
         //grids[View::MOUTH].draw();//1403, 849); // MOUTH
         //grids[View::NOSE].draw();//748, 1230); // NOSE

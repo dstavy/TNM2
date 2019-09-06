@@ -102,6 +102,9 @@ User* PresentationUpdate::update() {
                     Json::Value v = datasetJson["users"][i];
                     string id = v["id"].asString();
                     float score = v["score"].asFloat();
+                    if (score == 0.0) {
+                        score = 0.5; // med
+                    }
                     int rounds = v["rounds"].asInt();
                     string timestamp = v["timestamp"].asString();
 					float shouldersWidth = v["shouldersWidth"].asFloat();
@@ -146,7 +149,7 @@ User* PresentationUpdate::update() {
 							if (tmp != NULL) {
 								// set data
 								setUser(tmp,
-										0.5, // med
+										score,
                                         rounds,
                                         timestamp,
 										shouldersWidth,
