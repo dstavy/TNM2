@@ -18,7 +18,7 @@ const string PresentationUpdate::JSON_FILE_LOCAL_SAVE = "records/dataset.json";
 const string PresentationUpdate::JSON_FILE = "../../../The-Normalizing-Machine/bin/Data/records/dataset.json";
 const string PresentationUpdate::FACE_DIR = "Faces/";
 const string PresentationUpdate::MOVIE_DIR = "Movies/";
-const string PresentationUpdate::SEQ_IMAGE_DIR = "../../incoming/";//Images/";
+const string PresentationUpdate::SEQ_IMAGE_DIR = "D:/capture/";//Images/";
 const string PresentationUpdate::JSON_NEW_USER_FILE = "records/user.json";
 
 #ifdef NO_RELEASE_BERLIN
@@ -77,10 +77,16 @@ User* PresentationUpdate::update() {
 		json = JSON_NEW_USER_FILE;
 #endif
 	}
-	
+	ofLogNotice() << " XXXX XXX XX" << json << endl;
+
     if (file.doesFileExist(json)) {
         file.open(json);
-        if (std::filesystem::last_write_time(file) > lastUpdate) {
+		
+		time_t t = std::filesystem::last_write_time(file);
+		cout << "ttt" << t << endl;
+        if (t > lastUpdate) {
+			lastUpdate = t;
+
             std::time_t f = std::filesystem::last_write_time(file);
             ofLogNotice() << "file time: " << f << " last update: "  << lastUpdate;
             file.close();
@@ -137,7 +143,7 @@ User* PresentationUpdate::update() {
 						//if (it == users->end()) {
 							// not found
 							User* tmp = createUser(id);
-							if (tmp!= NULL) {
+							if (tmp != NULL) {
 								// set data
 								setUser(tmp,
 										0.5, // med
@@ -195,7 +201,6 @@ User* PresentationUpdate::update() {
 			// file not udpated!
            file.close();
         }
-        lastUpdate = ofGetUnixTime();
 	} else {
         ofLogError() << "could not open " + file.getAbsolutePath();
 	}
@@ -243,7 +248,10 @@ User* PresentationUpdate::createUser(string id) {
         //some path, may be absolute or relative to bin/data
         string path = SEQ_IMAGE_DIR;// + id;//  +"_" + std::to_string(profileb);
         ofDirectory dir(path);
-        if (dir.exists()) {
+		ofLogError() << "HERHERH";
+
+		if (dir.exists()) {
+			ofLogError() << "HERHERH";
             //only show png files
             dir.allowExt(IMAGE_EXT);
             //populate the directory object
