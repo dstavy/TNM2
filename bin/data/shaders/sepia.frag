@@ -10,8 +10,8 @@ in vec2 texCoordVarying;
 out vec4 outputColor;
 
 #define desat 0.92
-#define sepia vec3(0.70,0.66,0.50)
-//#define sepia vec3(0.66,0.62,0.54) grey one
+//#define sepia vec3(0.70,0.66,0.50) // yellopwish
+#define sepia vec3(0.66,0.62,0.54) //grey one
 //#define halfsies
 
 void main(void)

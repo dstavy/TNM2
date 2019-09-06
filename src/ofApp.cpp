@@ -883,8 +883,8 @@ void ofApp::signalCurrentMugshotImageOff() {
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    glEnable(GL_BLEND);
-    ofSetColor(ofColor::lightYellow);
+   // glEnable(GL_BLEND);
+   // ofSetColor(ofColor::lightYellow);
     outputFbo.begin();
     
     ofClear(ofColor::black);
