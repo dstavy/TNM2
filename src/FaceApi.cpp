@@ -56,7 +56,7 @@ void FaceApi::urlResponse(ofHttpResponse &response){
 				user->hairColor = "invisible";
 			}
 			else if (faceV["hair"]["bald"].asFloat() > BALD_THRESHOLD) {
-				user->hairColor = "bold";
+				user->hairColor = "bald";
 			}
 			else if (faceV["hair"]["hairColor"].size() > 0) {
 				user->hairColor = faceV["hair"]["hairColor"][0]["color"].asString();
