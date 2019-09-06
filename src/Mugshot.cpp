@@ -136,7 +136,7 @@ void Mugshot::drawBackground(User* user) {
 		
 		shared_ptr<ofxSmartFont> font = ofxSmartFont::get("AmericanTypewriter");
 		
-		//ofSetColor(107, 55, 143); // #6B378F
+		ofSetColor(107, 55, 143); // #6B378F
 		
 		if (user != NULL) {
 			
@@ -616,7 +616,7 @@ void Mugshot::animate(float delay) {
 		int y_dist = MG_Y_MOVE / animateCounter;
 		int xTo = x - ofRandom( -80., 80);//+ ofRandom(y_dist - 10, y_dist + 10);
 		
-        int yTo = y  + ofRandom(y_dist - 0.3*y_dist, y_dist);//- ofRandom( -10., 10.);
+        int yTo = y  + ofRandom(y_dist - 0.2*y_dist, y_dist);//- ofRandom( -10., 10.);
         float rotTo = ofRandom(-4., 4.);
 		float scaleTo = scale - (0.01 * animateCounter);
         auto t0 = tweenManager.addTween(x, x, xTo, ANIMATION_TIME, delay , TWEEN::Ease::Quadratic::Out);
