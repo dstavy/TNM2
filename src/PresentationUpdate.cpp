@@ -362,7 +362,7 @@ bool PresentationUpdate::saveUserImage(string fileName, View& view) {
     int newH  = MIN(View::FACE_EXTENDED_PADDING * rec.height, image.getHeight());
     int moveX = MAX(0, (newW - rec.width ) /2);
     int moveY = MAX((newH - rec.height ) /2, 0);
-    image.crop(MAX(0, rec.x -moveX), MAX(0, rec.y - moveY), newW, newH);
+   // image.crop(MAX(0, rec.x -moveX), MAX(0, rec.y - moveY), newW, newH);
     return image.save(fileName);
 
 	// todo:: BUG WHEN FACE IS TOO SMALL
