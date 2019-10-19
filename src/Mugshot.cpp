@@ -46,7 +46,7 @@ const static ofPoint examined_2_pos = {700, 795, 0};
 
 const static ofPoint examined_at_pos = {139, 794, 0};
 
-const static string place = "Ars Electornica";
+const static string PLACE = "SITUATIONS/Deviant, Fotomuseum";
 
 static ofImage bgImage;
 
@@ -244,7 +244,7 @@ void Mugshot::drawBackground(User* user) {
 			}	
 			font_smaller->draw(date_string, examined_2_pos.x, examined_2_pos.y);
 			
-			font->draw(place, examined_at_pos.x, examined_at_pos.y);
+			font->draw(PLACE, examined_at_pos.x, examined_at_pos.y);
 		} else {
 			ofLogNotice() << "mugshot no user!";
 		}

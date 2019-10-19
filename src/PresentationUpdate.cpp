@@ -21,7 +21,7 @@ const string PresentationUpdate::MOVIE_DIR = "Movies/";
 #ifdef NO_RELEASE_BERLIN
 const string PresentationUpdate::SEQ_IMAGE_DIR = "incoming/";
 #else
-const string PresentationUpdate::SEQ_IMAGE_DIR = "D:/capture/";//Images/";
+const string PresentationUpdate::SEQ_IMAGE_DIR = "S:/TNM/capture/";//Images/";
 #endif
 const string PresentationUpdate::JSON_NEW_USER_FILE = "records/user.json";
 
