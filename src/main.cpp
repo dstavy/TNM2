@@ -30,11 +30,17 @@ int main( ){
 	// settings.setPosition(glm::vec2(0, 0));
 	//window.setMultiDisplayFullscreen(true);
 	settings.setSize(2160, 1920);
-	settings.setPosition(ofVec2f(1280, 0));
+	settings.setPosition(ofVec2f(1920, 0));
 
 	//settings.monitor = 1;
 	//settings.resizable = false;
 	//settings.resizable = true;
+#ifndef DEBUG
+	//HWND hwnd = GetConsoleWindow();
+	//ShowWindow(hwnd, 0);
+
+	FreeConsole();
+#endif
 #endif
     
 #ifdef DEBUG

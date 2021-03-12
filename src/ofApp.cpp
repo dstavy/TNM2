@@ -47,8 +47,7 @@ void ofApp::setup(){
     profileTracker.setThreaded(false);
     frontTracker.setup("Model/shape_predictor_68_face_landmarks.dat");
     profileTracker.setup("Model/shape_predictor_68_face_landmarks.dat");
-    frontTracker.setThreaded(false);
-    profileTracker.setThreaded(false);
+    
 #if not defined NO_RELEASE_BERLIN
     frontTracker.setFaceDetectorImageSize(735000);
 #endif
