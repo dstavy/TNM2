@@ -23,7 +23,7 @@
 //#define NO_RELEASE_BERLIN
 
 // settings
-#define SCREEN_WIDTH 1080	//
+#define SCREEN_WIDTH 1200	//
 #define SCREEN_HEIGHT 1920
 #define MUGSHOT_IS_LEFT
 //#define GRID_SCALE_TABLE 1.0//0.37125f  // scaling factor for grid-image
