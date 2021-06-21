@@ -8,7 +8,7 @@
 #   The location of your root openFrameworks installation
 #       (default) OF_ROOT = ../../../../of_v0.10.1_ios_release 
 ################################################################################
-# OF_ROOT = ../../../../of_v0.10.1_ios_release
+OF_ROOT = D:\of_v0.11.2_vs2017_release
 
 ################################################################################
 # PROJECT ROOT
