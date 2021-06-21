@@ -46,7 +46,7 @@ const static ofPoint examined_2_pos = {700, 795, 0};
 
 const static ofPoint examined_at_pos = {139, 794, 0};
 
-const static string PLACE = "Humans / Machines @ Le Pavillion";
+const static string PLACE = "YOU and AI @ Athens, Greece";
 
 static ofImage bgImage;
 

@@ -1238,11 +1238,10 @@ void ofApp::keyReleased(int key){
 void ofApp::setFeatureToFocus(View::Features feature, float animTime) {
     currentFeatureToFocus = feature;
     float toY = View::getLocationForFeature(currentFeatureToFocus);
-    float toX = View::getLocationForFeature(currentFeatureToFocus);
     
     /*
      if (gridTween != nullptr) {
-     gridTween->clear();
+		gridTween->clear();
      }
      
      gridTween = tweenManager.addTween(gridY,

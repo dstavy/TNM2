@@ -1,8 +1,8 @@
+ofxOpenCv
 ofxCv
 ofxFaceTracker2
 ofxGui
 ofxJSON
-ofxOpenCv
 ofxOsc
 ofxPoco
 ofxSmartFont

@@ -226,7 +226,7 @@
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp">
       <Filter>addons\ofxXmlSettings\libs</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\dlib-19.21\dlib-19.21\dlib\all\source.cpp">
+    <ClCompile Include="..\..\..\..\dlib-19.22\dlib\all\source.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1631,13 +1631,8 @@
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h">
       <Filter>addons\ofxXmlSettings\libs</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="bin\data\Assets\table_bg.png" />
-    <Image Include="icon.ico" />
   </ItemGroup>
 </Project>

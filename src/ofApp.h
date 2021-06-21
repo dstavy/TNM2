@@ -101,6 +101,7 @@ public:
     long lastUserUpdate = 0;
     long lastIdleUpdate = 0;
     TWEEN::Manager tweenManager;
+	//ofEasyCam cam;
     glm::vec3 camScale;
     vector<Mugshot*> mugshots;
     static const int ANIM_DELAY = 0.2;
