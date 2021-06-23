@@ -29,8 +29,8 @@ int main( ){
 	//settings.setPosition(glm::vec2(1280.0f, 0.0f));
 	// settings.setPosition(glm::vec2(0, 0));
 	//window.setMultiDisplayFullscreen(true);
-	settings.setSize(2160, 1920);
-	settings.setPosition(ofVec2f(1920, 0));
+	//settings.setSize(2160, 1920);
+	settings.setPosition(ofVec2f(800, 0));
 
 	//settings.monitor = 1;
 	//settings.resizable = false;
