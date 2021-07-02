@@ -127,15 +127,14 @@ void Group::filterGroup(GroupFilter& filter) {
                                             return true;
                                         }
                                     }
-                                    
-                                    if (filter.minAge != -1 )  {
-                                        if (user->age < filter.minAge) {
-                                            return true;
-                                        }
-                                    }
+									if (filter.minAge != -1) {
+										if (user->age < filter.minAge || user->age <= 0) {
+											return true;
+										}
+									}
                                     
                                     if (filter.maxAge != -1 )  {
-                                        if (user->age > filter.maxAge) {
+                                        if (user->age > filter.maxAge || user->age <= 0) {
                                             return true;
                                         }
                                     }

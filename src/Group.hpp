@@ -38,11 +38,11 @@ public:
                 return false;
             }
             
-            if (this->minAge != -1 && user->age <  this->minAge)  {
+            if ((this->minAge != -1 && user->age <  this->minAge) || user->age <= 0)  {
                  return false;
             }
             
-            if (this->maxAge != -1 && user->age >  this->maxAge)  {
+            if ((this->maxAge != -1 && user->age >  this->maxAge) || user->age <= 0)  {
                 return false;
             }
             if (!this->hairColor.empty() && this->hairColor.compare(user->hairColor) != 0)  {
