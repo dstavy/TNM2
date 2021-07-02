@@ -155,7 +155,7 @@ User* PresentationUpdate::update() {
 							hairColor = v["hairColor"].asString();
 							glasses = getGlassesFromBoolean(v["glasses"].asBool());
 						}
-						if (id.size() > 0 && age > 0) {
+						if (id.size() > 0 && ((firstUpdate && age > 0) || !firstUpdate)) {
 							//UserMap::iterator it = users->find(id);
 							//if (it == users->end()) {
 								// not found
